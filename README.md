@@ -57,7 +57,7 @@ class Directions(enum.Enum):
 Описание прототипов функций
 ```python
 '''
-1. Make n steps in direction specified using dir variable
+1. Make n > 0 steps in direction specified using dir variable
 Return:
     None
 '''
@@ -85,6 +85,12 @@ def check_enemy(self, dir: Directions) -> int:
 '''
 def sleep(self, n: int) -> None:
     return None
+
+'''
+5. Rotate bot in dir: Direction
+'''
+def rotate(self, dir: Direction) -> None:
+    return None
 ```
 |Описание|функция|
 |:--:|:--:|
@@ -92,3 +98,4 @@ def sleep(self, n: int) -> None:
 | 2. Произвести выстрел | `fire() -> bool` |
 | 3. Проверить наличие вражеского объекта в заданном с помощью переменной __dir__ направлении | `check_enemy(dir: Directions) -> int`|
 | 4. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` |
+| 5. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Directions) -> None` |

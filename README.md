@@ -1,7 +1,7 @@
 # rainbow hit
 ### Описание
 МИЭМ 2019 проект по питону.  
-Пошаговая игра основанная на том, что игрокам необходимо самостоятельно придумать алгоритм управления роботом, и записать его с помощью предооставленного API.  
+Игра основанная на том, что игрокам необходимо самостоятельно придумать алгоритм управления роботом, и записать его с помощью предооставленного API.  
 Пример возможного алгоритма:
 ```python
 # check if there is enemy around you
@@ -21,8 +21,8 @@ bot.fire()
 ```
 ### Структура Приложения
 1. Серверная часть:  
-    1.1 Логика бекенда ()  
-    1.2 123      
+    1.1 Логика бекенда
+    1.2       
 2. Клиентская часть (веб приложение):  
     2.1 Форма для отправки кода управления ботом  
     2.2 Окно с визуализацией действий ботов  
@@ -30,26 +30,29 @@ bot.fire()
 
 ### Описание API
 - Игрокам дается ссылка объект класса Bot: bot.  
-- Игрокам предоставляется возможность совершения __10__ действий в течении одного хода.
 
 Класс описывающий поля робота:
 ```python
 @dataclass
 class Bot():
-    # mac actions per move
-    MAX_ACTIONS: int = 10
-    # number of actions currently used
-    actions: int = 0
+    hp: int
+    speed: int
+    handle: str
+    damage: int
 ```
 
 Класс описывающий возможные направления в виде перечисления:
 ```python
 import enum
 class Directions(enum.Enum):
-   Up    = 1
-   Down  = 2
-   Left  = 3
-   Right = 4
+    North     = N  = Up        = 1
+    NorthEast = NE = RightUp   = UpRight   = 2
+    East      = E  = Right     = 3
+    SouthEast = SE = DownRight = RightDown = 4 
+    South     = S  = Down      = 5 
+    SouthWest = SW = LeftDown  = DownLeft  = 6
+    West      = W  = Left      = 7 
+    NorthWest = NW = LeftUp    = UpLeft    = 8 
 ```
 Описание прототипов функций
 ```python
@@ -74,7 +77,7 @@ def fire(self) -> bool:
 Return:
     return distance to enemy in cells, or -1 if there is no enemies on the row
 '''
-def is_enemy(self, dir: Directions) -> int:
+def check_enemy(self, dir: Directions) -> int:
     return distance_to_enemy
 
 '''
@@ -83,9 +86,9 @@ def is_enemy(self, dir: Directions) -> int:
 def sleep(self, n: int) -> None:
     return None
 ```
-|Описание|функция|используемое количество действий|
-|:--:|:--:|:--:|
-| 1. Переместить робота на __n__ клеток, в заданном с помощью переменной __dir__ направлении | `bot.move(dir: Directions, n: int) -> None` | __n * 2__ |
-| 2. Произвести выстрел | `bot.fire() -> bool` | __2__ |
-| 3. Проверить наличие вражеского объекта в заданном с помощью переменной __dir__ направлении | `is_enemy(dir: Directions) -> int`| __1__ |
-| 4. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` | __n__ |
+|Описание|функция|
+|:--:|:--:|
+| 1. Переместить робота на __n__ клеток, в заданном с помощью переменной __dir__ направлении | `move(dir: Directions, n: int) -> None` |
+| 2. Произвести выстрел | `fire() -> bool` |
+| 3. Проверить наличие вражеского объекта в заданном с помощью переменной __dir__ направлении | `check_enemy(dir: Directions) -> int`|
+| 4. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` |

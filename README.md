@@ -5,19 +5,19 @@
 Пример возможного алгоритма:
 ```python
 # check if there is enemy around you
-if is_enemy(Directions::Left):
-    bot.move(Directions::Left, 1)
-elif is_enemy(Directions::Right): 
-    bot.move(Directions::Right, 1)
-elif is_enemy(Directions::Up):
-    bot.move(Directions::Up, 1)
-elif is_enemy(Directions::Down):
-    bot.move(Directions::Down, 1)
-else:
-    bot.sleep(bot.MAX_ACTIONS - bot.actions)
+res = is_enemy_around()
+if res != None:
+    direct = res[0]
+    distan = res[1]
 
-# fire
-bot.fire()
+    if distan <= bot.shot_distance:
+        bot.rotate(direct)
+        bot.fire()
+    else:
+        bot.move(direct, distan - bot.shot_distance)
+        bot.fire()
+else:
+    bot.sleep(100)
 ```
 ### Структура Приложения
 1. Серверная часть:  
@@ -35,9 +35,23 @@ bot.fire()
 ```python
 @dataclass
 class Bot():
-    hp: int
+    MAX_SHOT_DST: int
+    MIN_SHOT_DST: int
+    shot_distance: int
+
+    MAX_HEALTH: int
+    MIN_HEALTH: int
+    health: int
+
+    MAX_SPEED: int
+    MIN_SPEED: int
     speed: int
+
+    DEFAULT_HANDLE: str
     handle: str
+
+    MAX_DAMAGE: int
+    MIN_DAMAGE: int
     damage: int
 ```
 
@@ -81,13 +95,22 @@ def check_enemy(self, dir: Directions) -> int:
     return distance_to_enemy
 
 '''
-4. Just do nothing for n actions
+4. Check if there is enemy object in all possible directions.
+Return:
+    if enemy found returns list with first element = direction to enemy, and second = distance to enemy
+    otherwise returns None
+'''
+def is_enemy_around(self) -> dict(dir: Direction, dist: int):
+    return dict(dir: Direction, dist: int)
+
+'''
+5. Just do nothing for n milliseconds
 '''
 def sleep(self, n: int) -> None:
     return None
 
 '''
-5. Rotate bot in dir: Direction
+6. Rotate bot in dir: Direction
 '''
 def rotate(self, dir: Direction) -> None:
     return None
@@ -97,5 +120,6 @@ def rotate(self, dir: Direction) -> None:
 | 1. Переместить робота на __n__ клеток, в заданном с помощью переменной __dir__ направлении | `move(dir: Directions, n: int) -> None` |
 | 2. Произвести выстрел | `fire() -> bool` |
 | 3. Проверить наличие вражеского объекта в заданном с помощью переменной __dir__ направлении | `check_enemy(dir: Directions) -> int`|
-| 4. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` |
-| 5. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Directions) -> None` |
+| 4. Проверить наличие вражеского объекта во всех возможных направлениях | `is_enemy_around() -> dict(dir: Direction, dist: int)`|
+| 5. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` |
+| 6. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Directions) -> None` |

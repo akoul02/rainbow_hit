@@ -18,8 +18,8 @@ else:
 ```
 ### Структура Приложения
 1. Серверная часть:  
-    1.1 Логика бекенда
-    1.2       
+    1.1 Логика бекенда (управление роботами, выполнение их алгоритма)  
+    1.2 Часть, которая будет взаимодействовать с веб-страницей (обновлять ее состояние (WebSockets?)) 
 2. Клиентская часть (веб приложение):  
     2.1 Форма для отправки кода управления ботом  
     2.2 Окно с визуализацией действий ботов  
@@ -66,7 +66,7 @@ class Direction(enum.Enum):
     NorthWest = NW = LeftUp    = UpLeft    = 8 
 ```
 
-Класс описывающий направление и дистанцию
+Класс описывающий направление и дистанцию:
 ```python
 @dataclass
 class DirDist():
@@ -74,7 +74,7 @@ class DirDist():
     distance:  int = None
 ```
 
-Описание прототипов функций
+Описание прототипов функций:
 ```python
 '''
 1. Make n > 0 steps in direction specified using dir variable
@@ -102,7 +102,7 @@ def check_enemy(self, dir: Direction) -> int:
 
 '''
 MAY NOT BE IN THE FINAL VERSION!
-4. Check if there is enemy object in all possible Direction.
+4. Check if there is enemy object in all possible Directions.
 Return:
     if enemy found returns DirDist instance with DirDist.direction = direction to enemy, DirDist.distance = distance to enemy
     otherwise returns None
@@ -127,6 +127,6 @@ def rotate(self, dir: Direction) -> None:
 | 1. Переместить робота на __n__ клеток, в заданном с помощью переменной __dir__ направлении | `move(dir: Direction, n: int) -> None` |
 | 2. Произвести выстрел | `fire() -> bool` |
 | 3. Проверить наличие вражеского объекта в заданном с помощью переменной __dir__ направлении | `check_enemy(dir: Direction) -> int`|
-| 4. Проверить наличие вражеского объекта во всех возможных направлениях | `is_enemy_around() -> dict(dir: Direction, dist: int)`|
-| 5. Ничего не делать, a.k.a. NOP | `sleep(n: int) -> None` |
+| 4. Проверить наличие вражеского объекта во всех возможных направлениях | `is_enemy_around() -> DirDist`|
+| 5. Ничего не делать, в течении __n__ миллисекунд | `sleep(n: int) -> None` |
 | 6. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Direction) -> None` |

@@ -33,7 +33,7 @@ else:
         * Статистика побед/поражений
 
 Визуальное представление:
-![drawio layout](www.google.com)
+![DrawIo layout](https://i.imgur.com/EBDFnnJ.png)
 ### Описание API
 - Игрокам дается ссылка объект класса Bot: bot.  
 

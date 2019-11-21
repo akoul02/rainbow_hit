@@ -4,10 +4,11 @@
 Игра основанная на том, что игрокам необходимо самостоятельно придумать алгоритм управления роботом, и записать его с помощью предоставленного API.  
 
 ### Задачи
-- Представление игрового мира
+- Представление игрового мира (в случае, если не используем готовый движок)
+    - map[WIDTH][HEIGHT]
 - Своевременное оформление тестов и документации в процессе написания (сдаешь функцию = есть тесты и документация)
-- Разделение на модули
-- GUI? (web/pySimpleGUI)
+- Разделение на модули/подзадачи
+- GUI? (web/pySimpleGUI/pygame)
 
 Пример возможного алгоритма:
 ```python
@@ -230,3 +231,11 @@ def rotate(self, dir: Direction) -> None:
 | 4. Проверить наличие вражеского объекта во всех возможных направлениях | `is_enemy_around() -> ObjectDescriptor`|
 | 5. Ничего не делать, в течении __n__ миллисекунд | `sleep(n: int) -> None` |
 | 6. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Direction) -> None` |
+
+### Линки
+- Обзор техник реализации игрового ИИ  
+https://habr.com/ru/post/420219/ 
+- Best Way to Create A Map for a 2D Game?  
+https://gamedev.stackexchange.com/questions/5173/best-way-to-create-a-map-for-a-2d-game
+- How EXACTLY do games store large 2D tiled worlds?  
+https://www.reddit.com/r/gamedev/comments/6sus0f/how_exactly_do_games_store_large_2d_tiled_worlds/

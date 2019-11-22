@@ -232,10 +232,11 @@ def rotate(self, dir: Direction) -> None:
 | 5. Ничего не делать, в течении __n__ миллисекунд | `sleep(n: int) -> None` |
 | 6. Развернуть робота в направлении указанном в переменной __dir__ | `rotate(dir: Direction) -> None` |
 
-### Линки
-- Обзор техник реализации игрового ИИ  
-https://habr.com/ru/post/420219/ 
-- Best Way to Create A Map for a 2D Game?  
-https://gamedev.stackexchange.com/questions/5173/best-way-to-create-a-map-for-a-2d-game
-- How EXACTLY do games store large 2D tiled worlds?  
-https://www.reddit.com/r/gamedev/comments/6sus0f/how_exactly_do_games_store_large_2d_tiled_worlds/
+### Ссылки
+- Обзор техник реализации игрового ИИ. ([Habr game AI](https://habr.com/ru/post/420219/))
+- Best Way to Create A Map for a 2D Game? ([2d map representation](https://gamedev.stackexchange.com/questions/5173/best-way-to-create-a-map-for-a-2d-game))
+- How EXACTLY do games store large 2D tiled worlds? ([2d tiled maps](https://www.reddit.com/r/gamedev/comments/6sus0f/how_exactly_do_games_store_large_2d_tiled_worlds/))
+- Небольшой гайд, по написанию игры на flash ([Example of representing 2d world](http://oos.moxiecode.com/blog/index.php/tutorials/))
+- Разные пути по представлению игрового мира ([Different approaches to represent world map](https://gamedev.stackexchange.com/questions/26346/whole-map-design-vs-tiles-array-design))
+- Пример создания класса (java) для представления 2d-мира ([2d world system](https://stackoverflow.com/questions/33676775/in-java-create-2d-map-on-which-objects-can-be-placed-and-move))
+

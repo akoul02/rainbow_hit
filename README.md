@@ -243,3 +243,5 @@ def rotate(self, dir: Direction) -> None:
 - [	'Overwatch' Gameplay Architecture and Netcode](https://www.gdcvault.com/play/1024001/-Overwatch-Gameplay-Architecture-and)
 - [Как мы писали сетевой код мобильного PvP шутера: синхронизация игрока на клиенте](https://habr.com/ru/company/pixonic/blog/415959/)
 - [What Every Programmer Needs To Know About Game Networking](https://gafferongames.com/post/what_every_programmer_needs_to_know_about_game_networking/)
+- [simple 2D game engine](https://github.com/adnzzzzZ/blog/issues/39)
+- [developing 2d game engine](https://gamebanana.com/tuts/11229)

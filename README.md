@@ -13,13 +13,16 @@
 Пример возможного алгоритма:
 ```python
 # check if there is enemy around you
-res = is_enemy_around()
-if res != None:
-    if res.distance <= bot.shot_distance:
-        bot.rotate(~res.direction)
-    else:
-        bot.move(res.direction, res.distance - bot.shot_distance)
-        bot.rotate(~res.direction)
+res = is_object_around()
+if len(res) > 1:
+    for obj in res:
+        if obj.obj_type == ObjectType.enemy:
+            if obj.distance <= bot.shot_distance:
+                bot.rotate(obj.direction)
+                bot.fire()
+            else:
+                bot.move(obj.direction, obj.distance - bot.shot_distance)
+                bot.fire()
 else:
     bot.sleep(100)
 ```

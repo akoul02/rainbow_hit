@@ -248,3 +248,4 @@ def rotate(self, dir: Direction) -> None:
 - [What Every Programmer Needs To Know About Game Networking](https://gafferongames.com/post/what_every_programmer_needs_to_know_about_game_networking/)
 - [simple 2D game engine](https://github.com/adnzzzzZ/blog/issues/39)
 - [developing 2d game engine](https://gamebanana.com/tuts/11229)
+- [how to share variables across scripts in python](https://stackoverflow.com/questions/1829116/how-to-share-variables-across-scripts-in-python)

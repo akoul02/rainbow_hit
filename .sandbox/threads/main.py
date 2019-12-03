@@ -1,26 +1,31 @@
-from threading import Barrier, Thread, Lock
-from playerCode import *
-from bot import Bot
+from threading import Barrier, Thread, Lock, Event
 from executor import Executor
+from playerCode import *
+from time import sleep
+from bot import Bot
 
 def main():
-    playerLock = Lock()
-    enemyLock = Lock()
-    executor1 = Executor(0, 'player', playerLock, runUser)
-    executor2 = Executor(0, 'enemy', enemyLock, runEnemy)
+    # used to lock main Thread
+    main_event = Event()
+    playerExecutor = Executor(Bot(0, 'player', main_event), run_user)
+    enemyExecuror  = Executor(Bot(0, 'enemy', main_event),  run_enemy)
 
-    threads = []
+    playerExecutor.run()
+    main_event.wait()
+    main_event.clear()
 
-    threads.append(Thread(target=executor1.init))
-    threads[-1].start()
+    playerExecutor.next_move()
+    main_event.wait()
+    main_event.clear()
 
-    threads.append(Thread(target=executor2.init))
-    threads[-1].start()
+    playerExecutor.next_move()
+    main_event.wait()
+    main_event.clear()
 
+    # for step in range(0, 8):
+    #     print(f'Step: {step}')
+    #     sync.next_move()
 
-    for step in range(0, 8):
-        playerLock.release()
-        enemyLock.release()
 
 if __name__ == "__main__":
     main()

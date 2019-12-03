@@ -1,26 +1,39 @@
 from dataclasses import dataclass
-from threading import Barrier, Thread, Lock
+from threading import Barrier, Thread, Lock, Event
 from typing import List
-import functools
 
 @dataclass
 class Bot:
     x: int
     name: str
-    lock: Lock
+    event: Event
 
-    def __init__(self, x: int, name: str, lock: Lock):
+    def __init__(self, x: int, name: str, main_event: Event):
         self.x = x
         self.name = name
-        self.lock = lock
-        self.lock.acquire()
+        self.event = Event()
+        self.main_event = main_event
 
     def step(self, n: int):
+        
         self.x += n
         print(f'{self.name} Making {n} steps')
         print(f'{self.name}\'s Current coordinate: {self.x}\n')
-        self.lock.acquire()
+
+        self.main_event.set()
+                          # false - wait
+        self.event.wait() # true  - continue
+        self.event.clear()
+
+        return n
 
     def sleep(self):
+
+        # self.event.wait()
+
         print(f'{self.name} is sleeping')
-        self.lock.acquire()
+
+        # self.event.clear()
+
+        return None
+

@@ -1,22 +1,21 @@
 from bot import Bot
-from threading import Barrier, Thread, Lock
+from threading import Barrier, Thread, Lock, Event
 from typing import Any
 
 class Executor:
     bot: Bot
     bot_coord: int
     bot_name: str
-    code: Any
-    lock: Lock
+    run_func: Any
+    thread: Thread
 
-    def __init__(self, bot_coord: int, bot_name: str, lock: Lock, code):
-        self.lock = lock
-        self.code = code
-        self.bot_coord = bot_coord
-        self.bot_name  = bot_name
+    def __init__(self, bot: Bot, run_func):
+        self.run_func = run_func
+        self.bot = bot
+        self.thread = Thread(target=self.run_func, args=[self.bot])
 
-    def init(self):
-        self.bot = Bot(self.bot_coord, self.bot_name, self.lock)
+    def run(self):
+        self.thread.start()
 
-    def start(self):
-        self.code(bot)
+    def next_move(self):
+        self.bot.event.set()

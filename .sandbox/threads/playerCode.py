@@ -1,11 +1,11 @@
 from bot import Bot
 
-def runUser(bot: Bot):
+def run_user(bot: Bot):
     bot.step(5)
     bot.step(1)
     bot.step(3)
 
-def runEnemy(bot: Bot):
+def run_enemy(bot: Bot):
     bot.step(7)
     bot.step(5)
     bot.step(3)

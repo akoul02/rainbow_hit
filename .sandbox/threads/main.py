@@ -10,21 +10,41 @@ def main():
     playerExecutor = Executor(Bot(0, 'player', main_event), run_user)
     enemyExecuror  = Executor(Bot(0, 'enemy', main_event),  run_enemy)
 
-    playerExecutor.run()
-    main_event.wait()
-    main_event.clear()
 
-    playerExecutor.next_move()
-    main_event.wait()
-    main_event.clear()
+    # print(f'Step: 0')
+    # playerExecutor.run()
+    # main_event.wait()
+    # main_event.clear()
 
-    playerExecutor.next_move()
-    main_event.wait()
-    main_event.clear()
+    # enemyExecuror.run()
+    # main_event.wait()
+    # main_event.clear()
 
-    # for step in range(0, 8):
-    #     print(f'Step: {step}')
-    #     sync.next_move()
+    for step in range(1, 8):
+        print(f'Step: {step}')
+        try:
+            playerExecutor.next_move()
+            main_event.wait()
+            main_event.clear()
+        except Bot.ActionsAreOver:
+            print('Player actions are over')
+            # playerExecutor.thread.join()
+            # playerExecutor.bot.sleep()
+            # main_event.wait()
+            # main_event.clear()
+
+        try:
+            enemyExecuror.next_move()
+            main_event.wait()
+            main_event.clear()
+        except Bot.ActionsAreOver:
+            print('Enemy actions are over')
+            # enemyExecuror.thread.join()
+            # enemyExecuror.bot.sleep()
+            # main_event.wait()
+            # main_event.clear()
+
+
 
 
 if __name__ == "__main__":

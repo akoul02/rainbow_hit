@@ -9,21 +9,20 @@ class Executor:
     run_func: Any
     thread: Thread
     is_started: bool = False
-    is_bot_actions_are_over: List[bool] = [False]
 
     def __init__(self, bot: Bot, run_func):
         self.run_func = run_func
         self.bot = bot
-        self.thread = Thread(target=self.run_func, args=[self.bot, self.is_bot_actions_are_over])
+        self.thread = Thread(target=self.run_func, args=[self.bot])
 
     def next_move(self):
         if not self.is_started:
             self.is_started = True
-            # self.bot.event.set()
+            self.bot.event.set()
             self.thread.start()
         else:
-            if not self.is_bot_actions_are_over[0]:
+            if self.thread.isAlive():
                 self.bot.event.set()
             else:
-                raise Bot.ActionsAreOver()        
                 self.thread.join()
+                raise Bot.ActionsAreOver()

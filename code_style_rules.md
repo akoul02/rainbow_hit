@@ -32,10 +32,11 @@ def fun(x: int, y: str) -> List[Tuple(int, str)]:
 Классы:
 ```python
 class Test:
-    '''
-    Fast description
+    '''Fast description
+    
+    Long detailed descriotion... 
 
-    Members
+    Attributes
     ----------
     x : int
         Description of x

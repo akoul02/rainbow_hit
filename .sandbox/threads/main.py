@@ -1,36 +1,33 @@
-from threading import Barrier, Thread, Lock, Event
+from threading import Event
 from executor import Executor
 from playerCode import *
 from time import sleep
-import hanging_threads
 from bot import Bot
 
 def main():
     # used to lock main Thread
-
-    # hanging_threads.start_monitoring()
-
     main_event = Event()
-    playerExecutor = Executor(Bot(0, 'player', main_event), run_user)
-    enemyExecuror  = Executor(Bot(0, 'enemy', main_event),  run_enemy)
+    executors = []
+    playerExecutor  = Executor(Bot(0, 'player', main_event), run_user)
+    enemyExecuror   = Executor(Bot(0, 'enemy', main_event),  run_enemy)
+    enemyExecuror2  = Executor(Bot(0, 'enemy2', main_event), run_enemy2)
 
-    for step in range(1, 8):
+    for step in range(1, 20):
         print(f'\nStep: {step}')
         try:
             playerExecutor.next_move()
-            main_event.clear()
-            main_event.wait()
         except Bot.ActionsAreOver:
-            playerExecutor.bot.sleep_async(4)
+            playerExecutor.bot.sleep(blocking=False)
 
         try:
             enemyExecuror.next_move()
-            main_event.clear()
-            main_event.wait()
         except Bot.ActionsAreOver:
-            enemyExecuror.bot.sleep_async(2)
+            enemyExecuror.bot.sleep(blocking=False)
 
-
+        try:
+            enemyExecuror2.next_move()
+        except Bot.ActionsAreOver:
+            enemyExecuror2.bot.sleep(blocking=False)
 
 
 if __name__ == "__main__":

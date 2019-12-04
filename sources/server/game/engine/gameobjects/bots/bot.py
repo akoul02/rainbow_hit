@@ -3,8 +3,10 @@ from threading import Event
 from typing import List
 from exceptions import InvalidSelfInstance, GameException
 
+from engine.gameobjects.gameobject import GameObject
+
 @dataclass
-class Bot:
+class Bot(GameObject):
     '''Generic class for all bots
     
     All bots are gameobjects. All of their code should be 

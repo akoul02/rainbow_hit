@@ -1,4 +1,4 @@
-from bot import Bot
+from engine.gameobjects.bots.bot import Bot
 from typing import Any, List
 import exceptions
 
@@ -45,6 +45,7 @@ def run_enemy2(bot: Bot):
             bot.step(1)
 
     step_more(5)
+    # TODO: if thread hangs kill it
     while True:
        pass
     step_more(5)

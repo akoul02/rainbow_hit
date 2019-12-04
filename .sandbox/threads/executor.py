@@ -1,5 +1,5 @@
 from bot import Bot
-from threading import Barrier, Thread, Lock, Event
+from threading import Thread, Event
 from typing import Any, List
 
 class Executor:
@@ -26,3 +26,6 @@ class Executor:
             else:
                 self.thread.join()
                 raise Bot.ActionsAreOver()
+
+        self.bot.main_event.clear()
+        self.bot.main_event.wait()

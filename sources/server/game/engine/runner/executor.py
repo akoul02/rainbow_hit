@@ -1,13 +1,32 @@
-from dataclasses import dataclass
+from threading import Thread, Event
+from typing import Any, List
 
-@dataclass
+from engine.gameobjects.bots.bot import Bot
+
 class Executor:
-    def execute(self, path: str):
-        pass
+    bot: Bot
+    bot_coord: int
+    bot_name: str
+    run_func: Any
+    thread: Thread
+    is_started: bool = False
 
-def main():
-    pass
+    def __init__(self, bot: Bot, run_func):
+        self.run_func = run_func
+        self.bot = bot
+        self.thread = Thread(target=self.run_func, args=[self.bot])
 
+    def next_move(self):
+        if not self.is_started:
+            self.is_started = True
+            self.bot.event.set()
+            self.thread.start()
+        else:
+            if self.thread.isAlive():
+                self.bot.event.set()
+            else:
+                self.thread.join()
+                raise Bot.ActionsAreOver()
 
-if __name__ == "__main__":
-    main()
+        self.bot.main_event.clear()
+        self.bot.main_event.wait()

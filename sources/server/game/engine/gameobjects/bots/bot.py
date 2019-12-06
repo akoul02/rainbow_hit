@@ -50,8 +50,6 @@ class Bot(GameObject):
         def wrapper(*args: List[Any], **kwargs: Dict[str, Any]):
             if kwargs.pop('blocking', True):
                 if isinstance(args[0], Bot):
-                    # sleep(0.01)
-
                     # allow main thread to continue execution
                     args[0].main_event.set()
 

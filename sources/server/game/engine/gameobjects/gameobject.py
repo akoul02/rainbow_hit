@@ -7,11 +7,15 @@ class GameObject:
 
     Attributes
     ----------
-    x : float
+    x : int
         x-axis coordinate
     
-    y : float
+    y : int
         y-axis coordinate
     '''
-    x: float
-    y: float
+
+    def __init__(self):
+        super().__init__()
+
+    x: int
+    y: int

@@ -1,5 +1,6 @@
-from engine.gameobjects.gameobject import GameObject
 from dataclasses import dataclass
+
+from engine.gameobjects.gameobject import GameObject
 
 @dataclass
 class Laser(GameObject):
@@ -16,3 +17,4 @@ class Laser(GameObject):
     '''
     dest_x: int
     dest_y: int
+    damage: int

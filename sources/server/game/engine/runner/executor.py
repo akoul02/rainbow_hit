@@ -1,9 +1,9 @@
-from exceptions import ActionsAreOver
 from threading import Thread, Event
 from dataclasses import *
 from typing import Callable
 
 from engine.gameobjects.bots.bot import Bot
+from exceptions import ActionsAreOver
 
 @dataclass
 class Executor:

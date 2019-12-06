@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Callable, Tuple
+from math import pow, sqrt
+
 from exceptions import InvalidSelfInstance, GameException
 from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS, BOT_DEFAULT_HP
 from engine.utils.direction import Direction
 from engine.gameobjects.game_world import World
-from math import pow, sqrt
-
 from engine.gameobjects.gameobject import GameObject
 
 @dataclass
@@ -25,10 +25,10 @@ class Bot(GameObject):
     main_event : Event
         Event, to block main thread, until bot finishes his actions
 
-    hp : int
+    health : int
         Remaining 'hearts'
     
-    boosters : PowerUp
+    power_ups : PowerUp
         All active power ups on bot
 
     event : Event
@@ -37,32 +37,32 @@ class Bot(GameObject):
     name: str
     main_event: Event
     world: World
-    hp: int = BOT_DEFAULT_HP
-    fov = BOT_FOV_CELLS
-    boosters: List = field(default_factory=list)
+    health: int = BOT_DEFAULT_HP
+    fov: int = BOT_FOV_CELLS
+    power_ups: List = field(default_factory=list)
     event: Event = field(default_factory=Event)
 
-    def synchronized(func):
+    def synchronized(func: Callable):
         '''Decorator, to syncronise called function with main thread.
         
         First argument should be bot instance. 
         '''
-        def wrapper(*args: List[Any], **kwargs: Dict[str, Any]):
+        def wrapper(self, *args: List[Any], **kwargs: Dict[str, Any]):
             if kwargs.pop('blocking', True):
-                if isinstance(args[0], Bot):
+                if isinstance(self, Bot):
                     # allow main thread to continue execution
-                    args[0].main_event.set()
+                    self.main_event.set()
 
                     # block current thread
-                    args[0].event.wait()
-                    args[0].event.clear()
+                    self.event.wait()
+                    self.event.clear()
                 else:
                     raise exceptions.InvalidSelfInstance('Invalid type of self object!')
-            return func(*args, **kwargs)
+            return func(self, *args, **kwargs)
         return wrapper
 
     @synchronized
-    def step(self, dir: Direction) -> tuple:
+    def step(self, dir: Direction) -> Tuple[float, float]:
         '''Make 1 step in direction dir
 
         Parameters
@@ -86,18 +86,18 @@ class Bot(GameObject):
 
         return (self.x, self.y)
 
-    def current_location(self) -> tuple:
+    def current_location(self) -> Tuple[float, float]:
         return (self.x, self.y)
     
     def current_hp(self) -> int:
-        return self.hp
+        return self.health
     
-    def scan(self) -> list:
+    def scan(self) -> List[GameObject]:
         return [obj for obj in self.world if sqrt(pow(self.x, 2) + pow(self.y, 2)) <= self.fov]
     
     @synchronized
     def shoot(self):
-        # TBA
+        # TODO
         return None
 
     @synchronized

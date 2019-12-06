@@ -3,3 +3,9 @@ THREAD_TIMEOUT: int = 2
 
 # max amount of steps per game
 MAX_STEPS: int = 4
+
+# side of a cell
+CELL_SIDE: int = 16
+
+# fov of a bot measured in cells
+BOT_FOV_CELLS: int = 5

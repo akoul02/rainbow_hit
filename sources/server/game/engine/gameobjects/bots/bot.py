@@ -2,7 +2,10 @@ from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
 from typing import List, Dict, Any
 from exceptions import InvalidSelfInstance, GameException
-from constants import THREAD_TIMEOUT
+from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS
+from utils.direction import Direction
+from engine.gameobjects.game_world import World
+from math import pow, sqrt
 
 from engine.gameobjects.gameobject import GameObject
 
@@ -16,20 +19,27 @@ class Bot(GameObject):
 
     Attributes
     ----------
-    x : int
-        X-axis coordinate of the bot
-
     name : str
         Bot handle (simply bot name)
 
-    event : Event
-        Main syncronise lock for thread with current bot
-
     main_event : Event
         Event, to block main thread, until bot finishes his actions
+
+    hp : int
+        Remaining 'hearts'
+    
+    boosters : PowerUp
+        All active power ups on bot
+
+    event : Event
+        Main syncronise lock for thread with current bot
     '''
     name: str
     main_event: Event
+    world: World
+    hp: int = 10
+    fov = BOT_FOV_CELLS
+    boosters: List = field(default_factory=list)
     event: Event = field(default_factory=Event)
 
     def synchronized(func):
@@ -54,27 +64,46 @@ class Bot(GameObject):
         return wrapper
 
     @synchronized
-    def step(self, n: int, *args, **kwargs):
-        '''Make n steps
+    def step(self, dir: Direction) -> tuple:
+        '''Make 1 step in direction dir
 
         Parameters
         ----------
-        n : int
-            number of steps
+        dir : Direction
+            direction of a step
 
         Returns
         -------
         self.x : int
             current x-coordinate
+        
+        self.y : int
+            current y-coordinate
         '''
-        self.x += n
-        print(f'{self.name} making {n} steps')
-        print(f'{self.name}\'s current coordinate: {self.x}')
+        
+        self.x += dir.get_coords()[0]
+        self.y += dir.get_coords()[1]
 
-        return self.x
+        print(f'{self.name}\'s current coordinate: ({self.x}, {self.y})')
+
+        return (self.x, self.y)
+
+    def current_location(self) -> tuple:
+        return (self.x, self.y)
+    
+    def current_hp(self) -> int:
+        return self.hp
+    
+    def scan(self) -> list:
+        return [obj for obj in self.world if sqrt(pow(self.x, 2) + pow(self.y, 2)) <= self.fov]
+    
+    @synchronized
+    def shoot(self):
+        # TBA
+        return None
 
     @synchronized
-    def sleep(self, *args, **kwargs):
+    def sleep(self):
         '''Do nothing for 1 step
 
         Returns

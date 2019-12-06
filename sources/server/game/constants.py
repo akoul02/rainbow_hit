@@ -9,3 +9,6 @@ CELL_SIDE: int = 16
 
 # fov of a bot measured in cells
 BOT_FOV_CELLS: int = 5
+
+# default bot hp
+BOT_DEFAULT_HP: int = 10

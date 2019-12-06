@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
 from typing import List, Dict, Any
 from exceptions import InvalidSelfInstance, GameException
-from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS
-from utils.direction import Direction
+from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS, BOT_DEFAULT_HP
+from engine.utils.direction import Direction
 from engine.gameobjects.game_world import World
 from math import pow, sqrt
 
@@ -37,7 +37,7 @@ class Bot(GameObject):
     name: str
     main_event: Event
     world: World
-    hp: int = 10
+    hp: int = BOT_DEFAULT_HP
     fov = BOT_FOV_CELLS
     boosters: List = field(default_factory=list)
     event: Event = field(default_factory=Event)

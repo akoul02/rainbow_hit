@@ -30,8 +30,11 @@ class Executor:
     max_steps: int
     run_func: Callable[[Bot], None]
 
-    thread: Thread = Thread(target=run_func, args=[bot])
+    thread: Thread = field(default_factory=Thread)
     is_started: bool = False
+
+    def __post_init__(self):
+        self.thread = Thread(target=self.run_func, args=[self.bot])
 
     def next_move(self, n: int):
         '''

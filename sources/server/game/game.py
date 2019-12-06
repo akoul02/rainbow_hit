@@ -5,7 +5,7 @@ from time import sleep
 from engine.gameobjects.game_world import World
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
-from constants import MAX_STEPS
+from constants import MAX_STEPS, BOT_DEFAULT_HP
 from exceptions import ActionsAreOver
 from bots_code.code import *
 
@@ -21,11 +21,12 @@ class Game:
         None
         '''
         # used to lock main Thread
+        game_world = World()
         main_event = Event()
         executors = [
-            Executor(Bot(0, 0, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(Bot(0, 0, 'enemy',  main_event), MAX_STEPS, run_enemy),
-            Executor(Bot(0, 0, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+            Executor(Bot(0, 0, 'player', main_event, game_world), MAX_STEPS, run_user), 
+            Executor(Bot(0, 0, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),
+            Executor(Bot(0, 0, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
         ]
 
         for step in range(0, MAX_STEPS):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from threading import Event, Timer, Thread
-from typing import List
+from typing import List, Dict, Any
 from exceptions import InvalidSelfInstance, GameException
 from constants import THREAD_TIMEOUT
 
@@ -29,18 +29,21 @@ class Bot(GameObject):
         Event, to block main thread, until bot finishes his actions
     '''
     x: int
+    y: int
     name: str
     event: Event
     main_event: Event
 
     def synchronized(func):
-        '''
-        Decorator, to syncronise called function with main thread.
+        '''Decorator, to syncronise called function with main thread.
+        
         First argument should be bot instance. 
         '''
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: List[Any], **kwargs: Dict[str, Any]):
             if kwargs.pop('blocking', True):
                 if isinstance(args[0], Bot):
+                    # sleep(0.01)
+
                     # allow main thread to continue execution
                     args[0].main_event.set()
 
@@ -52,7 +55,7 @@ class Bot(GameObject):
             return func(*args, **kwargs)
         return wrapper
 
-    def __init__(self, x: int, name: str, main_event: Event):
+    def __init__(self, x: int, y: int, name: str, main_event: Event):
         '''Initializes bot instance
 
         Parameters
@@ -67,6 +70,7 @@ class Bot(GameObject):
             Event of the main thread
         '''
         self.x = x
+        self.y = y
         self.name = name
         self.event = Event()
         self.main_event = main_event

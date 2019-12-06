@@ -2,4 +2,4 @@
 THREAD_TIMEOUT: int = 2
 
 # max amount of steps per game
-MAX_STEPS: int = 20
+MAX_STEPS: int = 4

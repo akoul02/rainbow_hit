@@ -1,6 +1,7 @@
 from engine.gameobjects.bots.bot import Bot
 from typing import Any, List
 import exceptions
+import time
 
 def continuemain(func):
     '''
@@ -20,23 +21,13 @@ def continuemain(func):
 def run_user(bot: Bot):
     # user code starts here
     bot.step(1)
+    bot.sleep()
     bot.step(3)
-    bot.step(5)
-    bot.step(7)
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.step(8)
 
 @continuemain
 def run_enemy(bot: Bot):
     bot.step(2)
     bot.step(4)
-    bot.step(6)
-    bot.step(6)
-    bot.step(8)
-    bot.step(10)
     bot.step(12)
 
 @continuemain
@@ -44,9 +35,9 @@ def run_enemy2(bot: Bot):
     def step_more(n: int):
         for i in range(n):
             bot.step(1)
-    step_more(5)
+    step_more(2)
     # TODO: if thread hangs kill it
-    while True:
-       pass
-    step_more(5)
+    # while True:
+    #    pass
+    # step_more(5)
     

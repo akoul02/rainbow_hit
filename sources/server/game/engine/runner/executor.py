@@ -7,7 +7,7 @@ from engine.gameobjects.bots.bot import Bot
 class Executor:
     bot: Bot
     max_steps: int
-    run_func: Callable
+    run_func: Callable[[Bot], None]
 
     thread: Thread
     is_started: bool = False
@@ -33,15 +33,15 @@ class Executor:
         '''
         if not self.is_started:
             self.is_started = True
-            self.bot.event.set()
             self.thread.start()
+            self.bot.event.set()
         else:
-            if self.thread.isAlive():
+            if self.thread.is_alive():
                 self.bot.event.set()
             else:
                 self.thread.join()
                 raise ActionsAreOver()
-
+        
         self.bot.main_event.clear()
         # wait here, while the bot does it actions
         self.bot.main_event.wait()

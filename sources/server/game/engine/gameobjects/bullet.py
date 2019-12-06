@@ -1,4 +1,8 @@
 from engine.gameobjects.gameobject import GameObject
+from dataclasses import dataclass
 
+@dataclass
 class Bullet(GameObject):
-    pass
+    dest_x: int
+    dest_y: int
+    speed: int = 10

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
 from typing import List, Dict, Any
 from exceptions import InvalidSelfInstance, GameException
@@ -28,11 +28,9 @@ class Bot(GameObject):
     main_event : Event
         Event, to block main thread, until bot finishes his actions
     '''
-    x: int
-    y: int
     name: str
-    event: Event
     main_event: Event
+    event: Event = field(default_factory=Event)
 
     def synchronized(func):
         '''Decorator, to syncronise called function with main thread.
@@ -54,26 +52,6 @@ class Bot(GameObject):
                     raise exceptions.InvalidSelfInstance('Invalid type of self object!')
             return func(*args, **kwargs)
         return wrapper
-
-    def __init__(self, x: int, y: int, name: str, main_event: Event):
-        '''Initializes bot instance
-
-        Parameters
-        ----------
-        x : int
-            initial x-coordinate of the bot
-
-        name : str
-            bot name
-
-        main_event:
-            Event of the main thread
-        '''
-        self.x = x
-        self.y = y
-        self.name = name
-        self.event = Event()
-        self.main_event = main_event
 
     @synchronized
     def step(self, n: int, *args, **kwargs):

@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+@dataclass
 class GameObject:
-    def __init__(self):
-        pass
+    x: float
+    y: float

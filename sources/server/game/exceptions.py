@@ -1,7 +1,11 @@
 class GameException(Exception):
+    '''Base class for all in-game exceptions.
+    '''
     pass
 
 class InvalidSelfInstance(GameException):
+    '''Raised, when invalid object passed in args[0]
+    '''
     def __init__(self):
         GameException.__init__(self, 'Invalid type of self object!')
 

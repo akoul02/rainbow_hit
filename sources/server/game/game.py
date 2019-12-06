@@ -2,16 +2,24 @@ from dataclasses import dataclass
 from threading import Event
 from time import sleep
 
+from engine.gameobjects.game_world import World
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
-from bots_code.code import *
 from constants import MAX_STEPS
 from exceptions import ActionsAreOver
-from engine.gameobjects.game_world import World
+from bots_code.code import *
 
 @dataclass
 class Game:
+    '''Base game class.
+    '''
     def start(self):
+        '''Starts the game
+
+        Returns
+        -------
+        None
+        '''
         # used to lock main Thread
         main_event = Event()
         executors = [
@@ -29,7 +37,12 @@ class Game:
                     executor.bot.sleep(blocking=False)
 
     def stop(self):
-        pass
+        '''Stops the game
+
+        Returns
+        -------
+        None
+        '''
 
     def update(self):
         pass

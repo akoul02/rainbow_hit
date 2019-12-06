@@ -1,23 +1,37 @@
-from threading import Thread, Event
-from typing import Callable
 from exceptions import ActionsAreOver
+from threading import Thread, Event
+from dataclasses import *
+from typing import Callable
 
 from engine.gameobjects.bots.bot import Bot
 
+@dataclass
 class Executor:
+    '''Executor class. It executes user-code in strict sequnce.
+
+    Attributes
+    ----------
+    bot : Bot
+        pointer to bot object, associated with code
+
+    max_steps : int
+        max possible steps, that can be be performed
+
+    run_func : Callable[[Bot], None]
+        function, where user-code is defined
+
+    thread : Thread
+        thread, where all user-code is running
+
+    is_started : bool
+        boolean flag, that shows, if thread was already started
+    '''
     bot: Bot
     max_steps: int
     run_func: Callable[[Bot], None]
 
-    thread: Thread
+    thread: Thread = Thread(target=run_func, args=[bot])
     is_started: bool = False
-        
-    def __init__(self, bot: Bot, max_steps: int, run_func: Callable[[Bot], None]):
-        self.bot = bot
-        self.max_steps = max_steps
-        self.run_func = run_func
-
-        self.thread = Thread(target=self.run_func, args=[self.bot])
 
     def next_move(self, n: int):
         '''

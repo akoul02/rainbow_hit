@@ -1,6 +1,8 @@
 import enum
 
 class Direction(enum.Enum):
+    '''Describes all possible directions.
+    '''
     North     = N  = Up        = 1
     NorthEast = NE = RightUp   = UpRight   = 2
     East      = E  = Right     = 3
@@ -11,6 +13,18 @@ class Direction(enum.Enum):
     NorthWest = NW = LeftUp    = UpLeft    = 8
 
     def get_coords(self):
+        '''
+        Returns
+        -------
+        (x, y)
+            tuple with x-axis and y-axis coordinate
+        
+        Examples:
+        --------
+        >>> d = Direction.RightDown
+        >>> d.get_coords()
+        (1, -1)
+        '''
         if self == self.N:
             return (0, 1)
         elif self == self.NE:
@@ -30,6 +44,18 @@ class Direction(enum.Enum):
 
     # overloading '~' operator
     def __invert__(self):
+        '''Inverts direction
+        
+        Returns
+        -------
+        dir : Direction
+
+        Examples
+        --------
+        >>> ~Direction.Up
+        <Direction.South: 5>
+        
+        '''
         if self == self.N:
             return self.S
         elif self == self.NE:

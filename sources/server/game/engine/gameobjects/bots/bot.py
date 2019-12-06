@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from threading import Event
+from threading import Event, Timer, Thread
 from typing import List
 from exceptions import InvalidSelfInstance, GameException
+from constants import THREAD_TIMEOUT
 
 from engine.gameobjects.gameobject import GameObject
 
@@ -32,17 +33,13 @@ class Bot(GameObject):
     event: Event
     main_event: Event
 
-    class ActionsAreOver(GameException):
-        def __init__(self):
-            GameException.__init__(self, 'Bot actions are over!')
-
     def synchronized(func):
         '''
-        Simple decorator, to syncronise called function with main thread.
+        Decorator, to syncronise called function with main thread.
         First argument should be bot instance. 
         '''
         def wrapper(*args, **kwargs):
-            if kwargs.get('blocking', True) == True:
+            if kwargs.pop('blocking', True):
                 if isinstance(args[0], Bot):
                     # allow main thread to continue execution
                     args[0].main_event.set()

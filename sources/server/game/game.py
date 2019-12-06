@@ -5,33 +5,27 @@ from time import sleep
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
 from bots_code.code import *
+from constants import MAX_STEPS
+from exceptions import ActionsAreOver
 
 @dataclass
 class Game:
     def start(self):
         # used to lock main Thread
         main_event = Event()
-        executors = []
-        playerExecutor  = Executor(Bot(0, 'player', main_event), run_user)
-        enemyExecuror   = Executor(Bot(0, 'enemy',  main_event), run_enemy)
-        enemyExecuror2  = Executor(Bot(0, 'enemy2', main_event), run_enemy2)
+        executors = [
+            Executor(Bot(0, 'player', main_event), MAX_STEPS, run_user), 
+            Executor(Bot(0, 'enemy',  main_event), MAX_STEPS, run_enemy),
+            Executor(Bot(0, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+        ]
 
-        for step in range(1, 20):
+        for step in range(0, MAX_STEPS):
             print(f'\nStep: {step}')
-            try:
-                playerExecutor.next_move()
-            except Bot.ActionsAreOver:
-                playerExecutor.bot.sleep(blocking=False)
-
-            try:
-                enemyExecuror.next_move()
-            except Bot.ActionsAreOver:
-                enemyExecuror.bot.sleep(blocking=False)
-
-            try:
-                enemyExecuror2.next_move()
-            except Bot.ActionsAreOver:
-                enemyExecuror2.bot.sleep(blocking=False)
+            for executor in executors:
+                try:
+                    executor.next_move(step)
+                except ActionsAreOver:
+                    executor.bot.sleep(blocking=False)
 
     def stop(self):
         pass

@@ -6,7 +6,7 @@ from engine.gameobjects.game_world import World
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
 from constants import MAX_STEPS, BOT_DEFAULT_HP
-from exceptions import ActionsAreOver
+from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError
 from bots_code.code import *
 
 @dataclass
@@ -33,9 +33,17 @@ class Game:
             print(f'\nStep: {step}')
             for executor in executors:
                 try:
-                    executor.next_move(step)
-                except ActionsAreOver:
+                    executor.next_move()
+                except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
+                    print(f'Exception message: {e}')
                     executor.bot.sleep(blocking=False)
+        else:
+            for executor in executors:
+                executor.bot.event.set()
+                executor.thread.terminate(StepsAreOver)
+            print('Simulation is over!')
+
+        return None
 
     def stop(self):
         '''Stops the game

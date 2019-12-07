@@ -20,3 +20,17 @@ class ActionsAreOver(GameException):
     '''
     def __init__(self):
         GameException.__init__(self, 'Bot actions are over!')
+
+class BotTimeoutError(GameException, TimeoutError):
+    '''Exception, which get raised, 
+    if the bot thread runs longer than it should
+    '''
+    def __init__(self):
+        GameException.__init__(self, 'Bot thread time is over!')
+
+class ThreadKilledError(GameException):
+    '''Exception, which get raised, 
+    if the user-thread was killed, and player still trying to use it
+    '''
+    def __init__(self):
+        GameException.__init__(self, 'User thread killed!')

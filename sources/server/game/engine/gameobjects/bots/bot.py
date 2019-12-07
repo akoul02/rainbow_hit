@@ -28,7 +28,7 @@ class Bot(GameObject):
     health : int
         Remaining 'hearts'
     
-    power_ups : PowerUp
+    power_ups : List[PowerUp]
         All active power ups on bot
 
     event : Event

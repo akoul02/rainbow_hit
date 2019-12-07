@@ -15,8 +15,10 @@ def continuemain(func):
             ret = func(self, *args, **kwargs)
             return ret
         except (StepsAreOver, ActionsAreOver, BotTimeoutError):
+            # handle ascync-raised exceptions
             return 0
         finally:
+            # allow main thread to continue
             if isinstance(self, Bot):
                 self.main_event.set()
             else:
@@ -26,26 +28,39 @@ def continuemain(func):
 @continuemain
 def run_user(bot: Bot):
     # user code starts here
+    time.sleep(1)
     bot.sleep()
     bot.step(Direction.Up)
+    time.sleep(1)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    time.sleep(0.1)
     bot.step(Direction.Up)
     bot.step(Direction.Up)
     bot.step(Direction.Up)
+    time.sleep(0.1)
 
 @continuemain
 def run_enemy(bot: Bot):
     bot.step(Direction.Down)
     bot.step(Direction.Down)
     bot.step(Direction.Down)
+    time.sleep(0.1)
     bot.step(Direction.Down)
     bot.step(Direction.Down)
+    time.sleep(1)
 
 @continuemain
 def run_enemy2(bot: Bot):
+    time.sleep(0.1)
     bot.step(Direction.Left)
+    time.sleep(1)
     bot.step(Direction.Left)
+    time.sleep(0.01)
     bot.step(Direction.Left)
+    time.sleep(0.1)
+
+    # emulate situation, where thread hangs
     while True:
        pass
-    step_more(5)
     

@@ -29,7 +29,7 @@ class Game:
             Executor(Bot(0, 0, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
         ]
 
-        for step in range(0, MAX_STEPS):
+        for step in range(0, MAX_STEPS + 2):
             print(f'\nStep: {step}')
             for executor in executors:
                 try:
@@ -41,7 +41,8 @@ class Game:
             for executor in executors:
                 executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
-            print('Simulation is over!')
+        
+        print('Simulation is over!')
 
         return None
 

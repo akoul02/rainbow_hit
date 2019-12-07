@@ -1,7 +1,8 @@
 import ctypes 
 import threading
 import time
-from dataclasses import dataclass
+
+from exceptions import FatalException
 
 class KThread(threading.Thread):
     '''This thread can be killed.
@@ -17,19 +18,19 @@ class KThread(threading.Thread):
         threading.Thread.__init__(self, *args, **kwargs)
 
     def async_raise(self, exception) -> None:
-        target_tid = (tid for tid, tobj in threading._active.items() if tobj is self)
+        desired = (tid for tid, obj in threading._active.items() if obj is self)
 
         try:
-            target_tid = next(target_tid)
+            tid = next(desired)
         except StopIteration:
-            raise ValueError("Invalid thread object")
+            raise ValueError("Doesn't found any suitable thread objects!")
 
-        ret = ctypes.pythonapi.PyThreadState_SetAsyncExc(target_tid, ctypes.py_object(exception))
+        ret = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(tid), ctypes.py_object(exception))
         if ret == 0:
             raise ValueError("Invalid TID")
         elif ret > 1:
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(target_tid, 0)
-            raise SystemError("PyThreadState_SetAsyncExc failed")
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, 0)
+            raise FatalException("ctypes pythonapi failed!")
 
         return None
 

@@ -34,3 +34,11 @@ class ThreadKilledError(GameException):
     '''
     def __init__(self):
         GameException.__init__(self, 'User thread killed!')
+
+class FatalException(Exception):
+    '''FatalError
+
+    after this exception execution cannot be continued
+    '''
+    def __init__(self, msg):
+        Exception.__init__(msg)

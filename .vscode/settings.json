@@ -2,7 +2,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./sources",
+        "./sources/server/tests/",
         "-p",
         "*_test.py"
     ],
@@ -10,8 +10,8 @@
     "python.testing.nosetestsEnabled": false,
     "python.testing.unittestEnabled": true,
     "python.autoComplete.extraPaths": [
-        "./sources/server/game",
-        "./sources/"
+        "./sources/server/game/",
+        "./sources/client/"
     ],
     "python.linting.mypyEnabled": true,
     "python.linting.enabled": true

@@ -93,15 +93,18 @@ class Bot(GameObject):
         return self.health
     
     def scan(self) -> List[GameObject]:
-        return [obj for obj in self.world if sqrt(pow(self.x, 2) + pow(self.y, 2)) <= self.fov]
+        return [
+            obj for obj in self.world
+            if sqrt(pow(obj.x - self.x, 2) + pow(obj.y - self.y, 2)) <= self.fov
+        ]
     
     @synchronized
-    def shoot(self):
+    def shoot(self) -> None:
         # TODO
         return None
 
     @synchronized
-    def sleep(self):
+    def sleep(self) -> None:
         '''Do nothing for 1 step
 
         Returns

@@ -21,4 +21,4 @@ class Laser(GameObject):
         if obj.health == 0:
             obj.kill()
 
-        return obj.health 
+        return obj.health

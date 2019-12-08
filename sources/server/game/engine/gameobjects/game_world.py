@@ -40,6 +40,10 @@ class World:
         return World()
 
     def update(self) -> None:
+        '''Update state of game world.
+
+        Iterate trough all objects inside world, and delete them, if necessery
+        '''
         for i in self.objects:
             if isinstance(i, Destroyable):
                 if not i.alive:

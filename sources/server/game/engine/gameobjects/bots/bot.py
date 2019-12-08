@@ -95,12 +95,36 @@ class Bot(Destroyable):
         return Point(self.coord.x, self.coord.y)
 
     def current_location(self) -> Point:
+        '''Get current location as point
+
+        Returns
+        -------
+        point : Point
+            current coordinates
+        '''
         return Point(self.coord.x, self.coord.y)
     
     def current_hp(self) -> int:
+        '''Get current health
+
+        Returns
+        -------
+        health : int
+            Current health
+        '''
         return self.health
     
     def scan(self) -> List[GameObject]:
+        '''Find objects around you in world
+
+        Iterate throught all objects inside world, 
+        and return objects, that are inside players FOV 
+
+        Returns
+        -------
+        objects : List[GameObject]
+            Objects, that are inside players FOV
+        '''
         return [
             obj for obj in self.world.objects
             if self.coord.distance_to(obj.coord) <= self.fov if self != obj
@@ -108,10 +132,26 @@ class Bot(Destroyable):
     
     @synchronized
     def shoot(self, point: Point) -> Union[None, int]:
-        # y = kx + b
+        '''Try to shoot using laser at given point
+
+        Function tries to shoot at given point, but before that
+        it checks, if there are no more objects on a line between player
+        and target. If it founds object between, it will shoot him. 
+        (see ./diagrams/graph.jpg )
+
+        Parameters
+        ----------
+        point : Point
+            point, where you want to shoot
+        
+        Returns
+        result : Union[None, int]
+            None, if it cant shoot anyone
+            int, that represents target health after shot, if it hits successfully
+        -------
+        '''
         k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
         b1 = self.coord.y - self.coord.x * k1
-        # find graph for default point
         y1 = lambda x: k1 * x + b1
         
         closest = GameObject(Point(MAX_COORD, MAX_COORD))
@@ -119,7 +159,6 @@ class Bot(Destroyable):
             if obj != self:
                 k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
                 b2 = self.coord.y - self.coord.x * k2
-
                 y2 = lambda x: k2 * x + b2
 
                 if abs(y1(obj.coord.x) - y2(obj.coord.x)) <= DELTA:

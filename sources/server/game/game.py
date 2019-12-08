@@ -35,6 +35,7 @@ class Game:
             for executor in executors:
                 try:
                     executor.next_move()
+                    game_world.update()
                 except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
                     print(f'Exception message: {e}')
                     executor.bot.sleep(blocking=False)

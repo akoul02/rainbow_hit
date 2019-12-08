@@ -5,6 +5,7 @@ from typing import Any, List
 import math
 
 from engine.gameobjects.gameobject import GameObject
+from engine.gameobjects.destroyable import Destroyable
 
 @dataclass
 class World:
@@ -37,3 +38,10 @@ class World:
         '''Creates new instance of World object, with generated map
         '''
         return World()
+
+    def update(self) -> None:
+        for i in self.objects:
+            if isinstance(i, Destroyable):
+                if not i.alive:
+                    self.objects.pop(i)
+        return None

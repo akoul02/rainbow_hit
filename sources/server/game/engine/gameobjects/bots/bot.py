@@ -8,9 +8,10 @@ from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS, BOT_DEFAULT_HP
 from engine.utils.direction import Direction
 from engine.gameobjects.game_world import World
 from engine.gameobjects.gameobject import GameObject
+from engine.gameobjects.destroyable import Destroyable
 
 @dataclass
-class Bot(GameObject):
+class Bot(Destroyable):
     '''Generic class for all bots
     
     All bots are gameobjects. All of their code should be 
@@ -25,7 +26,7 @@ class Bot(GameObject):
     main_event : Event
         Event, to block main thread, until bot finishes his actions
 
-    health : int
+    health : ints
         Remaining 'hearts'
     
     power_ups : List[PowerUp]
@@ -37,7 +38,6 @@ class Bot(GameObject):
     name: str
     main_event: Event
     world: World
-    health: int = BOT_DEFAULT_HP
     fov: int = BOT_FOV_CELLS
     power_ups: List = field(default_factory=list)
     event: Event = field(default_factory=Event)

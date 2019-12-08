@@ -43,6 +43,7 @@ class Bot(Destroyable):
     name: str
     main_event: Event
     world: World
+    damage: int = LASER_DAMAGE
     fov: int = BOT_FOV_CELLS
     power_ups: List = field(default_factory=list)
     event: Event = field(default_factory=Event)
@@ -127,7 +128,7 @@ class Bot(Destroyable):
         
         if not closest.coord == Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
-                l = Laser(self.coord, obj.coord, LASER_DAMAGE)
+                l = Laser(self.coord, obj.coord, self.damage)
                 return l.shoot(closest)
 
         return None

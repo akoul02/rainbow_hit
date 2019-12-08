@@ -43,5 +43,5 @@ class World:
         for i in self.objects:
             if isinstance(i, Destroyable):
                 if not i.alive:
-                    self.objects.pop(i)
+                    self.objects.remove(i)
         return None

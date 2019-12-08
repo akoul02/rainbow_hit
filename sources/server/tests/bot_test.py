@@ -39,8 +39,11 @@ class BotTest(unittest.TestCase):
         bot3 = Bot(Point(3, 3), 1, 10, True, 'enemy3', None, world)
 
         bot.shoot(Point(3, 3), blocking=False)
+        world.update()
         bot.shoot(Point(3, 3), blocking=False)
+        world.update()
         bot.shoot(Point(3, 3), blocking=False)
+        world.update()
         pass
 
 if __name__ == "__main__":

@@ -21,8 +21,8 @@ class Game:
         None
         '''
         # used to lock main Thread
-        game_world = World()
         main_event = Event()
+        game_world = World()
         executors = [
             Executor(Bot(0, 0, 'player', main_event, game_world), MAX_STEPS, run_user), 
             Executor(Bot(0, 0, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),

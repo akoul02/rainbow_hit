@@ -41,4 +41,4 @@ class FatalException(Exception):
     after this exception execution cannot be continued
     '''
     def __init__(self, msg):
-        Exception.__init__(msg)
+        Exception.__init__(self, msg)

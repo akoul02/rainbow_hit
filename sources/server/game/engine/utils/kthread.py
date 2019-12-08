@@ -39,6 +39,3 @@ class KThread(threading.Thread):
             self.async_raise(exception)
             self.join()
             self.killed = True
-
-if __name__ == "__main__":
-    main()

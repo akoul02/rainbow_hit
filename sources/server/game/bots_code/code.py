@@ -14,9 +14,9 @@ def continuemain(func):
         try:
             ret = func(self, *args, **kwargs)
             return ret
-        except (StepsAreOver, ActionsAreOver, BotTimeoutError):
+        except (StepsAreOver, ActionsAreOver, BotTimeoutError) as e:
             # handle ascync-raised exceptions
-            return 0
+            return e
         finally:
             # allow main thread to continue
             if isinstance(self, Bot):

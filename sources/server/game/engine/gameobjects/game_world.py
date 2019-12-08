@@ -6,6 +6,7 @@ import math
 
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
+from engine.gameobjects.laser import Laser
 
 @dataclass
 class World:
@@ -44,4 +45,6 @@ class World:
             if isinstance(i, Destroyable):
                 if not i.alive:
                     self.objects.remove(i)
+            if isinstance(i, Laser):
+                self.objects.remove(i)
         return None

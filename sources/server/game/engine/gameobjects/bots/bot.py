@@ -42,15 +42,10 @@ class Bot(Destroyable):
     '''
     name: str
     main_event: Event
-    world: World
     fov: int = BOT_FOV_CELLS
     power_ups: List = field(default_factory=list)
     event: Event = field(default_factory=Event)
 
-    # add current bot to game world
-    def __post_init__(self):
-        if self.world != None:
-            self.world.append(self)
 
     def synchronized(func: Callable):
         '''Decorator, to syncronise called function with main thread.

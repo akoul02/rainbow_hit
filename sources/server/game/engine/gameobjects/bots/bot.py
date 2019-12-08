@@ -101,8 +101,8 @@ class Bot(Destroyable):
     
     def scan(self) -> List[GameObject]:
         return [
-            obj for obj in self.world
-            if self.coord.distance_to(obj.coord) <= self.fov
+            obj for obj in self.world.objects
+            if self.coord.distance_to(obj.coord) <= self.fov if self != obj
         ]
     
     @synchronized
@@ -114,7 +114,7 @@ class Bot(Destroyable):
         y1 = lambda x: k1 * x + b1
         
         closest = GameObject(Point(MAX_COORD, MAX_COORD))
-        for obj in self.world:
+        for obj in self.world.objects:
             k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
             b2 = self.coord.y - self.coord.x * k2
 

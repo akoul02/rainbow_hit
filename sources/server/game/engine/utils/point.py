@@ -18,4 +18,4 @@ class Point:
 
     @staticmethod
     def distance(a: Point, b: Point):
-        return sqrt(pow(a.x - b.x, 2) + pow(b.y - b.y, 2))
+        return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2))

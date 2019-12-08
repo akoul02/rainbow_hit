@@ -13,7 +13,4 @@ class GameObject:
         current x and y coordinate
     '''
 
-    def __init__(self):
-        super().__init__()
-
     coord: Point

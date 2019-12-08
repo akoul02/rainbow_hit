@@ -115,18 +115,19 @@ class Bot(Destroyable):
         
         closest = GameObject(Point(MAX_COORD, MAX_COORD))
         for obj in self.world.objects:
-            k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
-            b2 = self.coord.y - self.coord.x * k2
+            if obj != self:
+                k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
+                b2 = self.coord.y - self.coord.x * k2
 
-            y2 = lambda x: k2 * x + b2
+                y2 = lambda x: k2 * x + b2
 
-            if abs(y1(obj.coord.x) - y2(obj.coord.x)) <= DELTA:
-                if obj.distance_to(self.coord) <= closest.distance_to(self.coord):
-                    closest = obj
+                if abs(y1(obj.coord.x) - y2(obj.coord.x)) <= DELTA:
+                    if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
+                        closest = obj
         
         if not closest.coord == Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
-                l = Laser(obj.coord, LASER_DAMAGE)
+                l = Laser(self.coord, obj.coord, LASER_DAMAGE)
                 return l.shoot(closest)
 
         return None

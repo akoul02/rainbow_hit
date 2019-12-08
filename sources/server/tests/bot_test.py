@@ -21,7 +21,7 @@ class BotTest(unittest.TestCase):
         
         self.assertEqual(bot.current_location(), Point(-3, 4))
 
-    def test_shoot(self):
+    def test_scan(self):
         world = World()
         bot  = Bot(Point(0, 0), 2, 10, True, 'player', None, world)
         bot1 = Bot(Point(1, 1), 1, 10, True, 'player', None, world)
@@ -29,8 +29,19 @@ class BotTest(unittest.TestCase):
         bot3 = Bot(Point(3, 3), 1, 10, True, 'player', None, world)
 
         objects = bot.scan()
-        pass
+        self.assertEqual(len(objects), 3)
         
+    def test_shoot(self):
+        world = World()
+        bot  = Bot(Point(0, 0), 2, 10, True, 'player', None, world)
+        bot1 = Bot(Point(1, 1), 1, 10, True, 'enemy1', None, world)
+        bot2 = Bot(Point(2, 2), 1, 10, True, 'enemy2', None, world)
+        bot3 = Bot(Point(3, 3), 1, 10, True, 'enemy3', None, world)
+
+        bot.shoot(Point(3, 3), blocking=False)
+        bot.shoot(Point(3, 3), blocking=False)
+        bot.shoot(Point(3, 3), blocking=False)
+        pass
 
 if __name__ == "__main__":
     unittest.main()

@@ -24,9 +24,9 @@ class Game:
         main_event = Event()
         game_world = World()
         executors = [
-            Executor(Bot(0, 0, 'player', main_event, game_world), MAX_STEPS, run_user), 
-            Executor(Bot(0, 0, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),
-            Executor(Bot(0, 0, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
+            Executor(Bot(0, 0, 10, 10, True, 'player', main_event, game_world), MAX_STEPS, run_user), 
+            Executor(Bot(0, 0, 10, 10, True, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),
+            Executor(Bot(0, 0, 10, 10, True, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
         ]
 
         for step in range(0, MAX_STEPS + 2):

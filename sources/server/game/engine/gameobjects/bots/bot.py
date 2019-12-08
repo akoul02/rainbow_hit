@@ -28,9 +28,6 @@ class Bot(Destroyable):
     main_event : Event
         Event, to block main thread, until bot finishes his actions
 
-    world : World
-        Reference to a world
-
     fov : int
         Field of view
 
@@ -148,7 +145,7 @@ class Bot(Destroyable):
         b1 = self.coord.y - self.coord.x * k1
         y1 = lambda x: k1 * x + b1
         
-        closest = GameObject(Point(MAX_COORD, MAX_COORD))
+        closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
         for obj in self.world.objects:
             if obj != self:
                 k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
@@ -161,7 +158,7 @@ class Bot(Destroyable):
         
         if not closest.coord == Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
-                l = Laser(self.coord, obj.coord, self.damage)
+                l = Laser(self.coord, None, obj.coord, self.damage)
                 return l.shoot(closest)
 
         return None

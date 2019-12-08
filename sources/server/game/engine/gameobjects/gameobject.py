@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from engine.utils.point import Point
+import engine.gameobjects.game_world as g_world
 
 @dataclass
 class GameObject:
@@ -14,3 +15,9 @@ class GameObject:
     '''
 
     coord: Point
+    world: 'g_world.World'
+
+    def __post_init__(self):
+        if self.world != None:
+            self.world.append(self)
+

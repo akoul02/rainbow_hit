@@ -5,6 +5,7 @@ from time import sleep
 from engine.gameobjects.game_world import World
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
+from engine.utils.point import Point
 from constants import MAX_STEPS, BOT_DEFAULT_HP
 from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError
 from bots_code.code import *
@@ -24,12 +25,12 @@ class Game:
         main_event = Event()
         game_world = World()
         executors = [
-            Executor(Bot(0, 0, 10, 10, True, 'player', main_event, game_world), MAX_STEPS, run_user), 
-            Executor(Bot(0, 0, 10, 10, True, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),
-            Executor(Bot(0, 0, 10, 10, True, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
+            Executor(Bot(Point(0, 0), 10, 10, True, 'player', main_event, game_world), MAX_STEPS, run_user), 
+            Executor(Bot(Point(0, 0), 10, 10, True, 'enemy',  main_event, game_world), MAX_STEPS, run_enemy),
+            Executor(Bot(Point(0, 0), 10, 10, True, 'enemy2', main_event, game_world), MAX_STEPS, run_enemy2)
         ]
 
-        for step in range(0, MAX_STEPS + 2):
+        for step in range(0, MAX_STEPS):
             print(f'\nStep: {step}')
             for executor in executors:
                 try:

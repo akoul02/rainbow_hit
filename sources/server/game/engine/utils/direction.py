@@ -1,4 +1,5 @@
 import enum
+from engine.utils.point import Point
 
 class Direction(enum.Enum):
     '''Describes all possible directions.
@@ -16,31 +17,31 @@ class Direction(enum.Enum):
         '''
         Returns
         -------
-        (x, y)
-            tuple with x-axis and y-axis coordinate
+        point : Point
+            point with x-axis and y-axis coordinate
         
         Examples:
         --------
         >>> d = Direction.RightDown
         >>> d.get_coords()
-        (1, -1)
+        Point(1, -1)
         '''
         if self == self.N:
-            return (0, 1)
+            return Point(0, 1)
         elif self == self.NE:
-            return (1, 1)
+            return Point(1, 1)
         elif self == self.E:
-            return (1, 0)
+            return Point(1, 0)
         elif self == self.SE:
-            return (1, -1)
+            return Point(1, -1)
         elif self == self.S:
-            return (0, -1)
+            return Point(0, -1)
         elif self == self.SW:
-            return (-1, -1)
+            return Point(-1, -1)
         elif self == self.W:
-            return (-1, 0)
+            return Point(-1, 0)
         elif self == self.NW:
-            return (-1, 1)
+            return Point(-1, 1)
 
     # overloading '~' operator
     def __invert__(self):

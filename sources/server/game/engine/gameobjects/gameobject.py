@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from engine.utils.point import Point
+
 @dataclass
 class GameObject:
     '''Generic class for all game-objects. 
@@ -7,15 +9,11 @@ class GameObject:
 
     Attributes
     ----------
-    x : int
-        x-axis coordinate
-    
-    y : int
-        y-axis coordinate
+    coord : Point
+        current x and y coordinate
     '''
 
     def __init__(self):
         super().__init__()
 
-    x: int
-    y: int
+    coord: Point

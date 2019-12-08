@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import *
-from typing import Any
+from typing import Any, List
 import math
 
 from engine.gameobjects.gameobject import GameObject
@@ -13,7 +13,7 @@ class World:
     ----------
         objects : List[GameObjects]
     '''
-    objects: list = field(default_factory=list)
+    objects: List[GameObject] = field(default_factory=list)
 
     def append(self, obj: GameObject) -> list:
         '''Appends new object to world 

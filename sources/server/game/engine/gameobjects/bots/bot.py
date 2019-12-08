@@ -1,11 +1,13 @@
 from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
-from typing import List, Dict, Any, Callable, Tuple
+from typing import List, Dict, Any, Callable, Tuple, Union
 from math import pow, sqrt
 
 from exceptions import InvalidSelfInstance, GameException
-from constants import THREAD_TIMEOUT, CELL_SIDE, BOT_FOV_CELLS, BOT_DEFAULT_HP
+from constants import *
 from engine.utils.direction import Direction
+from engine.utils.point import Point
+from engine.gameobjects.laser import Laser
 from engine.gameobjects.game_world import World
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
@@ -26,9 +28,12 @@ class Bot(Destroyable):
     main_event : Event
         Event, to block main thread, until bot finishes his actions
 
-    health : ints
-        Remaining 'hearts'
-    
+    world : World
+        Reference to a world
+
+    fov : int
+        Field of view
+
     power_ups : List[PowerUp]
         All active power ups on bot
 
@@ -62,7 +67,7 @@ class Bot(Destroyable):
                     self.event.wait()
                     self.event.clear()
                 else:
-                    raise exceptions.InvalidSelfInstance('Invalid type of self object!')
+                    raise InvalidSelfInstance()
             return func(self, *args, **kwargs)
         return wrapper
 
@@ -77,22 +82,19 @@ class Bot(Destroyable):
 
         Returns
         -------
-        self.x : int
-            current x-coordinate
-        
-        self.y : int
-            current y-coordinate
+        point : Point
+            current player x and y coordinate
         '''
         
-        self.x += dir.get_coords()[0]
-        self.y += dir.get_coords()[1]
+        self.coord.x += dir.get_coords().x
+        self.coord.y += dir.get_coords().y
 
-        print(f'{self.name}\'s current coordinate: ({self.x}, {self.y})')
+        print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
 
-        return (self.x, self.y)
+        return Point(self.coord.x, self.coord.y)
 
-    def current_location(self) -> Tuple[float, float]:
-        return (self.x, self.y)
+    def current_location(self) -> Point:
+        return Point(self.coord.x, self.coord.y)
     
     def current_hp(self) -> int:
         return self.health
@@ -100,12 +102,33 @@ class Bot(Destroyable):
     def scan(self) -> List[GameObject]:
         return [
             obj for obj in self.world
-            if sqrt(pow(obj.x - self.x, 2) + pow(obj.y - self.y, 2)) <= self.fov
+            if self.coord.distance_to(obj.coord) <= self.fov
         ]
     
     @synchronized
-    def shoot(self) -> None:
-        # TODO
+    def shoot(self, point: Point) -> Union[None, int]:
+        # y = kx + b
+        k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
+        b1 = self.coord.y - self.coord.x * k1
+        # find graph for default point
+        y1 = lambda x: k1 * x + b1
+        
+        closest = GameObject(Point(MAX_COORD, MAX_COORD))
+        for obj in self.world:
+            k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
+            b2 = self.coord.y - self.coord.x * k2
+
+            y2 = lambda x: k2 * x + b2
+
+            if abs(y1(obj.coord.x) - y2(obj.coord.x)) <= DELTA:
+                if obj.distance_to(self.coord) <= closest.distance_to(self.coord):
+                    closest = obj
+        
+        if not closest.coord == Point(MAX_COORD, MAX_COORD):
+            if isinstance(closest, Destroyable):
+                l = Laser(obj.coord, LASER_DAMAGE)
+                return l.shoot(closest)
+
         return None
 
     @synchronized

@@ -12,3 +12,12 @@ BOT_FOV_CELLS: int = 5
 
 # default bot hp
 BOT_DEFAULT_HP: int = 10
+
+# delta
+DELTA: float = .5
+
+# Max possible coordinate
+MAX_COORD: int = 1_000_000
+
+# default laser damage
+LASER_DAMAGE: int = 1

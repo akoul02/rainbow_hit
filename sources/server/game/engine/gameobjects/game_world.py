@@ -6,7 +6,11 @@ import math
 
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
+from engine.utils.point import Point
+from engine.gameobjects.bots.user_bot import UserBot
+from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.laser import Laser
+from exceptions import GameOver
 
 @dataclass
 class World:
@@ -16,6 +20,8 @@ class World:
         objects : List[GameObjects]
     '''
     objects: List[GameObject] = field(default_factory=list)
+    size_x: int = 16
+    size_y: int = 16
 
     def append(self, obj: GameObject) -> list:
         '''Appends new object to world 
@@ -48,7 +54,19 @@ class World:
         for i in self.objects:
             if isinstance(i, Destroyable):
                 if not i.alive:
+                    if isinstance(i, UserBot):
+                        raise GameOver(False)
+                        
                     self.objects.remove(i)
             if isinstance(i, Laser):
                 self.objects.remove(i)
+        if len([i for i in self.objects if isinstance(i, EnemyBot)]) == 0:
+            raise GameOver(True)
+                
         return None
+
+    def position(self, coord: Point) -> bool:
+        for obj in self.objects:
+            if obj.coord == coord:
+                return False
+        return True

@@ -1,7 +1,7 @@
 import unittest
 
 import sys, os
-sys.path.insert(0, 'C:\\Users\\madrat\\Desktop\\rainbow_hit\\sources\\server\\game\\')
+sys.path.insert(0, os.path.dirname(__file__) + '/../game/')
 
 from engine.utils.point import Point
 

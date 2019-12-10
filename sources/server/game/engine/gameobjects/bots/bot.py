@@ -45,7 +45,7 @@ class Bot(Destroyable):
     event: Event = field(default_factory=Event)
 
     def synchronized(func: Callable):
-        '''Decorator, to syncronise called function with main thread.
+        '''Decorator, to synchronize called function with main thread.
         
         First argument should be bot instance. 
         '''

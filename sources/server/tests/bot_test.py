@@ -73,6 +73,7 @@ class BotTest(unittest.TestCase):
         bot.shoot(Point(3, 3), blocking=False)
         world.update()
         self.assertEqual(wall.is_alive(), False)
+        self.assertEqual(bot.is_alive(), True)
 
         bot.shoot(Point(3, 3), blocking=False)
         world.update()

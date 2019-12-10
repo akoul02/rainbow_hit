@@ -29,9 +29,11 @@ class Game:
         main_event = Event()
         game_world = World()
         executors = [
-            Executor(UserBot(Point(0, 0),  game_world, 1, 10, True, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(EnemyBot(Point(2, 2), game_world, 1, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
-            Executor(EnemyBot(Point(3, 4), game_world, 1, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+            Executor(UserBot(Point(1, 1),  game_world, 1, 10, True, 'player', main_event), MAX_STEPS, run_user), 
+            Executor(EnemyBot(Point(2, 1), game_world, 1, 10, True, 'enemy1', main_event), MAX_STEPS, run_enemy),
+            Executor(EnemyBot(Point(2, 2), game_world, 1, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2),
+            Executor(EnemyBot(Point(1, 2), game_world, 1, 10, True, 'enemy3', main_event), MAX_STEPS, run_enemy3),
+            Executor(EnemyBot(Point(0, 2), game_world, 1, 10, True, 'enemy4', main_event), MAX_STEPS, run_enemy4)
         ]
 
         try:
@@ -45,11 +47,6 @@ class Game:
                     except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
                         print(f'Exception message: {e}')
                         executor.bot.sleep(blocking=False)
-                    except BotIsDead as e:
-                        # TODO
-                        executor.bot.event.set()
-                        executor.thread.terminate(StepsAreOver)
-                        executors.remove(executor)
         except GameOver as e:
             result = e.game_won
         finally:

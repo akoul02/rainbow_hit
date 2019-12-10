@@ -116,11 +116,16 @@ class Bot(Destroyable):
         objects : List[GameObject]
             Objects, that are inside players FOV
         '''
-        return [
+        print(f'{self.name} got all coordinates: ')
+        objects = [
             obj for obj in self.world.objects
             if self.coord.distance_to(obj.coord) <= self.fov if self != obj
         ]
-    
+        for obj in objects:
+            print(f'\t{obj.name} : ({obj.coord})')
+
+        return objects
+
     @synchronized
     def shoot(self, point: Point) -> Union[None, int]:
         '''Try to shoot using laser at given point

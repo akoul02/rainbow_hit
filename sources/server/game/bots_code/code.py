@@ -30,13 +30,15 @@ def continuemain(func):
 def run_user(bot: Bot):
     # user code starts here
     bot.step(Direction.Up)
-    bot.shoot(Point(2, 2))
-    bot.sleep()
+    objects = bot.scan()
+    for obj in objects:
+        bot.shoot(obj.coord)
+
 
 @continuemain
 def run_enemy(bot: Bot):
     bot.sleep()
-    bot.shoot(Point(0, 1))
+    bot.sleep()
     bot.sleep()
     bot.sleep()
 
@@ -47,7 +49,17 @@ def run_enemy2(bot: Bot):
     bot.sleep()
     bot.sleep()
 
-    # emulate situation, where thread hangs
-    while True:
-       pass
+@continuemain
+def run_enemy3(bot: Bot):
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    
+@continuemain
+def run_enemy4(bot: Bot):
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
     

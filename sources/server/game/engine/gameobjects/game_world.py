@@ -11,7 +11,7 @@ from engine.gameobjects.bots.user_bot import UserBot
 from engine.gameobjects.bots.bot import Bot
 from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.laser import Laser
-from exceptions import GameOver, BotIsDead
+from exceptions import GameOver
 
 @dataclass
 class World:

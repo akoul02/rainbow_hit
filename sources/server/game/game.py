@@ -5,9 +5,11 @@ from time import sleep
 from engine.gameobjects.game_world import World
 from engine.runner.executor import Executor
 from engine.gameobjects.bots.bot import Bot
+from engine.gameobjects.bots.enemy_bot import EnemyBot
+from engine.gameobjects.bots.user_bot import UserBot
 from engine.utils.point import Point
 from constants import MAX_STEPS, BOT_DEFAULT_HP
-from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError
+from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver
 from bots_code.code import *
 
 @dataclass
@@ -25,9 +27,9 @@ class Game:
         main_event = Event()
         game_world = World()
         executors = [
-            Executor(Bot(Point(0, 0), game_world, 10, 10, True, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(Bot(Point(0, 0), game_world, 10, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
-            Executor(Bot(Point(0, 0), game_world, 10, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+            Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player', main_event), MAX_STEPS, run_user), 
+            Executor(EnemyBot(Point(0, 0), game_world, 10, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
+            Executor(EnemyBot(Point(0, 0), game_world, 10, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
         ]
 
         for step in range(0, MAX_STEPS):
@@ -36,7 +38,7 @@ class Game:
                 try:
                     executor.next_move()
                     game_world.update()
-                except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
+                except (ActionsAreOver, BotTimeoutError, ThreadKilledError, GameOver) as e:
                     print(f'Exception message: {e}')
                     executor.bot.sleep(blocking=False)
         else:

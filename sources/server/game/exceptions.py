@@ -42,3 +42,12 @@ class FatalException(Exception):
     '''
     def __init__(self, msg):
         Exception.__init__(self, msg)
+
+class GameOver(GameException):
+    '''Exception, which get raised, if steps are over
+    '''
+    game_won: bool = False
+
+    def __init__(self, win_status):
+        self.game_won = win_status
+        GameException.__init__(self, 'Game Over')

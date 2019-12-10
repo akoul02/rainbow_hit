@@ -8,7 +8,6 @@ from constants import *
 from engine.utils.direction import Direction
 from engine.utils.point import Point
 from engine.gameobjects.laser import Laser
-from engine.gameobjects.game_world import World
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
 
@@ -77,9 +76,11 @@ class Bot(Destroyable):
         point : Point
             current player x and y coordinate
         '''
-        
-        self.coord.x += dir.get_coords().x
-        self.coord.y += dir.get_coords().y
+        if self.world.position(Point(self.coord.x + dir.get_coords().x, self.coord.y + dir.get_coords().y)):
+            if self.coord.x + dir.get_coords().x >= 0 and self.coord.x + dir.get_coords().x < self.world.size_x and self.coord.y + dir.get_coords().y >= 0 and self.coord.y + dir.get_coords().y < self.world.size_y:
+                self.coord.x += dir.get_coords().x
+                self.coord.y += dir.get_coords().y
+
 
         print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
 

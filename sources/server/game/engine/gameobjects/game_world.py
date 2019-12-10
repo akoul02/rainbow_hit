@@ -65,8 +65,8 @@ class World:
                 
         return None
 
-    def position(self, coord: Point) -> bool:
+    def at_position(self, coord: Point) -> bool:
         for obj in self.objects:
             if obj.coord == coord:
-                return False
-        return True
+                return True
+        return False

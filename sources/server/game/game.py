@@ -16,20 +16,22 @@ from bots_code.code import *
 class Game:
     '''Base game class.
     '''
-    def start(self):
+    def start(self) -> bool:
         '''Starts the game
 
         Returns
         -------
         None
         '''
+        result: bool = False
+
         # used to lock main Thread
         main_event = Event()
         game_world = World()
         executors = [
             Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(EnemyBot(Point(0, 0), game_world, 10, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
-            Executor(EnemyBot(Point(0, 0), game_world, 10, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+            Executor(EnemyBot(Point(1, 1), game_world, 10, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
+            Executor(EnemyBot(Point(2, 2), game_world, 10, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
         ]
 
         for step in range(0, MAX_STEPS):
@@ -38,9 +40,13 @@ class Game:
                 try:
                     executor.next_move()
                     game_world.update()
-                except (ActionsAreOver, BotTimeoutError, ThreadKilledError, GameOver) as e:
+                except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
                     print(f'Exception message: {e}')
                     executor.bot.sleep(blocking=False)
+                except GameOver as e:
+                    print(f'Game is over: {e.game_won}')
+                    result = e.game_won
+
         else:
             for executor in executors:
                 executor.bot.event.set()
@@ -48,7 +54,7 @@ class Game:
         
         print('Simulation is over!')
 
-        return None
+        return result
 
     def stop(self):
         '''Stops the game

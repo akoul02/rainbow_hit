@@ -76,7 +76,7 @@ class Bot(Destroyable):
         point : Point
             current player x and y coordinate
         '''
-        if self.world.position(Point(self.coord.x + dir.get_coords().x, self.coord.y + dir.get_coords().y)):
+        if not self.world.at_position(Point(self.coord.x + dir.get_coords().x, self.coord.y + dir.get_coords().y)):
             if self.coord.x + dir.get_coords().x >= 0 and self.coord.x + dir.get_coords().x < self.world.size_x and self.coord.y + dir.get_coords().y >= 0 and self.coord.y + dir.get_coords().y < self.world.size_y:
                 self.coord.x += dir.get_coords().x
                 self.coord.y += dir.get_coords().y
@@ -137,10 +137,10 @@ class Bot(Destroyable):
             point, where you want to shoot
         
         Returns
+        -------
         result : Union[None, int]
             None, if it cant shoot anyone
             int, that represents target health after shot, if it hits successfully
-        -------
         '''
         k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
         b1 = self.coord.y - self.coord.x * k1

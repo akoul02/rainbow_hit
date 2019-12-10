@@ -44,10 +44,17 @@ class FatalException(Exception):
         Exception.__init__(self, msg)
 
 class GameOver(GameException):
-    '''Exception, which get raised, if steps are over
+    '''Exception, which get raised, if game is over
     '''
     game_won: bool = False
 
     def __init__(self, win_status):
         self.game_won = win_status
         GameException.__init__(self, 'Game Over')
+
+class InvalidCoordinate(GameException):
+    '''Exception, which get raised if someone try to place object at already occupied cell 
+    '''
+    
+    def __init__(self):
+        GameException.__init__(self, 'Invalid coordinate')

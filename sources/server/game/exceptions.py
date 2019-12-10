@@ -58,3 +58,10 @@ class InvalidCoordinate(GameException):
     
     def __init__(self):
         GameException.__init__(self, 'Invalid coordinate')
+
+class BotIsDead(GameException):
+    '''Exception, which get raised if bot is dead
+    '''
+
+    def __init__(self):
+        GameException.__init__(self, 'Bot is dead!')

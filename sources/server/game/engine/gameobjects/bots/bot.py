@@ -156,11 +156,12 @@ class Bot(Destroyable):
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
         
-        if not closest.coord == Point(MAX_COORD, MAX_COORD):
+        if closest.coord != Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
+                # l = Laser(self.coord, None, closest.coord, self.damage)
                 l = Laser(self.coord, None, closest.coord, self.damage)
-                # print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
-                # print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
+                print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
+                print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
                 return l.shoot(closest)
 
         return None

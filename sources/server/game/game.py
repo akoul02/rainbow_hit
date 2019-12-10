@@ -9,7 +9,7 @@ from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.bots.user_bot import UserBot
 from engine.utils.point import Point
 from constants import MAX_STEPS, BOT_DEFAULT_HP
-from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver
+from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
 from bots_code.code import *
 
 @dataclass
@@ -45,6 +45,11 @@ class Game:
                     except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
                         print(f'Exception message: {e}')
                         executor.bot.sleep(blocking=False)
+                    except BotIsDead as e:
+                        # TODO
+                        executor.bot.event.set()
+                        executor.thread.terminate(StepsAreOver)
+                        executors.remove(executor)
         except GameOver as e:
             result = e.game_won
         finally:

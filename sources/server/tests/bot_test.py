@@ -5,14 +5,16 @@ sys.path.insert(0, os.path.dirname(__file__) + '/../game/')
 
 from engine.utils.point import Point
 from engine.gameobjects.game_world import World
-from engine.gameobjects.bots.bot import Bot
+from engine.gameobjects.bots.user_bot import UserBot
+from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.wall import Wall
 from engine.utils.direction import Direction
+from exceptions import GameOver
 
 class BotTest(unittest.TestCase):
     def test_stepping(self):
         world = World()
-        bot = Bot(Point(0, 0), world, 10, 10, True, 'test_bot', None)
+        bot = UserBot(Point(0, 0), world, 10, 10, True, 'test_bot', None)
 
         bot.step(Direction.Up,     blocking=False)
         bot.step(Direction.Up,     blocking=False)
@@ -25,52 +27,58 @@ class BotTest(unittest.TestCase):
 
     def test_scan(self):
         world = World()
-        bot  = Bot(Point(0, 0), world, 2, 10, True, 'player', None)
-        bot1 = Bot(Point(1, 1), world, 1, 10, True, 'player', None)
-        bot2 = Bot(Point(2, 2), world, 1, 10, True, 'player', None)
-        bot3 = Bot(Point(3, 3), world, 1, 10, True, 'player', None)
+        bot  = UserBot(Point(0, 0), world, 2, 10, True, 'player', None)
+        bot1 = UserBot(Point(1, 1), world, 1, 10, True, 'player', None)
+        bot2 = UserBot(Point(2, 2), world, 1, 10, True, 'player', None)
+        bot3 = UserBot(Point(3, 3), world, 1, 10, True, 'player', None)
 
         objects = bot.scan()
         self.assertEqual(len(objects), 3)
         
     def test_shoot1(self):
         world = World()
-        bot  = Bot(Point(0, 0), world, 2, 10, True, 'player', None)
-        bot1 = Bot(Point(1, 1), world, 1, 10, True, 'enemy1', None)
-        bot2 = Bot(Point(2, 2), world, 1, 10, True, 'enemy2', None)
-        bot3 = Bot(Point(3, 3), world, 1, 10, True, 'enemy3', None)
+        bot  = UserBot(Point(0, 0), world, 2, 10, True, 'player', None)
+        bot1 = EnemyBot(Point(1, 1), world, 1, 10, True, 'enemy1', None)
+        bot2 = EnemyBot(Point(2, 2), world, 1, 10, True, 'enemy2', None)
+        bot3 = EnemyBot(Point(3, 3), world, 1, 10, True, 'enemy3', None)
 
-        bot.shoot(Point(3, 3), blocking=False)
-        world.update()
-        bot.shoot(Point(3, 3), blocking=False)
-        world.update()
-        bot.shoot(Point(3, 3), blocking=False)
-        world.update()
+        try:
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
 
         self.assertEqual(len(world.objects), 1)
 
     def test_shoot2(self):
         world = World()
-        bot  = Bot(Point(0, 0), world, 2, 10, True, 'player', None)
-        bot1 = Bot(Point(3, 1), world, 1, 10, True, 'enemy1', None)
-        bot2 = Bot(Point(4, 2), world, 1, 10, True, 'enemy2', None)
+        try:
+            bot  = UserBot(Point(0, 0), world, 2, 10, True, 'player', None)
+            bot1 = EnemyBot(Point(3, 1), world, 1, 10, True, 'enemy1', None)
+            bot2 = EnemyBot(Point(4, 2), world, 1, 10, True, 'enemy2', None)
 
-        bot.shoot(Point(4, 2), blocking=False)
-        world.update()
-        self.assertEqual(bot1.is_alive(), False)
-        
-        bot.shoot(Point(4, 2), blocking=False)
-        world.update()
-        self.assertEqual(bot2.is_alive(), False)
+            bot.shoot(Point(4, 2), blocking=False)
+            world.update()
+            self.assertEqual(bot1.is_alive(), False)
+            
+            bot.shoot(Point(4, 2), blocking=False)
+            world.update()
+            self.assertEqual(bot2.is_alive(), False)
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
 
         self.assertEqual(len(world.objects), 1)
 
     def test_shoot3(self):
         world = World()
         try:
-            bot  = Bot(Point(0, 0), world, 2, 10, True, 'player', None)
+            bot  = UserBot(Point(0, 0), world, 2, 10, True, 'player', None)
             wall = Wall(Point(2, 2), world, 1, 1, True)
-            bot1 = Bot(Point(3, 3), world, 1, 10, True, 'enemy1', None)
+            bot1 = EnemyBot(Point(3, 3), world, 1, 10, True, 'enemy1', None)
 
             bot.shoot(Point(3, 3), blocking=False)
             world.update()
@@ -79,8 +87,9 @@ class BotTest(unittest.TestCase):
 
             bot.shoot(Point(3, 3), blocking=False)
             world.update()
-        except:
-            self.assertEqual(bot1.is_alive(), False)
+        except GameOver:
+            pass
+        self.assertEqual(bot1.is_alive(), False)
 
 
 if __name__ == "__main__":

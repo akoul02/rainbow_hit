@@ -8,9 +8,10 @@ from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
 from engine.utils.point import Point
 from engine.gameobjects.bots.user_bot import UserBot
+from engine.gameobjects.bots.bot import Bot
 from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.laser import Laser
-from exceptions import GameOver
+from exceptions import GameOver, BotIsDead
 
 @dataclass
 class World:

@@ -3,6 +3,7 @@ import time
 
 from engine.gameobjects.bots.bot import Bot
 from engine.utils.direction import Direction
+from engine.utils.point import Point
 from exceptions import *
 
 def continuemain(func):
@@ -29,36 +30,24 @@ def continuemain(func):
 def run_user(bot: Bot):
     # user code starts here
     time.sleep(1)
-    bot.sleep()
     bot.step(Direction.Up)
     time.sleep(1)
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    time.sleep(0.1)
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    time.sleep(0.1)
+    print(f'Shooted object hp: {bot.shoot(Point(2, 2))}')
+    print(f'Shooted object hp: {bot.shoot(Point(3, 4))}')
 
 @continuemain
 def run_enemy(bot: Bot):
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
-    time.sleep(0.1)
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
-    time.sleep(1)
+    bot.sleep()
+    print(f'Shooted object hp: {bot.shoot(Point(0, 1))}')
+    bot.sleep()
+    bot.sleep()
 
 @continuemain
 def run_enemy2(bot: Bot):
-    time.sleep(0.1)
-    bot.step(Direction.Left)
-    time.sleep(1)
-    bot.step(Direction.Left)
-    time.sleep(0.01)
-    bot.step(Direction.Left)
-    time.sleep(0.1)
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
 
     # emulate situation, where thread hangs
     while True:

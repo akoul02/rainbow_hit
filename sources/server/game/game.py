@@ -29,29 +29,29 @@ class Game:
         main_event = Event()
         game_world = World()
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(EnemyBot(Point(1, 1), game_world, 10, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
-            Executor(EnemyBot(Point(2, 2), game_world, 10, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
+            Executor(UserBot(Point(0, 0),  game_world, 1, 10, True, 'player', main_event), MAX_STEPS, run_user), 
+            Executor(EnemyBot(Point(2, 2), game_world, 1, 10, True, 'enemy',  main_event), MAX_STEPS, run_enemy),
+            Executor(EnemyBot(Point(3, 4), game_world, 1, 10, True, 'enemy2', main_event), MAX_STEPS, run_enemy2)
         ]
 
-        for step in range(0, MAX_STEPS):
-            print(f'\nStep: {step}')
-            for executor in executors:
-                try:
-                    executor.next_move()
-                    game_world.update()
-                except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
-                    print(f'Exception message: {e}')
-                    executor.bot.sleep(blocking=False)
-                except GameOver as e:
-                    print(f'Game is over: {e.game_won}')
-                    result = e.game_won
-
-        else:
+        try:
+            # main game loop
+            for step in range(0, MAX_STEPS):
+                print(f'\nStep: {step}')
+                for executor in executors:
+                    try:
+                        executor.next_move()
+                        game_world.update()
+                    except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
+                        print(f'Exception message: {e}')
+                        executor.bot.sleep(blocking=False)
+        except GameOver as e:
+            result = e.game_won
+        finally:
             for executor in executors:
                 executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
-        
+
         print('Simulation is over!')
 
         return result
@@ -69,7 +69,8 @@ class Game:
 
 def main():
     game = Game()
-    game.start()
+    result = game.start()
+    print(f'Game won: {result}')
 
 if __name__ == '__main__':
     main()

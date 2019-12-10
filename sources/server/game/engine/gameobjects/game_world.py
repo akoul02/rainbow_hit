@@ -70,3 +70,9 @@ class World:
             if obj.coord == coord:
                 return True
         return False
+
+    def get_obj_at_position(self, coord: Point) -> GameObject:
+        for obj in self.objects:
+            if obj.coord == coord:
+                return obj
+        return None

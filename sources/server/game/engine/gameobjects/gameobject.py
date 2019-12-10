@@ -19,8 +19,8 @@ class GameObject:
     world: 'g_world.World'
 
     def __post_init__(self):
-        if self.world.at_position(self.coord):
-            raise InvalidCoordinate()
         if self.world != None:
+            if self.world.at_position(self.coord):
+                raise InvalidCoordinate()
             self.world.append(self)
 

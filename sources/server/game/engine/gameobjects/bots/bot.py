@@ -142,6 +142,8 @@ class Bot(Destroyable):
             None, if it cant shoot anyone
             int, that represents target health after shot, if it hits successfully
         '''
+        print(f'{self.name} shooting at: {point} [{self.world.get_obj_at_position(point).name}]')
+
         k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
         b1 = self.coord.y - self.coord.x * k1
         y1 = lambda x: k1 * x + b1

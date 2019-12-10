@@ -81,7 +81,6 @@ class Bot(Destroyable):
                 self.coord.x += dir.get_coords().x
                 self.coord.y += dir.get_coords().y
 
-
         print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
 
         return Point(self.coord.x, self.coord.y)
@@ -142,8 +141,6 @@ class Bot(Destroyable):
             None, if it cant shoot anyone
             int, that represents target health after shot, if it hits successfully
         '''
-        print(f'{self.name} shooting at: {point} [{self.world.get_obj_at_position(point).name}]')
-
         k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
         b1 = self.coord.y - self.coord.x * k1
         y1 = lambda x: k1 * x + b1
@@ -161,7 +158,9 @@ class Bot(Destroyable):
         
         if not closest.coord == Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
-                l = Laser(self.coord, None, obj.coord, self.damage)
+                l = Laser(self.coord, None, closest.coord, self.damage)
+                # print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
+                # print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
                 return l.shoot(closest)
 
         return None

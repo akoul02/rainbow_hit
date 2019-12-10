@@ -29,16 +29,14 @@ def continuemain(func):
 @continuemain
 def run_user(bot: Bot):
     # user code starts here
-    time.sleep(1)
     bot.step(Direction.Up)
-    time.sleep(1)
-    print(f'Shooted object hp: {bot.shoot(Point(2, 2))}')
-    print(f'Shooted object hp: {bot.shoot(Point(3, 4))}')
+    bot.shoot(Point(2, 2))
+    bot.sleep()
 
 @continuemain
 def run_enemy(bot: Bot):
     bot.sleep()
-    print(f'Shooted object hp: {bot.shoot(Point(0, 1))}')
+    bot.shoot(Point(0, 1))
     bot.sleep()
     bot.sleep()
 

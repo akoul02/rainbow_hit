@@ -6,4 +6,5 @@ from engine.gameobjects.destroyable import Destroyable
 class Wall(Destroyable):
     '''Object, that represents killable wall
     '''
+    name: str = 'Wall'
     pass

@@ -54,10 +54,9 @@ class World:
         for i in self.objects:
             if isinstance(i, Destroyable):
                 if not i.alive:
+                    self.objects.remove(i)
                     if isinstance(i, UserBot):
                         raise GameOver(False)
-                        
-                    self.objects.remove(i)
             if isinstance(i, Laser):
                 self.objects.remove(i)
         if len([i for i in self.objects if isinstance(i, EnemyBot)]) == 0:

@@ -3,6 +3,11 @@ class GameException(Exception):
     '''
     pass
 
+class NetworkException(Exception):
+    '''Base class for all network exceptions.
+    '''
+    pass
+
 class InvalidSelfInstance(GameException):
     '''Raised, when invalid object passed in args[0]
     '''
@@ -64,3 +69,21 @@ class BotIsDead(GameException):
     '''
     def __init__(self, reference):
         GameException.__init__(self, 'Bot is dead!')
+
+class HandshakeError(NetworkException):
+    '''Exception, which get raised if troubles with handshake
+    '''
+    def __init__(self):
+        NetworkException.__init__(self, 'Client did not say zdarova')
+
+class UnameError(NetworkException):
+    '''Exception, which get raised if client did not say his username
+    '''
+    def __init__(self):
+        NetworkException.__init__(self, 'Client did not say his username')
+
+class CodeTransmissionError(NetworkException):
+    '''Exception, which get raised if troubles with code transmission
+    '''
+    def __init__(self):
+        NetworkException.__init__(self, 'Troubles with code transmission')

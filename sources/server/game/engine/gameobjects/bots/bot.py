@@ -158,8 +158,13 @@ class Bot(Destroyable):
                 k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
                 b2 = self.coord.y - self.coord.x * k2
                 y2 = lambda x: k2 * x + b2
+                kn = -1/k2
+                bn = self.coord.x / k2 + self.coord.y
+                x_intersect = (bn - b1)/(k1 - kn)
+                y_intersect = y1(x_intersect)
+                dist = sqrt((self.coord.x - x_intersect) ** 2 - (self.coord.y - y_intersect) ** 2)
 
-                if abs(y1(obj.coord.x) - y2(obj.coord.x)) <= DELTA:
+                if dist <= DELTA:
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
         

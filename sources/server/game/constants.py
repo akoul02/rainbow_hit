@@ -21,3 +21,6 @@ MAX_COORD: int = 1_000_000
 
 # default laser damage
 LASER_DAMAGE: int = 1
+
+# is debug
+IS_DEBUG: bool = True

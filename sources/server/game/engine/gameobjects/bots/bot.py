@@ -80,8 +80,8 @@ class Bot(Destroyable):
             if self.coord.x + dir.get_coords().x >= 0 and self.coord.x + dir.get_coords().x < self.world.size_x and self.coord.y + dir.get_coords().y >= 0 and self.coord.y + dir.get_coords().y < self.world.size_y:
                 self.coord.x += dir.get_coords().x
                 self.coord.y += dir.get_coords().y
-
-        print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
+        if IS_DEBUG:
+            print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
 
         return Point(self.coord.x, self.coord.y)
 
@@ -116,13 +116,15 @@ class Bot(Destroyable):
         objects : List[GameObject]
             Objects, that are inside players FOV
         '''
-        print(f'{self.name} got all coordinates: ')
+        if IS_DEBUG:
+            print(f'{self.name} got all coordinates: ')
         objects = [
             obj for obj in self.world.objects
             if self.coord.distance_to(obj.coord) <= self.fov if self != obj
         ]
-        for obj in objects:
-            print(f'\t{obj.name} : ({obj.coord})')
+        if IS_DEBUG:
+            for obj in objects:
+                print(f'\t{obj.name} : ({obj.coord})')
 
         return objects
 
@@ -165,8 +167,9 @@ class Bot(Destroyable):
             if isinstance(closest, Destroyable):
                 # l = Laser(self.coord, None, closest.coord, self.damage)
                 l = Laser(self.coord, None, closest.coord, self.damage)
-                print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
-                print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
+                if IS_DEBUG:
+                    print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
+                    print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
                 return l.shoot(closest)
 
         return None

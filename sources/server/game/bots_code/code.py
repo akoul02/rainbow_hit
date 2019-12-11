@@ -30,9 +30,11 @@ def continuemain(func):
 def run_user(bot: Bot):
     # user code starts here
     bot.step(Direction.Up)
-    objects = bot.scan()
-    for obj in objects:
-        bot.shoot(obj.coord)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    # for obj in objects:
+    #    bot.shoot(obj.coord)
 
 
 @continuemain

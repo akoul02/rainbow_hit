@@ -157,7 +157,6 @@ class Bot(Destroyable):
             if obj != self:
                 k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
                 b2 = self.coord.y - self.coord.x * k2
-                y2 = lambda x: k2 * x + b2
                 kn = -1/k2
                 bn = self.coord.x / k2 + self.coord.y
                 x_intersect = (bn - b1)/(k1 - kn)

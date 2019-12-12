@@ -153,19 +153,27 @@ class Bot(Destroyable):
         y1 = lambda x: k1 * x + b1
         
         closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
-        for obj in self.world.objects:
-            if obj != self:
-                k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
-                b2 = self.coord.y - self.coord.x * k2
-                kn = -1/k2
-                bn = self.coord.x / k2 + self.coord.y
-                x_intersect = (bn - b1)/(k1 - kn)
-                y_intersect = y1(x_intersect)
-                dist = sqrt((self.coord.x - x_intersect) ** 2 - (self.coord.y - y_intersect) ** 2)
 
-                if dist <= DELTA:
+        same_axis_obj_exist = False
+        for obj in self.world.objects:
+            if obj.coord != self.coord:
+                if self.coord.x != obj.coord.x and self.coord.y !=obj.coord.y and not same_axis_obj_exist:
+                    k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
+                    b2 = self.coord.y - self.coord.x * k2
+                    kn = -1/k2
+                    bn = self.coord.x / k2 + self.coord.y
+                    x_intersect = (bn - b1)/(k1 - kn)
+                    y_intersect = y1(x_intersect)
+                    dist = sqrt((self.coord.x - x_intersect) ** 2 - (self.coord.y - y_intersect) ** 2)
+
+                    if dist <= DELTA:
+                        if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
+                            closest = obj
+                else:
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
+                        same_axis_obj_exist = True
+
         
         if closest.coord != Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):

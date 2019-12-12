@@ -173,7 +173,7 @@ class BotTest(unittest.TestCase):
             self.assertEqual(bot1.is_alive(), False)
         except GameOver as e:
             self.assertEqual(e.game_won, True)
-            self.assertEqual(e.winner.name, 'player1')
+            self.assertEqual(e.winner.name, 'player')
 
         self.assertEqual(len(world.objects), 1)
 

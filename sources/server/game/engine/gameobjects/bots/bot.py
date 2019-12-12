@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from threading import Event, Timer, Thread
-from typing import List, Dict, Any, Callable, Tuple, Union
+from typing import List, Dict, Any, Callable, Tuple, Union, Optional
 from math import pow, sqrt
 
 from exceptions import InvalidSelfInstance, GameException
@@ -129,7 +129,7 @@ class Bot(Destroyable):
         return objects
 
     @synchronized
-    def shoot(self, point: Point) -> Union[None, int]:
+    def shoot(self, point: Point) -> Optional[int]:
         '''Try to shoot using laser at given point
 
         Function tries to shoot at given point, but before that
@@ -169,7 +169,6 @@ class Bot(Destroyable):
         
         if closest.coord != Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):
-                # l = Laser(self.coord, None, closest.coord, self.damage)
                 l = Laser(self.coord, None, closest.coord, self.damage)
                 if IS_DEBUG:
                     print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')

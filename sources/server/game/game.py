@@ -27,10 +27,10 @@ class Game:
 
         # used to lock main Thread
         main_event = Event()
-        game_world = World()
+        game_world = World('pvp')
         executors = [
-            Executor(UserBot(Point(1, 1),  game_world, 1, 10, True, 'player', main_event), MAX_STEPS, run_user), 
-            Executor(EnemyBot(Point(2, 1), game_world, 1, 10, True, 'enemy1', main_event), MAX_STEPS, run_enemy),
+            Executor(UserBot(Point(1, 1), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user), 
+            Executor(UserBot(Point(2, 1), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy),
         ]
 
         try:
@@ -46,6 +46,8 @@ class Game:
                         executor.bot.sleep(blocking=False)
         except GameOver as e:
             result = e.game_won
+            if result:
+                print(f'Winner is: {e.winner.name}')
         finally:
             for executor in executors:
                 executor.bot.event.set()
@@ -69,7 +71,6 @@ class Game:
 def main():
     game = Game()
     result = game.start()
-    print(f'Game won: {result}')
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,5 @@
+from typing import *
+
 class GameException(Exception):
     '''Base class for all in-game exceptions.
     '''
@@ -52,9 +54,11 @@ class GameOver(GameException):
     '''Exception, which get raised, if game is over
     '''
     game_won: bool = False
+    winner: Optional['UserBot'] = None
 
-    def __init__(self, win_status):
+    def __init__(self, win_status: bool, winner = None):
         self.game_won = win_status
+        self.winner = winner
         GameException.__init__(self, 'Game Over')
 
 class InvalidCoordinate(GameException):

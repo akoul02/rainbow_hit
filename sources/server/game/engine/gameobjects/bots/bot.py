@@ -76,10 +76,10 @@ class Bot(Destroyable):
         point : Point
             current player x and y coordinate
         '''
-        if not self.world.at_position(Point(self.coord.x + dir.get_coords().x, self.coord.y + dir.get_coords().y)):
-            if self.coord.x + dir.get_coords().x >= 0 and self.coord.x + dir.get_coords().x < self.world.size_x and self.coord.y + dir.get_coords().y >= 0 and self.coord.y + dir.get_coords().y < self.world.size_y:
-                self.coord.x += dir.get_coords().x
-                self.coord.y += dir.get_coords().y
+        if not self.world.at_position(Point(self.coord.x + dir.value.x, self.coord.y + dir.value.y)):
+            if self.coord.x + dir.value.x >= 0 and self.coord.x + dir.value.x < self.world.size_x and self.coord.y + dir.value.y >= 0 and self.coord.y + dir.value.y < self.world.size_y:
+                self.coord.x += dir.value.x
+                self.coord.y += dir.value.y
         if IS_DEBUG:
             print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
 

@@ -4,44 +4,14 @@ from engine.utils.point import Point
 class Direction(enum.Enum):
     '''Describes all possible directions.
     '''
-    North     = N  = Up        = 1
-    NorthEast = NE = RightUp   = UpRight   = 2
-    East      = E  = Right     = 3
-    SouthEast = SE = DownRight = RightDown = 4
-    South     = S  = Down      = 5 
-    SouthWest = SW = LeftDown  = DownLeft  = 6
-    West      = W  = Left      = 7 
-    NorthWest = NW = LeftUp    = UpLeft    = 8
-
-    def get_coords(self):
-        '''
-        Returns
-        -------
-        point : Point
-            point with x-axis and y-axis coordinate
-        
-        Examples:
-        --------
-        >>> d = Direction.RightDown
-        >>> d.get_coords()
-        Point(1, -1)
-        '''
-        if self == self.N:
-            return Point(0, 1)
-        elif self == self.NE:
-            return Point(1, 1)
-        elif self == self.E:
-            return Point(1, 0)
-        elif self == self.SE:
-            return Point(1, -1)
-        elif self == self.S:
-            return Point(0, -1)
-        elif self == self.SW:
-            return Point(-1, -1)
-        elif self == self.W:
-            return Point(-1, 0)
-        elif self == self.NW:
-            return Point(-1, 1)
+    North     = N  = Up        = Point(0, 1)
+    NorthEast = NE = RightUp   = UpRight   = Point(1, 1)
+    East      = E  = Right     = Point(1, 0)
+    SouthEast = SE = DownRight = RightDown = Point(1, -1)
+    South     = S  = Down      = Point(0, -1)
+    SouthWest = SW = LeftDown  = DownLeft  = Point(-1, -1)
+    West      = W  = Left      = Point(-1, 0)
+    NorthWest = NW = LeftUp    = UpLeft    = Point(-1, 1)
 
     # overloading '~' operator
     def __invert__(self):

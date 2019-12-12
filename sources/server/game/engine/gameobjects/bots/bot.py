@@ -147,16 +147,16 @@ class Bot(Destroyable):
         result : Union[None, int]
             None, if it cant shoot anyone
             int, that represents target health after shot, if it hits successfully
-        '''
-        k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
-        b1 = self.coord.y - self.coord.x * k1
-        y1 = lambda x: k1 * x + b1
-        
+        '''      
         closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
 
         same_axis_obj_exist = False
         for obj in self.world.objects:
-            if obj.coord != self.coord:
+            if obj.coord != self.coord and obj != self and self.coord != point:
+                k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
+                b1 = self.coord.y - self.coord.x * k1
+                y1 = lambda x: k1 * x + b1
+                
                 if self.coord.x != obj.coord.x and self.coord.y !=obj.coord.y and not same_axis_obj_exist:
                     k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
                     b2 = self.coord.y - self.coord.x * k2
@@ -173,7 +173,6 @@ class Bot(Destroyable):
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
                         same_axis_obj_exist = True
-
         
         if closest.coord != Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):

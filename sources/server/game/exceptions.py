@@ -64,7 +64,6 @@ class GameOver(GameException):
 class InvalidCoordinate(GameException):
     '''Exception, which get raised if someone try to place object at already occupied cell 
     '''
-    
     def __init__(self):
         GameException.__init__(self, 'Invalid coordinate')
 

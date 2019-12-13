@@ -129,7 +129,7 @@ class Bot(Destroyable):
         return objects
 
     @synchronized
-    def shoot(self, point: Point) -> Optional[int]:
+    def shoot(self, obj: Union[Point, GameObject]) -> Optional[int]:
         '''Try to shoot using laser at given point
 
         Function tries to shoot at given point, but before that
@@ -147,7 +147,12 @@ class Bot(Destroyable):
         result : Union[None, int]
             None, if it cant shoot anyone
             int, that represents target health after shot, if it hits successfully
-        '''      
+        '''
+        if isinstance(obj, Point):
+            point = obj
+        elif isinstance(obj, GameObject):
+            point = obj.coord
+
         closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
 
         same_axis_obj_exist = False

@@ -41,7 +41,7 @@ def run_user(bot: Bot):
 @continuemain
 def run_enemy(bot: Bot):
     objects = bot.scan()
-    bot.shoot(objects[0].coord)
+    bot.shoot(objects[0])
     bot.sleep()
     bot.sleep()
     bot.sleep()

@@ -121,11 +121,11 @@ class BotTest(unittest.TestCase):
         self.assertEqual(bot1.is_alive(), True)
 
         try:
-            bot.shoot(Point(2, 5), blocking=False)
+            bot.shoot(bot2, blocking=False)
             world.update()
             self.assertEqual(bot1.is_alive(), False)
             
-            bot.shoot(Point(2, 5), blocking=False)
+            bot.shoot(bot2, blocking=False)
             world.update()
             self.assertEqual(bot2.is_alive(), False)
         except GameOver as e:

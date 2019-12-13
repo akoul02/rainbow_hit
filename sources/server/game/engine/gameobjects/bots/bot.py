@@ -81,7 +81,7 @@ class Bot(Destroyable):
                 self.coord.x += dir.value.x
                 self.coord.y += dir.value.y
         if IS_DEBUG:
-            print(f'{self.name}\'s current coordinate: ({self.coord.x}, {self.coord.y})')
+            print(f'Bot: {self.name} making step. current coordinate: ({self.coord.x}, {self.coord.y})')
 
         return Point(self.coord.x, self.coord.y)
 
@@ -116,17 +116,18 @@ class Bot(Destroyable):
         objects : List[GameObject]
             Objects, that are inside players FOV
         '''
-        if IS_DEBUG:
-            print(f'{self.name} got all coordinates: ')
-        objects = [
-            obj for obj in self.world.objects
-            if self.coord.distance_to(obj.coord) <= self.fov if self != obj
-        ]
-        if IS_DEBUG:
-            for obj in objects:
-                print(f'\t{obj.name} : ({obj.coord})')
+        if self.is_alive():
+            if IS_DEBUG:
+                print(f'{self.name} got all coordinates: ')
+            objects = [
+                obj for obj in self.world.objects
+                if self.coord.distance_to(obj.coord) <= self.fov if self != obj
+            ]
+            if IS_DEBUG:
+                for obj in objects:
+                    print(f'\t{obj.name} : ({obj.coord})')
 
-        return objects
+            return objects
 
     @synchronized
     def shoot(self, obj: Union[Point, GameObject]) -> Optional[int]:
@@ -197,6 +198,7 @@ class Bot(Destroyable):
         -------
             None
         '''
-        print(f'{self.name} is sleeping')
+        if IS_DEBUG:
+            print(f'{self.name} is sleeping')
 
         return None

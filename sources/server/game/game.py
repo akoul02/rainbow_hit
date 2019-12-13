@@ -49,7 +49,7 @@ class Game:
             winner = e.winner.name
         finally:
             for executor in executors:
-                # executor.bot.event.set()
+                executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
 
         if result:

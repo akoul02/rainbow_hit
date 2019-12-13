@@ -33,6 +33,7 @@ def run_user(bot: Bot):
     # bot.step(Direction.Up)
     objects = bot.scan()
     bot.shoot(objects[0].coord)
+    bot.step(Direction.Up)
     # for obj in objects:
     #    bot.shoot(obj.coord)
 
@@ -40,9 +41,12 @@ def run_user(bot: Bot):
 @continuemain
 def run_enemy(bot: Bot):
     objects = bot.scan()
-    bot.shoot(objects[0])
+    if len(objects) > 0:
+        bot.shoot(objects[0])
     bot.sleep()
+    objects = bot.scan()
     bot.sleep()
+    objects = bot.scan()
     bot.sleep()
     bot.sleep()
 

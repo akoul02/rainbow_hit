@@ -59,7 +59,13 @@ class World:
     def generate() -> World:
         '''Creates new instance of World object, with generated map
         '''
-        return World()
+        world = World('pvp')
+        for i in matrix:
+            for j in matrix:
+                if matrix[i][j]:
+                    Wall(Point(i, j), world, 1, 1, True)
+                    
+        return world
 
     def update(self) -> None:
         '''Update state of game world.

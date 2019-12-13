@@ -72,8 +72,10 @@ class Executor:
         
             # clear main event
             self.bot.main_event.clear()
-            # wait here, while the bot does it actions
-            if not self.bot.main_event.wait(THREAD_TIMEOUT):
+            # wait here, while bot is doing his actions
+            timeout = self.bot.main_event.wait(THREAD_TIMEOUT)
+
+            if not timeout:
                 # timeout over, but bot thread is still running
                 self.thread.terminate(BotTimeoutError)
                 self.bot.main_event.set()

@@ -46,13 +46,16 @@ class Game:
                         executor.bot.sleep(blocking=False)
         except GameOver as e:
             result = e.game_won
-            if result:
-                print(f'Winner is: {e.winner.name}')
+            winner = e.winner.name
         finally:
             for executor in executors:
-                executor.bot.event.set()
+                # executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
 
+        if result:
+            print(f'Winner is: {winner}')
+            assert winner == 'player1'
+        
         print('Simulation is over!')
 
         return result

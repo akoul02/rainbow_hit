@@ -33,7 +33,6 @@ def run_user(bot: Bot):
     # bot.step(Direction.Up)
     objects = bot.scan()
     bot.shoot(objects[0].coord)
-    bot.step(Direction.Up)
     # for obj in objects:
     #    bot.shoot(obj.coord)
 

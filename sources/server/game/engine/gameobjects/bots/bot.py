@@ -157,7 +157,7 @@ class Bot(Destroyable):
                 b1 = self.coord.y - self.coord.x * k1
                 y1 = lambda x: k1 * x + b1
                 
-                if self.coord.x != obj.coord.x and self.coord.y !=obj.coord.y and not same_axis_obj_exist:
+                if self.coord.x != obj.coord.x and self.coord.y != obj.coord.y and not same_axis_obj_exist:
                     k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
                     b2 = self.coord.y - self.coord.x * k2
                     kn = -1/k2

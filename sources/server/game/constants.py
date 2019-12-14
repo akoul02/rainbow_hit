@@ -1,5 +1,5 @@
 # Kill user-code thread, if it is in inactive state for more than n seconds
-THREAD_TIMEOUT: int = 3
+THREAD_TIMEOUT: int = 5
 
 # max amount of steps per game
 MAX_STEPS: int = 8
@@ -24,3 +24,9 @@ LASER_DAMAGE: int = 1
 
 # is debug
 IS_DEBUG: bool = True
+
+ANSI_CYAN: str = '\u001b[36m'
+
+ANSI_GREEN: str = '\u001b[32m'
+
+ANSI_RES: str = '\u001b[0m'

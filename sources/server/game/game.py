@@ -42,7 +42,7 @@ class Game:
                         executor.next_move()
                         game_world.update()
                     except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
-                        print(f'Exception message: {e}')
+                        print(f'Exception message: {e} [{executor.bot.name}]')
                         executor.bot.sleep(blocking=False)
         except GameOver as e:
             result = e.game_won
@@ -53,7 +53,8 @@ class Game:
                 executor.thread.terminate(StepsAreOver)
         if result:
             print(f'Winner is: {winner}')
-            assert winner == 'player1'
+        else:
+            print(f'Draw!')
         
         print('Simulation is over!')
 

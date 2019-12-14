@@ -57,13 +57,17 @@ def run_enemy(bot: Bot):
 
 @continuemain
 def run_enemy2(bot: Bot):
-    time.sleep(2)
+    time.sleep(3)
+    bot.scan()
     bot.step(Direction.Up)
     time.sleep(2)
+    bot.scan()
+    bot.step(Direction.Up)
+    time.sleep(3)
+    bot.scan()
     bot.step(Direction.Up)
     time.sleep(2)
-    bot.step(Direction.Up)
-    time.sleep(2)
+    bot.scan()
     bot.step(Direction.Up)
     bot.sleep()
     bot.sleep()
@@ -72,17 +76,18 @@ def run_enemy2(bot: Bot):
 
 @continuemain
 def run_enemy3(bot: Bot):
-    time.sleep(1)
+    time.sleep(2)
+    bot.scan()
     bot.step(Direction.Up)
     time.sleep(1)
+    bot.scan()
+    bot.step(Direction.Up)
+    time.sleep(3)
+    bot.scan()
     bot.step(Direction.Up)
     time.sleep(1)
+    # bot.shoot(bot.scan()[0])
     bot.step(Direction.Up)
-    time.sleep(1)
-    bot.step(Direction.Up)
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
     bot.sleep()
     
 @continuemain

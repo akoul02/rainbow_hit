@@ -49,7 +49,9 @@ class Bot(Destroyable):
         First argument should be bot instance. 
         '''
         def wrapper(self, *args: List[Any], **kwargs: Dict[str, Any]):
-            if kwargs.pop('blocking', True):
+            flag = kwargs.pop('blocking', True)
+            res = func(self, *args, **kwargs)
+            if flag:
                 if isinstance(self, Bot):
                     # allow main thread to continue execution
                     self.main_event.set()
@@ -59,7 +61,7 @@ class Bot(Destroyable):
                     self.event.clear()
                 else:
                     raise InvalidSelfInstance()
-            return func(self, *args, **kwargs)
+            return res
         return wrapper
 
     @synchronized
@@ -76,12 +78,13 @@ class Bot(Destroyable):
         point : Point
             current player x and y coordinate
         '''
+        old_coord = Point(self.coord.x, self.coord.y)
         if not self.world.at_position(Point(self.coord.x + dir.value.x, self.coord.y + dir.value.y)):
             if self.coord.x + dir.value.x >= 0 and self.coord.x + dir.value.x < self.world.size_x and self.coord.y + dir.value.y >= 0 and self.coord.y + dir.value.y < self.world.size_y:
                 self.coord.x += dir.value.x
                 self.coord.y += dir.value.y
         if IS_DEBUG:
-            print(f'Bot: {self.name} making step. current coordinate: ({self.coord.x}, {self.coord.y})')
+            print(f'{ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
 
         return Point(self.coord.x, self.coord.y)
 
@@ -106,8 +109,6 @@ class Bot(Destroyable):
         return self.health
     
 
-    # FIXME sync between bots, race condition
-    # after fox delete self.is_alive() checks
     def scan(self) -> List[GameObject]:
         '''Find objects around you in world
 
@@ -121,14 +122,14 @@ class Bot(Destroyable):
         '''
         if self.is_alive():
             if IS_DEBUG:
-                print(f'{self.name} got all coordinates: ')
+                print(f'{ANSI_CYAN + self.name + ANSI_RES} got all coordinates: ')
             objects = [
                 obj for obj in self.world.objects
                 if self.coord.distance_to(obj.coord) <= self.fov if self != obj
             ]
             if IS_DEBUG:
                 for obj in objects:
-                    print(f'\t{obj.name} : ({obj.coord})')
+                    print(f'\t{ANSI_GREEN + obj.name + ANSI_RES} : ({obj.coord})')
 
         return objects
         
@@ -188,7 +189,7 @@ class Bot(Destroyable):
             if isinstance(closest, Destroyable):
                 l = Laser(self.coord, None, closest.coord, self.damage)
                 if IS_DEBUG:
-                    print(f'{self.name} shooting at: {closest.coord} [{self.world.get_obj_at_position(closest.coord).name}]')
+                    print(f'{ANSI_GREEN + self.name + ANSI_RES}\u001b[0m shooting at: {closest.coord} [{ANSI_CYAN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
                     print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
                 return l.shoot(closest)
 
@@ -203,6 +204,6 @@ class Bot(Destroyable):
             None
         '''
         if IS_DEBUG:
-            print(f'{self.name} is sleeping')
+            print(f'{ANSI_GREEN + self.name + ANSI_RES} is sleeping')
 
         return None

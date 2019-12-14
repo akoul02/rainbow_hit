@@ -13,6 +13,11 @@ def continuemain(func):
     '''
     def wrapper(self, *args, **kwargs):
         try:
+            self.main_event.set()
+
+            # block current thread
+            self.event.wait()
+            self.event.clear()
             ret = func(self, *args, **kwargs)
             return ret
         except (StepsAreOver, ActionsAreOver, BotTimeoutError) as e:
@@ -52,6 +57,14 @@ def run_enemy(bot: Bot):
 
 @continuemain
 def run_enemy2(bot: Bot):
+    time.sleep(2)
+    bot.step(Direction.Up)
+    time.sleep(2)
+    bot.step(Direction.Up)
+    time.sleep(2)
+    bot.step(Direction.Up)
+    time.sleep(2)
+    bot.step(Direction.Up)
     bot.sleep()
     bot.sleep()
     bot.sleep()
@@ -59,6 +72,14 @@ def run_enemy2(bot: Bot):
 
 @continuemain
 def run_enemy3(bot: Bot):
+    time.sleep(1)
+    bot.step(Direction.Up)
+    time.sleep(1)
+    bot.step(Direction.Up)
+    time.sleep(1)
+    bot.step(Direction.Up)
+    time.sleep(1)
+    bot.step(Direction.Up)
     bot.sleep()
     bot.sleep()
     bot.sleep()

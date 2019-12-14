@@ -29,8 +29,8 @@ class Game:
         main_event = Event()
         game_world = World('pvp')
         executors = [
-            Executor(UserBot(Point(1, 1), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user), 
-            Executor(UserBot(Point(2, 1), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy),
+            Executor(UserBot(Point(1, 1), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_enemy2), 
+            Executor(UserBot(Point(2, 1), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy3),
         ]
 
         try:
@@ -51,7 +51,6 @@ class Game:
             for executor in executors:
                 executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
-
         if result:
             print(f'Winner is: {winner}')
             assert winner == 'player1'

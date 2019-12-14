@@ -105,6 +105,9 @@ class Bot(Destroyable):
         '''
         return self.health
     
+
+    # FIXME sync between bots, race condition
+    # after fox delete self.is_alive() checks
     def scan(self) -> List[GameObject]:
         '''Find objects around you in world
 
@@ -127,7 +130,8 @@ class Bot(Destroyable):
                 for obj in objects:
                     print(f'\t{obj.name} : ({obj.coord})')
 
-            return objects
+        return objects
+        
 
     @synchronized
     def shoot(self, obj: Union[Point, GameObject]) -> Optional[int]:

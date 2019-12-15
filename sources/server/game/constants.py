@@ -7,6 +7,9 @@ MAX_STEPS: int = 8
 # side of a cell
 CELL_SIDE: int = 16
 
+# field size
+FIELD_SIZE: int = 16
+
 # fov of a bot measured in cells
 BOT_FOV_CELLS: int = 5
 

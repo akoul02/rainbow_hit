@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import *
-from typing import Any, List
 import math
 import random
+from dataclasses import *
+from typing import Any, List
+
 from engine.gameobjects.wall import Wall
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
@@ -13,6 +14,7 @@ from engine.gameobjects.bots.bot import Bot
 from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.laser import Laser
 from exceptions import GameOver
+from constants import *
 
 @dataclass
 class World:
@@ -55,10 +57,14 @@ class World:
         self.objects.append(obj)
         return self.objects
 
-    # TODO
     @staticmethod
-    def generate() -> World:
+    def generate(mode: str) -> World:
         '''Creates new instance of World object, with generated map
+
+        Parameters
+        ----------
+        mode : str
+            pve/pvp/pvpve
         '''
 
         def removeWall(cf, cs, m):
@@ -85,8 +91,8 @@ class World:
 
             return res
 
-        w0 = 16
-        h0 = 16
+        w0 = FIELD_SIZE
+        h0 = FIELD_SIZE
         w = 2 * w0 + 1
         h = 2 * h0 + 1
         maze = []
@@ -147,7 +153,7 @@ class World:
                         continue
                 maze_new[i].append(maze[i][j])
 
-        maze_new[w0 - 2][h0 - 2] = 0  # ПУстая клетка для бота
+        maze_new[w0 - 2][h0 - 2] = 0  # Empty cell for bot
 
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):

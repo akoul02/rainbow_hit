@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import *
 from typing import Any, List
 import math
-
+import random
+from engine.gameobjects.wall import Wall
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
 from engine.utils.point import Point
@@ -59,10 +60,104 @@ class World:
     def generate() -> World:
         '''Creates new instance of World object, with generated map
         '''
+
+        def removeWall(cf, cs, m):
+            x = (cf[0] - cs[0]) // 2
+            y = (cf[1] - cs[1]) // 2
+            m[cs[0] + x][cs[1] + y] = 0
+
+        def getNeighbours(mh, mw, cell, m):
+            res = []
+            x = cell[0]
+            y = cell[1]
+
+            if (y + 2) < mw and m[x][y + 2][-1] != 1:  # right
+                res.append(m[x][y + 2])
+
+            if (x + 2) < mh and m[x + 2][y][-1] != 1:  # down
+                res.append(m[x + 2][y])
+
+            if (y - 2) > 0 and m[x][y - 2][-1] != 1:  # left
+                res.append(m[x][y - 2])
+
+            if (x - 2) > 0 and m[x - 2][y][-1] != 1:  # up
+                res.append(m[x - 2][y])
+
+            return res
+
+        w0 = 16
+        h0 = 16
+        w = 2 * w0 + 1
+        h = 2 * h0 + 1
+        maze = []
+        stackcurr = []
+        unvisitedcells = w0 * h0
+
+        for i in range(h):
+            maze.append([])
+
+            if (i % 2 == 0):
+                maze[i].extend([int(x) for x in '1' * w])
+
+            else:
+                for j in range(w):
+
+                    if (j % 2 == 0):
+                        maze[i].append(1)
+
+                    else:
+                        maze[i].append([i, j, 0])
+
+        startcell = random.randrange(1, h, 2)
+        currentcell = maze[startcell][1]
+        maze[startcell][0] = 0
+        currentcell[-1] = 1
+        unvisitedcells -= 1
+        stackcurr.append(currentcell)
+
+        while (unvisitedcells):
+            neigh = getNeighbours(h, w, currentcell, maze)
+
+            if (neigh):
+                randnum = random.randint(0, len(neigh) - 1)
+                neighbourcell = neigh[randnum]
+                neighbourcell[-1] = 1
+                unvisitedcells -= 1
+                removeWall(neighbourcell, currentcell, maze)
+                currentcell = neighbourcell
+                stackcurr.append(neighbourcell)
+
+            else:
+                stackcurr.pop()
+                currentcell = stackcurr[-1]
+
+        endcell = random.randrange(1, h, 2)
+        maze[endcell][-1] = 0
+        maze_new = []
+
+        for i in range(w0):
+            maze_new.append([])
+
+            for j in range(w0):
+
+                if i % 2 == 1:
+
+                    if j % 2 == 1:
+                        maze_new[i].append(0)
+                        continue
+                maze_new[i].append(maze[i][j])
+
+        maze_new[w0 - 2][h0 - 2] = 0  # ПУстая клетка для бота
+
+        for i in range(0, len(maze_new)):
+            for j in range(0, len(maze_new)):
+                if random.randrange(0, 10) < 0.5:
+                    maze_new[i][j] = 1 - maze_new[i][j]
+
         world = World('pvp')
-        for i in matrix:
-            for j in matrix:
-                if matrix[i][j]:
+        for i in range(0, len(maze_new)):
+            for j in range(0, len(maze_new)):
+                if maze_new[i][j]:
                     Wall(Point(i, j), world, 1, 1, True)
                     
         return world

@@ -11,6 +11,9 @@ from engine.gameobjects.laser import Laser
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
 
+if IS_DEBUG:
+    import threading
+
 @dataclass
 class Bot(Destroyable):
     '''Generic class for all bots
@@ -84,7 +87,7 @@ class Bot(Destroyable):
                 self.coord.x += dir.value.x
                 self.coord.y += dir.value.y
         if IS_DEBUG:
-            print(f'{ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
+            print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
 
         return Point(self.coord.x, self.coord.y)
 
@@ -120,16 +123,15 @@ class Bot(Destroyable):
         objects : List[GameObject]
             Objects, that are inside players FOV
         '''
-        if self.is_alive():
-            if IS_DEBUG:
-                print(f'{ANSI_CYAN + self.name + ANSI_RES} got all coordinates: ')
-            objects = [
-                obj for obj in self.world.objects
-                if self.coord.distance_to(obj.coord) <= self.fov if self != obj
-            ]
-            if IS_DEBUG:
-                for obj in objects:
-                    print(f'\t{ANSI_GREEN + obj.name + ANSI_RES} : ({obj.coord})')
+        if IS_DEBUG:
+            print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} got all coordinates: ')
+        objects = [
+            obj for obj in self.world.objects
+            if self.coord.distance_to(obj.coord) <= self.fov if self != obj
+        ]
+        if IS_DEBUG:
+            for obj in objects:
+                print(f'\t{ANSI_GREEN + obj.name + ANSI_RES} : ({obj.coord})')
 
         return objects
         
@@ -189,9 +191,12 @@ class Bot(Destroyable):
             if isinstance(closest, Destroyable):
                 l = Laser(self.coord, None, closest.coord, self.damage)
                 if IS_DEBUG:
-                    print(f'{ANSI_GREEN + self.name + ANSI_RES}\u001b[0m shooting at: {closest.coord} [{ANSI_CYAN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
+                    print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
                     print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
                 return l.shoot(closest)
+            else:
+                if IS_DEBUG:
+                    print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
 
         return None
 
@@ -204,6 +209,6 @@ class Bot(Destroyable):
             None
         '''
         if IS_DEBUG:
-            print(f'{ANSI_GREEN + self.name + ANSI_RES} is sleeping')
+            print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} is sleeping')
 
         return None

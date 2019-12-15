@@ -20,7 +20,7 @@ def continuemain(func):
             self.event.clear()
             ret = func(self, *args, **kwargs)
             return ret
-        except (StepsAreOver, ActionsAreOver, BotTimeoutError) as e:
+        except (StepsAreOver, ActionsAreOver, BotTimeoutError, BotIsDead) as e:
             # handle ascync-raised exceptions
             return e
         finally:
@@ -36,38 +36,41 @@ def run_user(bot: Bot):
     # user code starts here
     # bot.step(Direction.Up)
     # bot.step(Direction.Up)
-    objects = bot.scan()
-    bot.shoot(objects[0].coord)
+    bot.step(Direction.Right)
+    bot.step(Direction.RightUp)
+    # (2, 3)
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
+    bot.shoot(bot.scan()[0])
+    bot.shoot(bot.scan()[0])
     bot.step(Direction.Up)
+    bot.sleep()
     # for obj in objects:
     #    bot.shoot(obj.coord)
 
 
 @continuemain
 def run_enemy(bot: Bot):
-    objects = bot.scan()
-    if len(objects) > 0:
-        bot.shoot(objects[0])
     bot.sleep()
-    objects = bot.scan()
     bot.sleep()
-    objects = bot.scan()
+    bot.step(Direction.Down)
+    bot.step(Direction.Down)
+    bot.sleep()
+    bot.sleep()
+    bot.sleep()
     bot.sleep()
     bot.sleep()
 
 @continuemain
 def run_enemy2(bot: Bot):
-    time.sleep(3)
-    bot.scan()
     bot.step(Direction.Up)
-    time.sleep(2)
-    bot.scan()
     bot.step(Direction.Up)
-    time.sleep(3)
-    bot.scan()
+    objects = bot.scan()
     bot.step(Direction.Up)
-    time.sleep(2)
-    bot.scan()
+    objects = bot.scan()
+    bot.step(Direction.Up)
     bot.step(Direction.Up)
     bot.sleep()
     bot.sleep()
@@ -76,24 +79,23 @@ def run_enemy2(bot: Bot):
 
 @continuemain
 def run_enemy3(bot: Bot):
-    time.sleep(2)
-    bot.scan()
     bot.step(Direction.Up)
-    time.sleep(1)
-    bot.scan()
     bot.step(Direction.Up)
-    time.sleep(3)
-    bot.scan()
+    objects = bot.scan()
     bot.step(Direction.Up)
-    time.sleep(1)
-    # bot.shoot(bot.scan()[0])
+    objects = bot.scan()
     bot.step(Direction.Up)
-    bot.sleep()
+    bot.step(Direction.Up)
+    objects = bot.scan()
+    bot.step(Direction.Up)
+    objects = bot.scan()
     
 @continuemain
 def run_enemy4(bot: Bot):
     bot.sleep()
     bot.sleep()
+    bot.sleep()
+    objects = bot.scan()
     bot.sleep()
     bot.sleep()
     

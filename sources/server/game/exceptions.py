@@ -70,7 +70,7 @@ class InvalidCoordinate(GameException):
 class BotIsDead(GameException):
     '''Exception, which get raised if bot is dead
     '''
-    def __init__(self, reference):
+    def __init__(self):
         GameException.__init__(self, 'Bot is dead!')
 
 class HandshakeError(NetworkException):

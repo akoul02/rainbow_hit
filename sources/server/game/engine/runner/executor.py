@@ -57,29 +57,38 @@ class Executor:
             Raises, if thread was killed at sopme point
         '''
         if not self.thread.killed:
-            if not self.is_started:
-                self.is_started = True
-                self.thread.start()
-                self.bot.event.set()
-            else:
-                if self.thread.is_alive():
-                    # if thread is alive (actions are still available)
+            # if bot in thread is alive
+            if self.bot.is_alive():
+                if not self.is_started:
+                    self.is_started = True
+                    self.thread.start()
                     self.bot.event.set()
                 else:
-                    # if actions are over
-                    self.thread.join()
-                    raise ActionsAreOver()
-        
-            # clear main event
-            self.bot.main_event.clear()
-            # wait here, while bot is doing his actions
-            timeout = self.bot.main_event.wait(THREAD_TIMEOUT)
+                    if self.thread.is_alive():
+                        # if thread is alive (actions are still available)
+                        self.bot.event.set()
+                    else:
+                        # if actions are over
+                        self.thread.join()
+                        raise ActionsAreOver()
+            
+                # clear main event
+                self.bot.main_event.clear()
+                # wait here, while bot is doing his actions
+                timeout = self.bot.main_event.wait(THREAD_TIMEOUT)
 
-            if not timeout:
-                # timeout over, but bot thread is still running
-                self.thread.terminate(BotTimeoutError)
-                self.bot.main_event.set()
-                raise BotTimeoutError()
+                if not timeout:
+                    # timeout over, but bot thread is still running
+                    self.thread.terminate(BotTimeoutError)
+                    self.bot.main_event.set()
+                    raise BotTimeoutError()
+            else:
+                # if bot is dead
+                if self.thread.is_alive():
+                    self.bot.event.set()
+                    self.thread.terminate(BotIsDead)
+                    self.bot.main_event.set()
+                raise BotIsDead()
         else:
             self.bot.main_event.clear()
             raise ThreadKilledError()

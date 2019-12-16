@@ -160,7 +160,7 @@ class World:
                 if random.randrange(0, 10) < 0.5:
                     maze_new[i][j] = 1 - maze_new[i][j]
 
-        world = World('pvp')
+        world = World(mode)
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):
                 if maze_new[i][j]:

@@ -33,33 +33,26 @@ def continuemain(func):
 
 @continuemain
 def run_user(bot: Bot):
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
     # user code starts here
     # bot.step(Direction.Up)
     # bot.step(Direction.Up)
-    bot.step(Direction.Right)
-    bot.step(Direction.RightUp)
-    # (2, 3)
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.step(Direction.Up)
-    bot.sleep()
+    # bot.step(Direction.Right)
+    # bot.step(Direction.RightUp)
+    # bot.step(Direction.Up)
     # for obj in objects:
     #    bot.shoot(obj.coord)
 
 
 @continuemain
 def run_enemy(bot: Bot):
-    bot.sleep()
-    bot.sleep()
     bot.step(Direction.Down)
     bot.step(Direction.Down)
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
+    bot.step(Direction.Down)
+    bot.step(Direction.Down)
 
 @continuemain
 def run_enemy2(bot: Bot):

@@ -57,6 +57,22 @@ class World:
         self.objects.append(obj)
         return self.objects
 
+
+    def draw(self):
+        for i in range(self.size_x, 0, -1):
+            s = '|'
+            for j in range(self.size_y):
+                obj = self.get_obj_at_position(Point(i, j))
+                if isinstance(obj, Wall):
+                    s += 'w'
+                    #print('■')
+                elif isinstance(obj, UserBot):
+                    s += 'b'
+                else:
+                    s += ' '
+            s += '|'
+            print(s)
+
     @staticmethod
     def generate(mode: str) -> World:
         '''Creates new instance of World object, with generated map
@@ -154,6 +170,7 @@ class World:
                 maze_new[i].append(maze[i][j])
 
         maze_new[w0 - 2][h0 - 2] = 0  # Empty cell for bot
+        maze_new[1][1] = 0  # Empty cell for bot
 
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):

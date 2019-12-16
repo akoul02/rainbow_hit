@@ -5,10 +5,11 @@ THREAD_TIMEOUT: int = 2
 MAX_STEPS: int = 8
 
 # side of a cell
-CELL_SIDE: int = 16
+CELL_SIDE: int = 32
 
-# field size
-FIELD_SIZE: int = 16
+FIELD_X: int = 16
+
+FIELD_Y: int = 16
 
 # fov of a bot measured in cells
 BOT_FOV_CELLS: int = 5

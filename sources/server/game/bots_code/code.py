@@ -33,9 +33,7 @@ def continuemain(func):
 
 @continuemain
 def run_user(bot: Bot):
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
+    pass
     # user code starts here
     # bot.step(Direction.Up)
     # bot.step(Direction.Up)
@@ -48,10 +46,10 @@ def run_user(bot: Bot):
 
 @continuemain
 def run_enemy(bot: Bot):
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
-    bot.step(Direction.Down)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.Up)
 
 @continuemain
 def run_enemy2(bot: Bot):

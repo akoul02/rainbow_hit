@@ -59,22 +59,23 @@ class World:
 
 
     def draw(self):
-        for i in range(self.size_x, 0, -1):
-            s = '|'
-            for j in range(self.size_y):
-                obj = self.get_obj_at_position(Point(i, j))
+        print('┌' + '─' * self.size_y * 2+ '┐')
+        for i in range(self.size_x):
+            s = '│'
+            for j in range(self.size_y, 0, -1):
+                obj = self.get_obj_at_position(Point(i, j - 1))
                 if isinstance(obj, Wall):
-                    s += 'w'
-                    #print('■')
+                    s += '■■'
                 elif isinstance(obj, UserBot):
-                    s += 'b'
+                    s += '@@'
                 else:
-                    s += ' '
-            s += '|'
+                    s += '  '
+            s += '│'
             print(s)
+        print('└' + '─' * self.size_y * 2 + '┘')
 
     @staticmethod
-    def generate(mode: str) -> World:
+    def generate(mode: str, maze_density=3, x_size=FIELD_X, y_size=FIELD_Y) -> World:
         '''Creates new instance of World object, with generated map
 
         Parameters
@@ -107,11 +108,11 @@ class World:
 
             return res
 
-        w0 = FIELD_SIZE
-        h0 = FIELD_SIZE
+        w0 = x_size
+        h0 = y_size
         w = 2 * w0 + 1
         h = 2 * h0 + 1
-        maze = []
+        maze: List[List[int]] = []
         stackcurr = []
         unvisitedcells = w0 * h0
 
@@ -169,16 +170,13 @@ class World:
                         continue
                 maze_new[i].append(maze[i][j])
 
-        maze_new[w0 - 2][h0 - 2] = 0  # Empty cell for bot
-        maze_new[1][1] = 0  # Empty cell for bot
-        maze_new[0][15] = 0  # Empty cell for bot
-        maze_new[15][0] = 0  # Empty cell for bot
-
-
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):
-                if random.randrange(0, 10) < 3:
-                    maze_new[i][j] = 1 - maze_new[i][j]
+                if random.randrange(0, 10) < maze_density:
+                    maze_new[i][j] = 0 # 1 - maze_new[i][j]
+
+        maze_new[0][0] = 0                      # Empty cell for bot
+        maze_new[FIELD_X - 1][FIELD_Y - 1] = 0  # Empty cell for bot
 
         world = World(mode)
         for i in range(0, len(maze_new)):

@@ -27,10 +27,10 @@ class Game:
 
         # used to lock main Thread
         main_event = Event()
-        game_world = World('pvp')
+        game_world = World.generate('pvp')
         
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user),
+            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy),
         ]
 
         try:
@@ -48,6 +48,7 @@ class Game:
                         print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
                         game_world.draw()
+                        print('')
                         # send updated state to server
                         # for client in clients:
                         #     net.send(executor.last_action, client)

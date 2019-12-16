@@ -22,41 +22,17 @@ class Client:
         self.canvas.grid(column=0, row=0)
         self.canvas.pack()
 
-    # def movement(self, *args, **kwargs):
-    #     self.сanvas.move(self.imagesprite, 0, -32)
-    #
-    # def lazer(self, *args, **kwargs):
-    #     canvas_id = self.сanvas.create_line(48, 48, 48, self.WIDTH - 32, fill='red', width='3')
-    #     self.сanvas.after(200, self.сanvas.delete, canvas_id)
-    #
-    # def rotatioon(self):
-    #     rotated = Image.open("./assets/greenr.png").rotate(55)
-    #     image = ImageTk.PhotoImage(rotated)
-    #     img = self.сanvas.create_image(272, 240, image=image)
-    #     self.imagegreen
-    #     self.сanvas.after(100)
-
-    # def a(self):
-    #     pilImage = Image.open("./assets/redd.png")
-    #     image = ImageTk.PhotoImage(pilImage)
-    #     self.imagesprite = self.сanvas.create_image(48, 80, image=image)
-    #
-    #     pilImage1 = Image.open("./assets/blueu.png")
-    #     imRotate = pilImage1.rotate(45)
-    #     image1 = ImageTk.PhotoImage(imRotate)
-    #     self.imagesblue = self.сanvas.create_image(self.WIDTH - 80, self.WIDTH - 112, image=image1)
-    #
-    #     pilImage2 = Image.open("./assets/greenr.png")
-    #     image2 = ImageTk.PhotoImage(pilImage2)
-    #     self.imagegreen = self.сanvas.create_image(272, 240, image=image2)
-
     def start(self):
-        # pilImage = Image.open("C:/Users/varya/Desktop/rainbow_hit/sources/client/assets/redd.png")
-        # image = ImageTk.PhotoImage(pilImage)
-        # self.canvas.create_image(48, 48, image=image)
-
-        tank = Tank(48, 48, self.canvas, "C:/Users/varya/Desktop/rainbow_hit/sources/client/assets/redd.png")
+        tank_red = Tank(48, 48, self.canvas, "C:/Users/varya/Desktop/rainbow_hit/sources/client/assets/redd.png")
+        tank_red.creation()
+        tank_green = Tank(208, 208, self.canvas, "C:/Users/varya/Desktop/rainbow_hit/sources/client/assets/greend.png")
+        tank_green.creation()
+        self.root.bind('1'+'<Right>', tank_red.move)
+        self.root.bind('<Left>', tank_green.move)
+        self.root.bind('<Up>', tank_red.rotation)
+        self.root.bind('<Down>', tank_green.laser)
         self.root.mainloop()
 
 client = Client()
 client.start()
+

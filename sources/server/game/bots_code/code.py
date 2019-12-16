@@ -36,7 +36,6 @@ def run_user(bot: Bot):
     bot.step(Direction.Up)
     bot.step(Direction.Up)
     bot.step(Direction.Up)
-    bot.step(Direction.Up)
     # user code starts here
     # bot.step(Direction.Up)
     # bot.step(Direction.Up)

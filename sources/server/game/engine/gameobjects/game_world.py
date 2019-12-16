@@ -171,10 +171,13 @@ class World:
 
         maze_new[w0 - 2][h0 - 2] = 0  # Empty cell for bot
         maze_new[1][1] = 0  # Empty cell for bot
+        maze_new[0][15] = 0  # Empty cell for bot
+        maze_new[15][0] = 0  # Empty cell for bot
+
 
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):
-                if random.randrange(0, 10) < 0.5:
+                if random.randrange(0, 10) < 3:
                     maze_new[i][j] = 1 - maze_new[i][j]
 
         world = World(mode)
@@ -228,3 +231,4 @@ class World:
             if obj.coord == coord:
                 return obj
         return None
+

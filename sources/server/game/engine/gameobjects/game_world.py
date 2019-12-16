@@ -57,6 +57,12 @@ class World:
         self.objects.append(obj)
         return self.objects
 
+    def draw(self):
+        for i in range(self.size_x):
+            for j in range(self.size_y):
+                self.get_obj_at_position(Point(i, j))
+                pass
+
     @staticmethod
     def generate(mode: str) -> World:
         '''Creates new instance of World object, with generated map

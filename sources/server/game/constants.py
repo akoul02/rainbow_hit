@@ -26,7 +26,7 @@ MAX_COORD: int = 1_000_000
 LASER_DAMAGE: int = 1
 
 # is debug
-IS_DEBUG: bool = True
+IS_DEBUG: bool = False
 
 # ansi terminal colors: cyan
 ANSI_CYAN: str = '\u001b[36m'

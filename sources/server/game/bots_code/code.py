@@ -43,8 +43,6 @@ def run_user(bot: Bot):
     bot.sleep()
     bot.sleep()
     bot.sleep()
-    bot.shoot(bot.scan()[0])
-    bot.shoot(bot.scan()[0])
     bot.step(Direction.Up)
     bot.sleep()
     # for obj in objects:
@@ -55,7 +53,7 @@ def run_user(bot: Bot):
 def run_enemy(bot: Bot):
     bot.sleep()
     bot.sleep()
-    bot.step(Direction.Down)
+    bot.step(Direction.Right)
     bot.step(Direction.Down)
     bot.sleep()
     bot.sleep()

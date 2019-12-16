@@ -64,11 +64,11 @@ class World:
             for j in range(self.size_y):
 
                     #print('b')
-                obj = self.get_obj_at_position(Point(i, j))
+                obj = self.get_obj_at_position(Point(15 - i, j))
                 if isinstance(obj, Wall):
                     s += 'w'
                     #print('■')
-                elif (i == 1 and j == 1) or (i == 15 and j == 15):
+                elif isinstance(obj, Bot):
                     s += 'b'
                 else:
                     s += ' '
@@ -174,10 +174,13 @@ class World:
 
         maze_new[w0 - 2][h0 - 2] = 0  # Empty cell for bot
         maze_new[1][1] = 0  # Empty cell for bot
+        maze_new[0][15] = 0  # Empty cell for bot
+        maze_new[15][0] = 0  # Empty cell for bot
+
 
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):
-                if random.randrange(0, 10) < 0.5:
+                if random.randrange(0, 10) < 3:
                     maze_new[i][j] = 1 - maze_new[i][j]
 
         world = World('pvp')
@@ -231,3 +234,4 @@ class World:
             if obj.coord == coord:
                 return obj
         return None
+

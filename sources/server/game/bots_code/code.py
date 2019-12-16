@@ -54,7 +54,7 @@ def run_enemy(bot: Bot):
     bot.sleep()
     bot.sleep()
     bot.step(Direction.Right)
-    bot.step(Direction.Down)
+    bot.step(Direction.Up)
     bot.sleep()
     bot.sleep()
     bot.sleep()

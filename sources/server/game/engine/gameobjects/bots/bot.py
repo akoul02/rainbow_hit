@@ -163,29 +163,18 @@ class Bot(Destroyable):
 
         closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
 
-        same_axis_obj_exist = False
+        dbp = lambda x1, y1, x2, y2: sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        heron = lambda a, b, c: sqrt((a+b+c)/2*((a+b+c)/2 - a)*((a+b+c)/2 - b)*((a+b+c)/2 - c))
+        a = dbp(point.x, point.y, self.coord.x, self.coord.y)
         for obj in self.world.objects:
-            if obj.coord != self.coord and obj != self and self.coord != point:
-                k1 = (self.coord.y - point.y) / (self.coord.x - point.x)
-                b1 = self.coord.y - self.coord.x * k1
-                y1 = lambda x: k1 * x + b1
-                
-                if self.coord.x != obj.coord.x and self.coord.y != obj.coord.y and not same_axis_obj_exist:
-                    k2 = (self.coord.y - obj.coord.y) / (self.coord.x - obj.coord.x)
-                    b2 = self.coord.y - self.coord.x * k2
-                    kn = -1/k2
-                    bn = self.coord.x / k2 + self.coord.y
-                    x_intersect = (bn - b1)/(k1 - kn)
-                    y_intersect = y1(x_intersect)
-                    dist = sqrt((self.coord.x - x_intersect) ** 2 - (self.coord.y - y_intersect) ** 2)
-
-                    if dist <= DELTA:
-                        if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
-                            closest = obj
-                else:
+            if obj.coord != self.coord and obj != self and self.coord != point:               
+                b = dbp(self.coord.x, self.coord.y, obj.coord.x, obj.coord.y)
+                c = dbp(point.x, point.y, obj.coord.x, obj.coord.y)
+                dist = 2*heron(a, b, c)/a
+                if dist <= DELTA:
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
-                        same_axis_obj_exist = True
+   
         
         if closest.coord != Point(MAX_COORD, MAX_COORD):
             if isinstance(closest, Destroyable):

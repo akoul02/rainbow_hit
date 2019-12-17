@@ -169,7 +169,6 @@ class Bot(Destroyable):
         dircheck = lambda ox, oy, x1, x2, y1, y2 : True if ox in range(min(x1, x2), max(x1, x2)) and range(min(y1, y2), max(y1, y2)) else False
         samelcheck = lambda ox, oy, x1, x2, y1, y2: True if (ox - x1)/(x2 - x1) == (oy - y1)/(y2 - y1) else False
         for obj in self.world.objects:
-            ox, oy, x1, x2, y1, y2 = (obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y)
             if obj.coord != self.coord and obj != self and self.coord != point and dircheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y):
                                
                 b = dbp(self.coord.x, self.coord.y, obj.coord.x, obj.coord.y)

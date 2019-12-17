@@ -60,7 +60,7 @@ class World:
 
     def draw(self):
         print('┌' + '─' * self.size_y * 2+ '┐')
-        for i in range(self.size_x, -1, -1):
+        for i in range(self.size_x - 1, -1, -1):
             s = '│'
             for j in range(self.size_y):
                 obj = self.get_obj_at_position(Point(j, i))

@@ -60,16 +60,16 @@ class World:
 
     def draw(self):
         print('┌' + '─' * self.size_y * 2+ '┐')
-        for i in range(self.size_x):
+        for i in range(self.size_x, -1, -1):
             s = '│'
-            for j in range(self.size_y, 0, -1):
-                obj = self.get_obj_at_position(Point(i, j - 1))
+            for j in range(self.size_y):
+                obj = self.get_obj_at_position(Point(j, i))
                 if isinstance(obj, Wall):
                     s += '■■'
                 elif isinstance(obj, UserBot):
-                    s += '@@'
+                    s += '♖ '
                 else:
-                    s += '  '
+                    s += '  ' # ░░
             s += '│'
             print(s)
         print('└' + '─' * self.size_y * 2 + '┘')

@@ -43,10 +43,9 @@ def run_user(bot: Bot):
     # for obj in objects:
     #    bot.shoot(obj.coord)
 
-
 @continuemain
 def run_enemy(bot: Bot):
-    bot.step(Direction.Up)
+    bot.step(Direction.Right)
     bot.step(Direction.Up)
     bot.step(Direction.Up)
     bot.step(Direction.Up)

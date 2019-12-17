@@ -161,31 +161,33 @@ class Bot(Destroyable):
         elif isinstance(obj, GameObject):
             point = obj.coord
 
-        closest = GameObject(Point(MAX_COORD, MAX_COORD), None)
+        closest = self.world.get_obj_at_position(point)
 
         dbp = lambda x1, y1, x2, y2: sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
         heron = lambda a, b, c: sqrt((a+b+c)/2*((a+b+c)/2 - a)*((a+b+c)/2 - b)*((a+b+c)/2 - c))
         a = dbp(point.x, point.y, self.coord.x, self.coord.y)
+        dircheck = lambda ox, oy, x1, x2, y1, y2 : True if ox in range(min(x1, x2), max(x1, x2)) and range(min(y1, y2), max(y1, y2)) else False
+        samelcheck = lambda ox, oy, x1, x2, y1, y2: True if (ox - x1)/(x2 - x1) == (oy - y1)/(y2 - y1) else False
         for obj in self.world.objects:
-            if obj.coord != self.coord and obj != self and self.coord != point:               
+            ox, oy, x1, x2, y1, y2 = (obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y)
+            if obj.coord != self.coord and obj != self and self.coord != point and dircheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y):
+                               
                 b = dbp(self.coord.x, self.coord.y, obj.coord.x, obj.coord.y)
                 c = dbp(point.x, point.y, obj.coord.x, obj.coord.y)
                 dist = 2*heron(a, b, c)/a
-                if dist <= DELTA:
+                if dist <= DELTA or samelcheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y):
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
-   
-        
-        if closest.coord != Point(MAX_COORD, MAX_COORD):
-            if isinstance(closest, Destroyable):
-                l = Laser(self.coord, None, closest.coord, self.damage)
-                if IS_DEBUG:
-                    print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
-                    print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
-                return l.shoot(closest)
-            else:
-                if IS_DEBUG:
-                    print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
+
+        if isinstance(closest, Destroyable):
+            l = Laser(self.coord, None, closest.coord, self.damage)
+            if IS_DEBUG:
+                print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
+                print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
+            return l.shoot(closest)
+        else:
+            if IS_DEBUG:
+                print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
 
         return None
 

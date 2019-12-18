@@ -8,7 +8,7 @@ from engine.gameobjects.bots.bot import Bot
 from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.bots.user_bot import UserBot
 from engine.utils.point import Point
-from constants import MAX_STEPS, BOT_DEFAULT_HP
+from constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER
 from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
 from bots_code.code import *
 
@@ -34,6 +34,18 @@ class Game:
             Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy2),
         ]
 
+        objects = ''
+        for idx in range(len(game_world.objects)):
+            obj = game_world.objects[idx]
+
+            if idx == len(game_world.objects) - 1:
+                objects += ' ' * 8 + obj.serialize()
+            else:
+                objects += ' ' * 8 + obj.serialize() + ',\n'
+        INIT_WORLD_CMD.format(objects)
+
+        # send world layout and bots positions
+
         try:
             # main game loop
             for step in range(0, MAX_STEPS):
@@ -48,8 +60,8 @@ class Game:
                     except BotIsDead as e:
                         print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
-                        game_world.draw()
-                        print('')
+                        # game_world.draw()
+                        executor.bot.last_action
                         # send updated state to server
                         # for client in clients:
                         #     net.send(executor.last_action, client)
@@ -61,11 +73,17 @@ class Game:
             for executor in executors:
                 executor.bot.event.set()
                 executor.thread.terminate(StepsAreOver)
+
         if result:
+            print(GAME_OVER.format(winner, "false" if result else "true"))
             print(f'Winner is: {winner}')
         else:
+            print(GAME_OVER.format('""', "false" if result else "true"))
             print(f'Draw!')
         
+        # send result
+        
+
         print('Simulation is over!')
 
         return result

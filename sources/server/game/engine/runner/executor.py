@@ -22,9 +22,6 @@ class Executor:
     run_func : Callable[[Bot], None]
         function, where user-code is defined
 
-    last_action: str
-        save information about last bot action in serialized (json) format
-
     thread : Thread
         thread, where all user-code is running
 
@@ -35,7 +32,6 @@ class Executor:
     max_steps: int
     run_func: Callable[[Bot], None]
     
-    last_action: str = '{}'
     thread: KThread = field(default_factory=KThread)
     is_started: bool = False
 

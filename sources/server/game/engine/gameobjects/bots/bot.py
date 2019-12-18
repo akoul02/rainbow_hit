@@ -38,6 +38,9 @@ class Bot(Destroyable):
 
     event : Event
         Main syncronise lock for thread with current bot
+
+    last_action: str
+        save information about last bot action in serialized (json) format
     '''
     name: str
     main_event: Event
@@ -45,6 +48,7 @@ class Bot(Destroyable):
     fov: int = BOT_FOV_CELLS
     power_ups: List = field(default_factory=list)
     event: Event = field(default_factory=Event)
+    last_action: str = ''
 
     def synchronized(func: Callable):
         '''Decorator, to synchronize called function with main thread.
@@ -66,6 +70,9 @@ class Bot(Destroyable):
                     raise InvalidSelfInstance()
             return res
         return wrapper
+
+    def serialize(self):
+        return f'"({self.coord.x}, {self.coord.y})": ["Bot", "{self.name}", {self.health}, {self.damage}]'
 
     @synchronized
     def step(self, dir: Direction) -> Tuple[float, float]:
@@ -89,6 +96,11 @@ class Bot(Destroyable):
         if IS_DEBUG:
             print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
 
+        self.last_action = STEP_CMD.format(
+            self.name, 
+            self.coord.x, 
+            self.coord.y
+        )
         return Point(self.coord.x, self.coord.y)
 
     def current_location(self) -> Point:
@@ -178,17 +190,27 @@ class Bot(Destroyable):
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
 
+        res: Optional[int] = 0
         if isinstance(closest, Destroyable):
             l = Laser(self.coord, None, closest.coord, self.damage)
             if IS_DEBUG:
                 print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
                 print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
-            return l.shoot(closest)
+            res = l.shoot(closest)
         else:
             if IS_DEBUG:
                 print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
+            res = None
 
-        return None
+        self.last_action = SHOOT_CMD.format(
+            self.name, 
+            self.coord.x, 
+            self.coord.y, 
+            (point.x if closest == None else closest.coord.x), 
+            (point.y if closest == None else closest.coord.y), 
+            ("true" if ((closest != None) and not closest.is_alive()) else "false")
+        )
+        return res
 
     @synchronized
     def sleep(self) -> None:
@@ -201,4 +223,5 @@ class Bot(Destroyable):
         if IS_DEBUG:
             print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} is sleeping')
 
+        self.last_action = SLEEP_CMD.format(self.name)
         return None

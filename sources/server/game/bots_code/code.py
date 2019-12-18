@@ -47,16 +47,26 @@ def run_user(bot: Bot):
 def run_enemy(bot: Bot):
     bot.step(Direction.RightUp)
     bot.step(Direction.Up)
+    bot.shoot(Point(4, 4))
     bot.step(Direction.Up)
     bot.step(Direction.Up)
+    bot.step(Direction.Up)
+    bot.step(Direction.RightUp)
+    bot.step(Direction.Up)
+    bot.step(Direction.Right)
+    bot.step(Direction.Right)
+    bot.step(Direction.Right)
+    bot.step(Direction.Right)
+    bot.step(Direction.Up)
+    bot.scan()
 
 @continuemain
 def run_enemy2(bot: Bot):
     bot.step(Direction.DownLeft)
     bot.step(Direction.DownLeft)
-    objects = bot.scan()
+    bot.step(Direction.DownLeft)
+    bot.step(Direction.DownLeft)
     bot.step(Direction.Left)
-    objects = bot.scan()
     bot.step(Direction.RightDown)
     bot.step(Direction.Left)
     bot.sleep()

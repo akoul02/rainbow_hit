@@ -67,7 +67,7 @@ class World:
                 if isinstance(obj, Wall):
                     s += '■■'
                 elif isinstance(obj, UserBot):
-                    s += '♖ '
+                    s += '🛸'
                 else:
                     s += '  ' # ░░
             s += '│'

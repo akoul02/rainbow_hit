@@ -6,5 +6,9 @@ from engine.gameobjects.destroyable import Destroyable
 class Wall(Destroyable):
     '''Object, that represents killable wall
     '''
+
+    def serialize(self):
+        return f'"({self.coord.x}, {self.coord.y})": ["Wall", "{self.name}", {self.health}]'
+
     name: str = 'Wall'
     pass

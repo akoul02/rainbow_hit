@@ -327,6 +327,33 @@ class BotTest(unittest.TestCase):
             self.assertEqual(e.game_won, True)
 
         self.assertEqual(len(world.objects), 2)
+    def test_shoot7(self):
+        world = World()
+        bot  = UserBot(Point(0, 0), world, 2, 10, True, 'player', None)
+        self.assertEqual(bot.is_alive(), True)
+
+        bot1 = EnemyBot(Point(1, 1), world, 1, 10, True, 'enemy1', None)
+        self.assertEqual(bot1.is_alive(), True)
+
+        bot2 = EnemyBot(Point(2, 2), world, 1, 10, True, 'enemy2', None)
+        self.assertEqual(bot2.is_alive(), True)
+
+
+        try:
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+            self.assertEqual(bot1.is_alive(), False)
+
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+            self.assertEqual(bot2.is_alive(), False)
+
+            bot.shoot(Point(3, 3), blocking=False)
+            world.update()
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
+
+        self.assertEqual(len(world.objects), 1)
 
         
 if __name__ == "__main__":

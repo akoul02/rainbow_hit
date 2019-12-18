@@ -12,7 +12,7 @@ class Move_tests(unittest.TestCase):
         root = Tk()
         canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg="white")
 
-        test_object = Ufo(48, 48, canvas, "C:/Users/varya/Desktop/rainbow_hit/sources/client/assets/ufo1.png")
+        test_object = Ufo(48, 48, canvas, "../assets/ufo1.png")
         test_object.creation()
         x1, y1 = test_object.canvas.coords(test_object.sprite)
         test_object.move()

@@ -213,9 +213,9 @@ class Bot(Destroyable):
             self.name, 
             self.coord.x, 
             self.coord.y, 
-            (point.x if closest == None else closest.coord.x), 
-            (point.y if closest == None else closest.coord.y), 
-            ("true" if ((closest != None) and not closest.is_alive()) else "false")
+            (point.x if type(closest) is NoneObject else closest.coord.x), 
+            (point.y if type(closest) is NoneObject else closest.coord.y), 
+            ("true" if ((type(closest) is not NoneObject) and not closest.is_alive()) else "false")
         )
         return res
 

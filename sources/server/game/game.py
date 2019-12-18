@@ -30,7 +30,7 @@ class Game:
         game_world = World.generate('pvp')
         
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_enemy),
+            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user2),
             Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy2),
         ]
 

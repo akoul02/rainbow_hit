@@ -231,18 +231,6 @@ class BotTest(unittest.TestCase):
 
         self.assertEqual(len(world.objects), 1)
 
-    def test_shoot_yourself(self):
-        world = World('pvp')
-        bot  = UserBot(Point(1, 1), world, 2, 10, True, 'player', None)
-        self.assertEqual(bot.is_alive(), True)
-
-        bot1 = UserBot(Point(2, 1), world, 1, 10, True, 'enemy1', None)
-        self.assertEqual(bot1.is_alive(), True)
-
-        bot.shoot(Point(1, 1), blocking=False)
-        world.update()
-        self.assertEqual(bot.is_alive(), True)
-        self.assertEqual(bot1.is_alive(), True)
  
     def test_shoot_diagonal(self):
         world = World()

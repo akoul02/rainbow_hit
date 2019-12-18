@@ -1,4 +1,5 @@
 import enum
+import random
 from engine.utils.point import Point
 
 class Direction(enum.Enum):
@@ -12,6 +13,10 @@ class Direction(enum.Enum):
     SouthWest = SW = LeftDown  = DownLeft  = Point(-1, -1)
     West      = W  = Left      = Point(-1, 0)
     NorthWest = NW = LeftUp    = UpLeft    = Point(-1, 1)
+
+    @staticmethod
+    def rand_dir():
+        return random.choice(list(Direction))
 
     # overloading '~' operator
     def __invert__(self):

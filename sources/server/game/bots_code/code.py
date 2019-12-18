@@ -1,6 +1,9 @@
 from typing import Any, List
 import time
 
+from engine.gameobjects.wall import Wall
+from engine.gameobjects.destroyable import Destroyable
+from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.bots.bot import Bot
 from engine.utils.direction import Direction
 from engine.utils.point import Point
@@ -62,13 +65,13 @@ def run_enemy(bot: Bot):
 
 @continuemain
 def run_enemy2(bot: Bot):
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.Left)
-    bot.step(Direction.RightDown)
-    bot.step(Direction.Left)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.Left)
+    # bot.step(Direction.RightDown)
+    # bot.step(Direction.Left)
     bot.sleep()
     bot.sleep()
     bot.sleep()
@@ -96,3 +99,28 @@ def run_enemy4(bot: Bot):
     bot.sleep()
     bot.sleep()
     
+@continuemain
+def run_user2(bot: Bot):
+    objects = [[0] * 16 for i in range(16)]
+
+    def check(world: List[List[int]], point: Point, current: Point) -> bool:
+        if (current.x - point.x < 0 or current.y - point.x < 0):
+            return False
+        elif world[point.x][point.y]:
+            return False
+        else:
+            return True
+
+    while True:
+        for obj in bot.scan():
+            if isinstance(obj, Destroyable):
+                objects[obj.coord.x][obj.coord.y] = 1
+
+        coord = bot.coord
+
+        direction = Direction.rand_dir()
+        while not check(objects, direction.value, coord):
+            print(direction.value)
+            direction = Direction.rand_dir()
+
+        bot.step(direction)

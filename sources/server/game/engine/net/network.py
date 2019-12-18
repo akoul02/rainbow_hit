@@ -1,33 +1,43 @@
 import asyncio
-from exceptions import HandshakeError
+from exceptions import HandshakeError, UnameError, CodeTransmissionError
+from Crypto.Util.number import getPrime
+from gmpy2 import powmod, invert
+from hashlib import md5
+from os import listdir
 
+class DSA:
+    def __init__(self, p, q, e):
+        self.p = p
+        self.q = q
+        self.e = e
+        self.n = p*q
+        self.d = invert(e, (p-1)*(q-1))
+    def sign(self, message):
+        m = int.from_bytes(md5(message).digest(), "big")
+        return powmod(m, self.d, self.n)
+
+ExitException = KeyboardInterrupt
 async def server_main(r, w):
-    w.write(b'zdarova\n')
-    await writer.drain()
-    hello_answer = await reader.read(100)
-    if hello_answer != b'zdarova\n':
-        raise HandshakeError
-    try:
-        w.write(b'uname\n')
-        await writer.drain()
-        uname = (await reader.read(100)).decode()[:-1]
-    except:
-        raise UnameError
+    addr = writer.get_extra_info('peername')
+    uname = md5(addr.encode('ascii')).hexdigest()
+    code = (await reader.read(10000)).decode('utf-8')
+    code_file = open(f'../tmp/{uname}.py', 'w')
+    code_file.write(f'#{addr}\n')
+    code_file.write(code)
+    code_file.write('\n')
+    if len(listdir('../tmp/')) > 1:
+        raise ExitException
 
-    try:
-        w.write(b'code\n')
-        await writer.drain()
-        code = (await reader.read(10000)).decode()[:-1]
-    except:
-        raise CodeTransmissionError
 
 def server_start():
+    
     loop = asyncio.get_event_loop()
     coro = asyncio.start_server(server_main, '0.0.0.0', 31488, loop=loop)
     server = loop.run_until_complete(coro)
     print('Serving on {}'.format(server.sockets[0].getsockname()))
-    while 1:
+    try:
         loop.run_forever()
-    server.close()
-    loop.run_until_complete(server.wait_closed())
-    loop.close()
+    except ExitException:
+        server.close()
+        loop.run_until_complete(server.wait_closed())
+        loop.close()

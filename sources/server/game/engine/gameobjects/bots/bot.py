@@ -172,8 +172,15 @@ class Bot(Destroyable):
             point = obj
         elif isinstance(obj, GameObject):
             point = obj.coord
+        
+        class NoneObject:
+            def __init__(self, point):
+                self.coord = point
+                        
 
         closest = self.world.get_obj_at_position(point)
+        if closest == None:
+            closest = NoneObject(point)
 
         dbp = lambda x1, y1, x2, y2: sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
         heron = lambda a, b, c: sqrt((a+b+c)/2*((a+b+c)/2 - a)*((a+b+c)/2 - b)*((a+b+c)/2 - c))

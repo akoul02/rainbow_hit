@@ -60,7 +60,7 @@ class Game:
                     except BotIsDead as e:
                         print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
-                        # game_world.draw()
+                        game_world.draw()
                         executor.bot.last_action
                         # send updated state to server
                         # for client in clients:

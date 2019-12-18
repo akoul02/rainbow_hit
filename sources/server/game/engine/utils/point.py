@@ -13,15 +13,16 @@ class Point:
     def __eq__(self, pt):
         return self.x == pt.x and self.y == pt.y
 
-    def __add__(self, pt):
+    def __subeq__(self, pt):
         self.x -= pt.x
         self.y -= pt.y
         return self
 
-    def __sub__(self, pt):
-        self.x += pt.x
-        self.y += pt.y
-        return self
+    def __add__(self, pt):
+        return Point(self.x + pt.x, self.y + pt.y)
+
+    def __add__(self, pt):
+        return Point(self.x - pt.x, self.y - pt.y)
 
     def distance_to(self, b: Point) -> float:
         '''Find distance between current point and given point b

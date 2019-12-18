@@ -1,6 +1,7 @@
 from typing import Any, List
 import time
 
+from collections import deque
 from engine.gameobjects.wall import Wall
 from engine.gameobjects.destroyable import Destroyable
 from engine.gameobjects.bots.enemy_bot import EnemyBot
@@ -102,14 +103,20 @@ def run_enemy4(bot: Bot):
 @continuemain
 def run_user2(bot: Bot):
     objects = [[0] * 16 for i in range(16)]
+    # queue for steps (last 6)
+    steps: deque = deque([], 6)
 
-    def check(world: List[List[int]], point: Point, current: Point) -> bool:
-        if (current.x - point.x < 0 or current.y - point.x < 0):
-            return False
-        elif world[point.x][point.y]:
-            return False
-        else:
+    def at_position(coord: Point) -> bool:
+        if objects[coord.x][coord.y]:
             return True
+        return False
+
+    def check(world: List[List[int]], dst: Point, current: Point, steps: deque) -> bool:
+        if not at_position(current + dst):
+            if current.x + dst.x >= 0 and current.x + dst.x < 16 and current.y + dst.y >= 0 and current.y + dst.y < 16:
+                if not (current + dst in steps):
+                    return True
+        return False
 
     while True:
         for obj in bot.scan():
@@ -119,8 +126,8 @@ def run_user2(bot: Bot):
         coord = bot.coord
 
         direction = Direction.rand_dir()
-        while not check(objects, direction.value, coord):
-            print(direction.value)
+        while not check(objects, direction.value, coord, steps):
             direction = Direction.rand_dir()
 
+        steps.append(bot.coord)
         bot.step(direction)

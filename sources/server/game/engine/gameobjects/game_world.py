@@ -59,9 +59,9 @@ class World:
 
 
     def draw(self):
-        print('┌' + '─' * self.size_y * 2+ '┐')
+        print('  ┌' + '─' * self.size_y * 2+ '┐')
         for i in range(self.size_x - 1, -1, -1):
-            s = '│'
+            s = f'{str(i).ljust(2, " ")}│'
             for j in range(self.size_y):
                 obj = self.get_obj_at_position(Point(j, i))
                 if isinstance(obj, Wall):
@@ -72,7 +72,12 @@ class World:
                     s += '  ' # ░░
             s += '│'
             print(s)
-        print('└' + '─' * self.size_y * 2 + '┘')
+        print('  └' + '─' * self.size_y * 2 + '┘')
+        
+        print('   ', end='')
+        for i in range(0, 16):
+            print(str(i).ljust(2, ' '), end='')
+        print('')
 
     @staticmethod
     def generate(mode: str, maze_density=3, x_size=FIELD_X, y_size=FIELD_Y) -> World:

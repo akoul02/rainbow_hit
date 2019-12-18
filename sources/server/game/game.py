@@ -45,6 +45,8 @@ class Game:
         INIT_WORLD_CMD.format(objects)
 
         # send world layout and bots positions
+        
+        game_world.draw()
 
         try:
             # main game loop
@@ -60,8 +62,8 @@ class Game:
                     except BotIsDead as e:
                         print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
-                        # game_world.draw()
-                        executor.bot.last_action
+                        game_world.draw()
+                        print(executor.bot.last_action)
                         # send updated state to server
                         # for client in clients:
                         #     net.send(executor.last_action, client)

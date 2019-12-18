@@ -177,7 +177,6 @@ class Bot(Destroyable):
             def __init__(self, point):
                 self.coord = point
                         
-
         closest = self.world.get_obj_at_position(point)
         if closest == None:
             closest = NoneObject(point)

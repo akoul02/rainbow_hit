@@ -3,7 +3,9 @@ from dataclasses import *
 from typing import Callable
 
 from engine.gameobjects.bots.bot import Bot
-from exceptions import ActionsAreOver
+from engine.utils.kthread import KThread
+from constants import THREAD_TIMEOUT
+from exceptions import *
 
 @dataclass
 class Executor:
@@ -29,36 +31,60 @@ class Executor:
     bot: Bot
     max_steps: int
     run_func: Callable[[Bot], None]
-
-    thread: Thread = field(default_factory=Thread)
+    
+    thread: KThread = field(default_factory=KThread)
     is_started: bool = False
 
     def __post_init__(self):
-        self.thread = Thread(target=self.run_func, args=[self.bot])
+        self.thread = KThread(target=self.run_func, args=[self.bot])
 
-    def next_move(self, n: int):
-        '''
-        Parameters
-        ----------
-        n : int
-            Current step number
-
+    def next_move(self):
+        '''continues execution
         Raises
         ------
-        Bot.ActionsAreOver
+        ActionsAreOver
             Raises, if actions inside "user-code" are over
-        '''
-        if not self.is_started:
-            self.is_started = True
-            self.thread.start()
-            self.bot.event.set()
-        else:
-            if self.thread.is_alive():
-                self.bot.event.set()
-            else:
-                self.thread.join()
-                raise ActionsAreOver()
+
+        BotTimeoutError
+            Raises, if bot thread runs for very long 
+            time (longer than BotTimeoutError)
         
-        self.bot.main_event.clear()
-        # wait here, while the bot does it actions
-        self.bot.main_event.wait()
+        ThreadKilledError
+            Raises, if thread was killed at sopme point
+        '''
+        if not self.thread.killed:
+            # if bot in thread is alive
+            if self.bot.is_alive():
+                if not self.is_started:
+                    self.is_started = True
+                    self.thread.start()
+                    self.bot.event.set()
+                else:
+                    if self.thread.is_alive():
+                        # if thread is alive (actions are still available)
+                        self.bot.event.set()
+                    else:
+                        # if actions are over
+                        self.thread.join()
+                        raise ActionsAreOver()
+            
+                # clear main event
+                self.bot.main_event.clear()
+                # wait here, while bot is doing his actions
+                timeout = self.bot.main_event.wait(THREAD_TIMEOUT)
+
+                if not timeout:
+                    # timeout over, but bot thread is still running
+                    self.thread.terminate(BotTimeoutError)
+                    self.bot.main_event.set()
+                    raise BotTimeoutError()
+            else:
+                # if bot is dead
+                if self.thread.is_alive():
+                    self.bot.event.set()
+                    self.thread.terminate(BotIsDead)
+                    self.bot.main_event.set()
+                raise BotIsDead()
+        else:
+            self.bot.main_event.clear()
+            raise ThreadKilledError()

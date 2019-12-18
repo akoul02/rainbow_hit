@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
 from engine.gameobjects.gameobject import GameObject
+from engine.gameobjects.destroyable import Destroyable
+from engine.utils.point import Point
 
 @dataclass
 class Laser(GameObject):
@@ -8,13 +10,15 @@ class Laser(GameObject):
 
     Attributes
     ----------
-    dest_x : int
-        destination x coordinate
-    
-    dest_y : int
-        destination y coordinate
-
+    dst_point : Point
+        destination x and y coordinate
     '''
-    dest_x: int
-    dest_y: int
+    dst_point: Point
     damage: int
+
+    def shoot(self, obj: Destroyable):
+        obj.reduce_health(self.damage)
+        if obj.health == 0:
+            obj.kill()
+
+        return obj.health

@@ -1,19 +1,41 @@
-import threader
+import ctypes 
 import threading
-from time import sleep
+import time
 
-# this code was copy-pasted from here: 
-# https://github.com/munawarb/Python-Kill-Thread-Extension
+from exceptions import FatalException
 
 class KThread(threading.Thread):
-	def __init__(self):
-		threading.Thread.__init__(self)
-		self.stopped = False # This is the flag we'll use to signal thread termination.
+    '''This thread can be killed.
 
-	def is_alive(self):
-		return not self.stopped
+    Attributes
+    ----------
+    killed : bool
+        shows, that thread is killed, or not
+    '''
+    killed: bool = False
 
-	def end(self):
-		if self.is_alive():
-			threader.killThread(self.ident)
-			self.stopped = True
+    def __init__(self, *args, **kwargs):
+        threading.Thread.__init__(self, *args, **kwargs)
+
+    def async_raise(self, exception) -> None:
+        desired = (tid for tid, obj in threading._active.items() if obj is self)
+
+        try:
+            tid = next(desired)
+        except StopIteration:
+            raise ValueError("Doesn't found any suitable thread objects!")
+
+        ret = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(tid), ctypes.py_object(exception))
+        if ret == 0:
+            raise ValueError("Invalid TID")
+        elif ret > 1:
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, 0)
+            raise FatalException("ctypes pythonapi failed!")
+
+        return None
+
+    def terminate(self, exception=Exception):
+        if not self.killed and self.is_alive():
+            self.async_raise(exception)
+            self.join()
+            self.killed = True

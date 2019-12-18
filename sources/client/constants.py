@@ -1,3 +1,5 @@
+"""All constants
+"""
 CELL_SIZE: int = 32
 
 LASER_TIMEOUT: int = 200

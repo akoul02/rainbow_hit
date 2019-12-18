@@ -9,7 +9,11 @@ from constants import *
 
 
 class Client:
+    """Base client class.
+    """
     def __init__(self):
+        """Initialising values and creating the window with game world
+        """
         self.root = Tk()
         self.root.title("RAINBOW hit")
         self.canvas = Canvas(self.root, width=WIDTH * 1.8, height=HEIGHT, bg="white")
@@ -38,6 +42,8 @@ class Client:
         message_button.place(x=564, y=540)
 
     def creating_game_objects(self):
+        """Creating Ufos and clouds
+        """
         self.ufo_1 = Ufo(48, 48, self.canvas, "./assets/ufo1.png")
         self.ufo_2 = Ufo(48 + 32*3, 208, self.canvas, "./assets/ufo2.png")
         self.cloud = Cloud(48, 80+32*2, self.canvas, "./assets/Cloud.png")
@@ -48,6 +54,8 @@ class Client:
         self.cloud5 = Cloud(48+32*9, 80, self.canvas, "./assets/Cloud.png")
 
     def actions(self):
+        """Commands processing and visualising actions: move, fire
+        """
         self.root.bind('1' + '<Right>', self.ufo_1.move)
         self.root.bind('2' + '<Right>', self.ufo_2.move)
         self.root.bind('<Down>', self.ufo_2.laser)

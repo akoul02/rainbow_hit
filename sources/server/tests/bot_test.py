@@ -343,7 +343,7 @@ class BotTest(unittest.TestCase):
 
         self.assertEqual(len(world.objects), 1)
 
-    def test_shoot7(self):
+    def test_shoot8(self):
         world = World('pvp')
         bot1  = UserBot(Point(15, 11), world, 2, 10, True, 'player', None)
         self.assertEqual(bot1.is_alive(), True)

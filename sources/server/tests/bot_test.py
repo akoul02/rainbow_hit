@@ -231,18 +231,6 @@ class BotTest(unittest.TestCase):
 
         self.assertEqual(len(world.objects), 1)
 
-    def test_shoot_yourself(self):
-        world = World('pvp')
-        bot  = UserBot(Point(1, 1), world, 2, 10, True, 'player', None)
-        self.assertEqual(bot.is_alive(), True)
-
-        bot1 = UserBot(Point(2, 1), world, 1, 10, True, 'enemy1', None)
-        self.assertEqual(bot1.is_alive(), True)
-
-        bot.shoot(Point(1, 1), blocking=False)
-        world.update()
-        self.assertEqual(bot.is_alive(), True)
-        self.assertEqual(bot1.is_alive(), True)
  
     def test_shoot_diagonal(self):
         world = World()
@@ -355,6 +343,33 @@ class BotTest(unittest.TestCase):
 
         self.assertEqual(len(world.objects), 1)
 
-        
+    def test_shoot7(self):
+        world = World('pvp')
+        bot1  = UserBot(Point(15, 11), world, 2, 10, True, 'player', None)
+        self.assertEqual(bot1.is_alive(), True)
+
+        bot2 = UserBot(Point(15, 15), world, 1, 10, True, 'enemy1', None)
+        self.assertEqual(bot2.is_alive(), True)
+
+        wall1 = Wall(Point(15, 12), world, 1, 1, True, 'wall1')
+        self.assertEqual(wall1.is_alive(), True)
+
+        world.draw()
+
+        try:
+            bot1.shoot(bot2, blocking=False)
+            world.update()
+            world.draw()
+            self.assertEqual(wall1.is_alive(), False)
+
+            bot1.shoot(bot2, blocking=False)
+            world.update()
+            world.draw()
+            self.assertEqual(bot2.is_alive(), False)
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
+
+        self.assertEqual(len(world.objects), 1)
+
 if __name__ == "__main__":
     unittest.main()

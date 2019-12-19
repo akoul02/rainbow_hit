@@ -10,6 +10,7 @@ from engine.utils.point import Point
 from engine.gameobjects.laser import Laser
 from engine.gameobjects.gameobject import GameObject
 from engine.gameobjects.destroyable import Destroyable
+from engine.utils.math_utils import samelcheck
 
 if IS_DEBUG:
     import threading
@@ -181,11 +182,13 @@ class Bot(Destroyable):
         if closest == None:
             closest = NoneObject(point)
 
+        _range = lambda x1, x2: range(x1, x2) if x1 != x2 else [x1]
+
         dbp = lambda x1, y1, x2, y2: sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
         heron = lambda a, b, c: sqrt((a+b+c)/2*((a+b+c)/2 - a)*((a+b+c)/2 - b)*((a+b+c)/2 - c))
         a = dbp(point.x, point.y, self.coord.x, self.coord.y)
-        dircheck = lambda ox, oy, x1, x2, y1, y2 : True if ox in range(min(x1, x2), max(x1, x2)) and range(min(y1, y2), max(y1, y2)) else False
-        samelcheck = lambda ox, oy, x1, x2, y1, y2: True if (ox - x1)/(x2 - x1) == (oy - y1)/(y2 - y1) else False
+        dircheck = lambda ox, oy, x1, x2, y1, y2 : True if ox in _range(min(x1, x2), max(x1, x2)) and _range(min(y1, y2), max(y1, y2)) else False
+        # samelcheck = lambda ox, oy, x1, x2, y1, y2: True if (ox - x1)/(x2 - x1) == (oy - y1)/(y2 - y1) else False
         for obj in self.world.objects:
             if obj.coord != self.coord and obj != self and self.coord != point and dircheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y):
                                

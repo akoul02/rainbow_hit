@@ -27,10 +27,10 @@ class Game:
 
         # used to lock main Thread
         main_event = Event()
-        game_world = World.generate('pvp')
+        game_world = World.generate('pvp', 9)
         
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_enemy),
+            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user2),
             Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy2),
         ]
 
@@ -63,7 +63,7 @@ class Game:
                         print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
                         game_world.draw()
-                        print(executor.bot.last_action)
+                        # print(executor.bot.last_action)
                         # send updated state to server
                         # for client in clients:
                         #     net.send(executor.last_action, client)
@@ -77,14 +77,13 @@ class Game:
                 executor.thread.terminate(StepsAreOver)
 
         if result:
-            print(GAME_OVER.format(winner, "false" if result else "true"))
+            # print(GAME_OVER.format(winner, "false" if result else "true"))
             print(f'Winner is: {winner}')
         else:
-            print(GAME_OVER.format('""', "false" if result else "true"))
+            # print(GAME_OVER.format('""', "false" if result else "true"))
             print(f'Draw!')
         
         # send result
-        
 
         print('Simulation is over!')
 

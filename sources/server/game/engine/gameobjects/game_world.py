@@ -230,6 +230,19 @@ class World:
         return False
 
     def get_obj_at_position(self, coord: Point) -> GameObject:
+        '''Returns object at presented coordinates,
+           if it exists.
+
+        Parameters
+        ----------
+        coord : Point
+            Any point
+
+        Returns
+        -------
+        obj : Optional[GameObject]
+            Object at presented coordinates
+        '''
         for obj in self.objects:
             if obj.coord == coord:
                 return obj

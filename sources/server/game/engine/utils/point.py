@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import sqrt, pow
+from copy import deepcopy
 
 @dataclass
 class Point:
@@ -12,6 +13,25 @@ class Point:
 
     def __eq__(self, pt):
         return self.x == pt.x and self.y == pt.y
+
+    def __isub__(self, pt):
+        self.x -= pt.x
+        self.y -= pt.y
+        return self
+
+    def __iadd__(self, pt):
+        self.x += pt.x
+        self.y += pt.y
+        return self
+
+    def __sub__(self, pt):
+        return Point(self.x - pt.x, self.y - pt.y)
+
+    def __add__(self, pt):
+        return Point(self.x + pt.x, self.y + pt.y)
+
+    def copy(self):
+        return deepcopy(self)
 
     def distance_to(self, b: Point) -> float:
         '''Find distance between current point and given point b

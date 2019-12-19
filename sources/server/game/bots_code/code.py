@@ -1,10 +1,15 @@
 from typing import Any, List
 import time
 
+from collections import deque
+from engine.gameobjects.wall import Wall
+from engine.gameobjects.destroyable import Destroyable
+from engine.gameobjects.bots.user_bot import UserBot
 from engine.gameobjects.bots.bot import Bot
 from engine.utils.direction import Direction
 from engine.utils.point import Point
 from exceptions import *
+import random
 
 def continuemain(func):
     '''
@@ -62,13 +67,13 @@ def run_enemy(bot: Bot):
 
 @continuemain
 def run_enemy2(bot: Bot):
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.DownLeft)
-    bot.step(Direction.Left)
-    bot.step(Direction.RightDown)
-    bot.step(Direction.Left)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.DownLeft)
+    # bot.step(Direction.Left)
+    # bot.step(Direction.RightDown)
+    # bot.step(Direction.Left)
     bot.sleep()
     bot.sleep()
     bot.sleep()
@@ -96,3 +101,14 @@ def run_enemy4(bot: Bot):
     bot.sleep()
     bot.sleep()
     
+@continuemain
+def run_user2(bot: Bot):
+    objects = [[0] * 16 for i in range(16)]
+    # queue for steps (last 6)
+    steps: deque = deque([], 80)
+    step_directions: deque = deque([], 80)
+
+    def at_position(world, coord: Point) -> bool:
+        if world[coord.x][coord.y]:
+            return True
+        return False

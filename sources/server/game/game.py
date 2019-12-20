@@ -24,6 +24,7 @@ class Game:
         None
         '''
         result: bool = False
+        history = open('history.txt', 'w')
 
         # used to lock main Thread
         main_event = Event()
@@ -42,7 +43,9 @@ class Game:
                 objects += ' ' * 8 + obj.serialize()
             else:
                 objects += ' ' * 8 + obj.serialize() + ',\n'
-        INIT_WORLD_CMD.format(objects)
+        
+        history.write('[' + INIT_WORLD_CMD.format(objects) + ',\n')
+        history.flush()
 
         # send world layout and bots positions
         
@@ -67,6 +70,8 @@ class Game:
                         # send updated state to server
                         # for client in clients:
                         #     net.send(executor.last_action, client)
+                        history.write(executor.bot.last_action + ',\n')
+                        history.flush()
                         pass
         except GameOver as e:
             result = e.game_won
@@ -77,10 +82,12 @@ class Game:
                 executor.thread.terminate(StepsAreOver)
 
         if result:
-            # print(GAME_OVER.format(winner, "false" if result else "true"))
+            history.write(GAME_OVER.format(winner, "false" if result else "true") + ']')
+            history.flush()
             print(f'Winner is: {winner}')
         else:
-            # print(GAME_OVER.format('""', "false" if result else "true"))
+            history.write(GAME_OVER.format('""', "false" if result else "true") + ']')
+            history.flush()
             print(f'Draw!')
         
         # send result

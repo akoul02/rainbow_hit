@@ -18,17 +18,10 @@ class Ufo:
         self.sprite = self.canvas.create_image(self.x, self.y, image=self.image)
         self.name = name
 
-    def move(self, cmd, Event=None):
+    def move(self, x, y, Event=None):
         """Moving UFO to adjacent cell
         """
-        if 'Up' in cmd:
-            self.canvas.move(self.sprite, 0, -CELL_SIZE)
-        if 'Down' in cmd:
-            self.canvas.move(self.sprite, 0, CELL_SIZE)
-        if 'Left' in cmd:
-            self.canvas.move(self.sprite, -CELL_SIZE, 0)
-        if 'Right' in cmd:
-            self.canvas.move(self.sprite, CELL_SIZE, 0)
+        self.canvas.move(self.sprite, self.y - (32 * 18 - (48 + y * 32)),self.x - (48 + x * 32))
         self.x, self.y = self.canvas.coords(self.sprite)
 
     def laser(self, x, y, Event=None):

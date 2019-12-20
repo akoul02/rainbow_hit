@@ -21,14 +21,14 @@ class Ufo:
     def move(self, x, y, Event=None):
         """Moving UFO to adjacent cell
         """
-        self.canvas.move(self.sprite, self.y - (32 * 18 - (48 + y * 32)),self.x - (48 + x * 32))
+        self.canvas.move(self.sprite, (48 + x * 32) - self.x, (32 * 18 - (48 + y * 32)) - self.y)
         self.x, self.y = self.canvas.coords(self.sprite)
 
     def laser(self, x, y, Event=None):
         """Laser from UFO to given coordinates
         """
         x1, y1 = self.canvas.coords(self.sprite)
-        canvas_id = self.canvas.create_line(x1, y1, x, y, fill='red', width='3')
+        canvas_id = self.canvas.create_line(x1, y1, 48 + x * 32, 32 * 18 - (48 + y * 32), fill='red', width='3')
         self.canvas.after(LASER_TIMEOUT, self.canvas.delete, canvas_id)
 
     def deleter(self, Event=None):

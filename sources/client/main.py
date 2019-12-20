@@ -46,8 +46,16 @@ class Client:
 
     def get_object(self, x, y):
         for obj in self.objects:
-            if self.canvas.coords(obj) == (48 + x * 32, 32 * 18 - (48 + y * 32)):
+            objx, objy = self.canvas.coords(obj.sprite)
+            if objx == 48 + x * 32.0 and objy == 32.0 * 18 - (48 + y * 32):
                 return obj
+        return None
+
+    def pop_object(self, x, y):
+        for idx in range(len(self.objects)):
+            objx, objy = self.canvas.coords(self.objects[idx].sprite)
+            if objx == 48 + x * 32.0 and objy == 32.0 * 18 - (48 + y * 32):
+                return self.objects.pop(idx)
         return None
 
     def get_ufo_by_name(self, name):
@@ -81,29 +89,36 @@ class Client:
         self.root.bind('<Up>', self.ufo_2.deleter)
 
     def updater(self):
-        if list(self.game_data[0].keys())[0] == 'sleep':
+        cmd = self.game_data.pop(0)
+        if list(cmd.keys())[0] == 'sleep':
             self.canvas.after(1000, self.updater)
-        elif list(self.game_data[0].keys())[0] == 'step':
-            player = self.game_data[0]['step']['player']
-            newx = self.game_data[0]['step']['new_x']
-            newy = self.game_data[0]['step']['new_y']
+        elif list(cmd.keys())[0] == 'step':
+            player = cmd['step']['player']
+            newx = cmd['step']['new_x']
+            newy = cmd['step']['new_y']
 
             player_ufo = self.get_ufo_by_name(player)
             player_ufo.move(newx, newy)
 
             self.canvas.after(1000, self.updater)
-        elif list(self.game_data[0].keys())[0] == 'shoot':
-            player = self.game_data[0]['shoot']['player']
-            x_end = self.game_data[0]['shoot']['x_end']
-            y_end = self.game_data[0]['shoot']['y_end']
-            destroyed = self.game_data[0]['shoot']['destroyed']
+        elif list(cmd.keys())[0] == 'shoot':
+            player = cmd['shoot']['player']
+            x_end = cmd['shoot']['x_end']
+            y_end = cmd['shoot']['y_end']
+            destroyed = cmd['shoot']['destroyed']
 
             player_ufo = self.get_ufo_by_name(player)
             player_ufo.laser(x_end, y_end)
+            if destroyed:
+                obj = self.pop_object(x_end, y_end)
+                obj.deleter()
 
             self.canvas.after(1000, self.updater)
-        elif list(self.game_data[0].keys())[0] == 'game_over':
-            pass
+        elif list(cmd.keys())[0] == 'game_over':
+            if cmd['game_over']['draw'] == True:
+                messagebox.showinfo("GAME OVER", "Draw!")
+            else:
+                messagebox.showinfo("GAME OVER", f"Winner is: {cmd['game_over']['winner']}")
 
     def main_loop(self):
         self.canvas.after(1000, self.updater)

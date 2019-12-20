@@ -54,16 +54,17 @@ class Game:
         try:
             # main game loop
             for step in range(0, MAX_STEPS):
-                print(f'\nStep: {step}')
+                # print(f'\nStep: {step}')
                 for executor in executors:
                     try:
                         executor.next_move()
                         game_world.update()
                     except (ActionsAreOver, BotTimeoutError, ThreadKilledError) as e:
-                        print(f'Exception message: {e} [{executor.bot.name}]')
+                        # print(f'Exception message: {e} [{executor.bot.name}]')
                         executor.bot.sleep(blocking=False)
                     except BotIsDead as e:
-                        print(f'Exception message: {e} [{executor.bot.name}]')
+                        pass
+                        # print(f'Exception message: {e} [{executor.bot.name}]')
                     finally:
                         # game_world.draw()
                         # print(executor.bot.last_action)

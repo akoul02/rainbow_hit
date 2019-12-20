@@ -1,5 +1,6 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__) + '/client/')
+sys.path.insert(0, os.path.dirname(__file__) + '/client/objects/')
 sys.path.insert(0, os.path.dirname(__file__) + '/server/game/')
 
 from client.main import Client

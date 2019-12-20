@@ -61,8 +61,3 @@ class Client:
         self.root.bind('<Down>', self.ufo_2.laser)
         self.root.bind('<Up>', self.ufo_2.deleter)
         self.root.mainloop()
-
-
-client = Client()
-client.creating_game_objects()
-client.actions()

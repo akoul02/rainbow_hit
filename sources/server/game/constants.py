@@ -38,6 +38,8 @@ ANSI_GREEN: str = '\u001b[32m'
 # ansi terminal colors: reset
 ANSI_RES: str = '\u001b[0m'
 
+TRACE_NAME: str = 'history.json'
+
 INIT_WORLD_CMD = '''{{
     "init_world" : 
     {{

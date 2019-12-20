@@ -59,9 +59,9 @@ class World:
 
 
     def draw(self):
-        print('  ┌' + '─' * self.size_y * 2+ '┐')
+        print('┌' + '─' * self.size_y * 2+ '┐')
         for i in range(self.size_x - 1, -1, -1):
-            s = f'{str(i).ljust(2, " ")}│'
+            s = '│'
             for j in range(self.size_y):
                 obj = self.get_obj_at_position(Point(j, i))
                 if isinstance(obj, Wall):
@@ -72,12 +72,7 @@ class World:
                     s += '  ' # ░░
             s += '│'
             print(s)
-        print('  └' + '─' * self.size_y * 2 + '┘')
-        
-        print('   ', end='')
-        for i in range(0, 16):
-            print(str(i).ljust(2, ' '), end='')
-        print('')
+        print('└' + '─' * self.size_y * 2 + '┘')
 
     @staticmethod
     def generate(mode: str, maze_density=3, x_size=FIELD_X, y_size=FIELD_Y) -> World:
@@ -224,12 +219,39 @@ class World:
         return None
 
     def at_position(self, coord: Point) -> bool:
+        '''Check of the existance of an object
+        at presented coordinates
+
+        Parameters
+        ----------
+        coord : Point
+            Coordinates
+
+        Returns
+        -------
+        bool
+            True if object exist, False if not
+        '''
         for obj in self.objects:
             if obj.coord == coord:
                 return True
         return False
 
     def get_obj_at_position(self, coord: Point) -> GameObject:
+        '''Return object at presented coordinates
+        if this object exist
+
+        Parameters
+        ----------
+        coord : Point
+            Coordinates
+
+        Returns
+        -------
+        Optional[GameObject]
+            GameObject at presented coordinates if it exist, else None
+            
+        '''
         for obj in self.objects:
             if obj.coord == coord:
                 return obj

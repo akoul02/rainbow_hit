@@ -77,7 +77,7 @@ SHOOT_CMD = '''{{
 GAME_OVER = '''{{
     "game_over":
     {{
-        "winner": {},
+        "winner": "{}",
         "draw": {}
     }}
 }}

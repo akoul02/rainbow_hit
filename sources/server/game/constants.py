@@ -47,7 +47,7 @@ INIT_WORLD_CMD = '''{{
 
 SLEEP_CMD = '''{{
     "sleep": {{
-        "player": {},
+        "player": "{}",
     }}
 }}'''
 

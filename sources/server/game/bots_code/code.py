@@ -38,17 +38,17 @@ def continuemain(func):
 
 @continuemain
 def run_enemy2(bot: Bot):
-    objects = [[0] * 16 for i in range(16)]
+    objects = [[False] * 16 for i in range(16)]
     # queue for steps (last 6)
-    steps: deque = deque([], 80)
-    step_directions: deque = deque([], 80)
+    steps: deque = deque([], 10)
+    step_directions: deque = deque([], 10)
 
-    def at_position(world, coord: Point) -> bool:
+    def at_position(world: List[List[bool]], coord: Point) -> bool:
         if world[coord.x][coord.y]:
             return True
         return False
 
-    def check(world: List[List[int]], dst: Point, current: Point, steps: deque) -> bool:
+    def check(world: List[List[bool]], dst: Point, current: Point, steps: deque) -> bool:
         if current.x + dst.x >= 0 and current.x + dst.x < 16 and current.y + dst.y >= 0 and current.y + dst.y < 16:
             if not at_position(world, current + dst):
                 if not (current + dst in steps):
@@ -60,10 +60,7 @@ def run_enemy2(bot: Bot):
     while True:
         for obj in bot.scan():
             if isinstance(obj, Wall):
-                objects[obj.coord.x][obj.coord.y] = 1
-            else:
-                # enemy
-                objects[obj.coord.x][obj.coord.y] = 2
+                objects[obj.coord.x][obj.coord.y] = True
 
         shooted = False
         for obj in bot.scan():
@@ -79,17 +76,20 @@ def run_enemy2(bot: Bot):
                 if check(objects, directions[idx].value, bot.coord, steps):
                     steps.append(bot.coord.copy())
                     step_directions.append(directions[idx])
-                    last_dir = directions[idx]
                     bot.step(directions[idx])
+                    idx = 0
                     break
                 else:
                     continue
         
         if idx == len(directions) - 1:
             steps.append(bot.coord.copy())
-            direction = ~step_directions.pop()
-            bot.step(direction)
-
+            try:
+                direction = ~step_directions.pop()
+                bot.step(direction)
+            except:
+                bot.shoot(bot.scan()[0])
+                
 @continuemain
 def run_enemy(bot: Bot):
     bot.step(Direction.RightUp)
@@ -131,17 +131,17 @@ def run_enemy4(bot: Bot):
     
 @continuemain
 def run_user2(bot: Bot):
-    objects = [[0] * 16 for i in range(16)]
+    objects = [[False] * 16 for i in range(16)]
     # queue for steps (last 6)
-    steps: deque = deque([], 80)
-    step_directions: deque = deque([], 80)
+    steps: deque = deque([], 10)
+    step_directions: deque = deque([], 10)
 
-    def at_position(world, coord: Point) -> bool:
+    def at_position(world: List[List[bool]], coord: Point) -> bool:
         if world[coord.x][coord.y]:
             return True
         return False
 
-    def check(world: List[List[int]], dst: Point, current: Point, steps: deque) -> bool:
+    def check(world: List[List[bool]], dst: Point, current: Point, steps: deque) -> bool:
         if current.x + dst.x >= 0 and current.x + dst.x < 16 and current.y + dst.y >= 0 and current.y + dst.y < 16:
             if not at_position(world, current + dst):
                 if not (current + dst in steps):
@@ -153,10 +153,7 @@ def run_user2(bot: Bot):
     while True:
         for obj in bot.scan():
             if isinstance(obj, Wall):
-                objects[obj.coord.x][obj.coord.y] = 1
-            else:
-                # enemy
-                objects[obj.coord.x][obj.coord.y] = 2
+                objects[obj.coord.x][obj.coord.y] = True
 
         shooted = False
         for obj in bot.scan():
@@ -172,13 +169,16 @@ def run_user2(bot: Bot):
                 if check(objects, directions[idx].value, bot.coord, steps):
                     steps.append(bot.coord.copy())
                     step_directions.append(directions[idx])
-                    last_dir = directions[idx]
                     bot.step(directions[idx])
+                    idx = 0
                     break
                 else:
                     continue
         
         if idx == len(directions) - 1:
             steps.append(bot.coord.copy())
-            direction = ~step_directions.pop()
-            bot.step(direction)
+            try:
+                direction = ~step_directions.pop()
+                bot.step(direction)
+            except:
+                bot.shoot(bot.scan()[0])

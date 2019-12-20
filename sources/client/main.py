@@ -6,14 +6,17 @@ from dataclasses import dataclass
 from objects.UFO import Ufo
 from objects.cloud import Cloud
 from const_client import *
-
+import json
 
 class Client:
     """Base client class.
     """
-    def __init__(self):
+    def __init__(self, trace_path):
         """Initialising values and creating the window with game world
         """
+        self.trace_path = trace_path
+        self.game_data = json.loads(open(trace_path, 'r').read())
+
         self.root = Tk()
         self.root.title("RAINBOW hit")
         self.canvas = Canvas(self.root, width=WIDTH * 1.8, height=HEIGHT, bg="white")
@@ -44,14 +47,15 @@ class Client:
     def creating_game_objects(self):
         """Creating Ufos and clouds
         """
-        self.ufo_1 = Ufo(48, 48, self.canvas, "./sources/client/assets/ufo1.png")
-        self.ufo_2 = Ufo(48 + 32*3, 208, self.canvas, "./sources/client/assets/ufo2.png")
-        self.cloud = Cloud(48, 80+32*2, self.canvas, "./sources/client/assets/Cloud.png")
-        self.cloud1 = Cloud(48, 80+32*1, self.canvas, "./sources/client/assets/Cloud.png")
-        self.cloud2 = Cloud(48+32*2, 80, self.canvas, "./sources/client/assets/Cloud.png")
-        self.cloud3 = Cloud(48+32*10, 80, self.canvas, "./sources/client/assets/Cloud.png")
-        self.cloud4 = Cloud(48, 80+32*4, self.canvas, "./sources/client/assets/Cloud.png")
-        self.cloud5 = Cloud(48+32*9, 80, self.canvas, "./sources/client/assets/Cloud.png")
+        self.objetcs = []
+        for k, v in self.game_data[0]['init_world'].items():
+            x, y = eval(k) 
+            if v[0] == 'Bot' and v[1] == 'player1':
+                self.objetcs.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo1.png"))
+            elif v[0] == 'Bot' and v[1] == 'player2':
+                self.objetcs.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo2.png"))
+            else:
+                self.objetcs.append(Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/Cloud.png"))            
 
     def actions(self):
         """Commands processing and visualising actions: move, fire
@@ -60,4 +64,6 @@ class Client:
         self.root.bind('2' + '<Right>', self.ufo_2.move)
         self.root.bind('<Down>', self.ufo_2.laser)
         self.root.bind('<Up>', self.ufo_2.deleter)
+
+    def main_loop(self):
         self.root.mainloop()

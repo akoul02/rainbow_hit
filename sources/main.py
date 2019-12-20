@@ -10,9 +10,9 @@ def main():
     game = Game()
     game.start()
 
-    client = Client('../' + TRACE_NAME)
+    client = Client(TRACE_NAME)
     client.creating_game_objects()
-    client.actions()
+    client.main_loop()
 
 
 if __name__ == "__main__":

@@ -86,7 +86,7 @@ class Game:
             history.flush()
             print(f'Winner is: {winner}')
         else:
-            history.write(GAME_OVER.format('""', "false" if result else "true") + ']')
+            history.write(GAME_OVER.format('', "false" if result else "true") + ']')
             history.flush()
             print(f'Draw!')
         

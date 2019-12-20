@@ -56,6 +56,8 @@ class Client:
                 self.objetcs.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo2.png"))
             else:
                 self.objetcs.append(Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/Cloud.png"))            
+        
+        self.game_data.pop(0)
 
     def actions(self):
         """Commands processing and visualising actions: move, fire
@@ -65,5 +67,17 @@ class Client:
         self.root.bind('<Down>', self.ufo_2.laser)
         self.root.bind('<Up>', self.ufo_2.deleter)
 
+    def updater(self):
+        if list(self.game_data[0].keys())[0] == 'sleep':
+            self.canvas.after(1000, self.updater)
+        elif list(self.game_data[0].keys())[0] == 'step':
+            self.game_data[0]['step']
+            self.canvas.after(1000, self.updater)
+        elif list(self.game_data[0].keys())[0] == 'shoot':
+            self.canvas.after(1000, self.updater)
+        elif list(self.game_data[0].keys())[0] == 'game_over':
+            pass
+
     def main_loop(self):
+        self.canvas.after(1000, self.updater)
         self.root.mainloop()

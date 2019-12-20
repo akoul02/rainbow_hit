@@ -91,7 +91,7 @@ class Client:
     def updater(self):
         cmd = self.game_data.pop(0)
         if list(cmd.keys())[0] == 'sleep':
-            self.canvas.after(1000, self.updater)
+            self.canvas.after(100, self.updater)
         elif list(cmd.keys())[0] == 'step':
             player = cmd['step']['player']
             newx = cmd['step']['new_x']
@@ -100,7 +100,7 @@ class Client:
             player_ufo = self.get_ufo_by_name(player)
             player_ufo.move(newx, newy)
 
-            self.canvas.after(1000, self.updater)
+            self.canvas.after(100, self.updater)
         elif list(cmd.keys())[0] == 'shoot':
             player = cmd['shoot']['player']
             x_end = cmd['shoot']['x_end']
@@ -113,7 +113,7 @@ class Client:
                 obj = self.pop_object(x_end, y_end)
                 obj.deleter()
 
-            self.canvas.after(1000, self.updater)
+            self.canvas.after(100, self.updater)
         elif list(cmd.keys())[0] == 'game_over':
             if cmd['game_over']['draw'] == True:
                 messagebox.showinfo("GAME OVER", "Draw!")
@@ -121,5 +121,5 @@ class Client:
                 messagebox.showinfo("GAME OVER", f"Winner is: {cmd['game_over']['winner']}")
 
     def main_loop(self):
-        self.canvas.after(1000, self.updater)
+        self.canvas.after(100, self.updater)
         self.root.mainloop()

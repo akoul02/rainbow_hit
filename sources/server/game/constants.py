@@ -2,7 +2,7 @@
 THREAD_TIMEOUT: int = 2
 
 # max amount of steps per game
-MAX_STEPS: int = 10
+MAX_STEPS: int = 80
 
 # side of a cell
 CELL_SIDE: int = 32

@@ -130,23 +130,25 @@ def run_user2(bot: Bot):
                 # enemy
                 objects[obj.coord.x][obj.coord.y] = 2
 
+        shooted = False
         for obj in bot.scan():
             if isinstance(obj, UserBot):
                 bot.shoot(obj)
+                shooted = True
                 break
 
         directions = clean_directions.copy()
         random.shuffle(directions)
-        
-        for idx in range(len(directions)):
-            if check(objects, directions[idx].value, bot.coord, steps):
-                steps.append(bot.coord.copy())
-                step_directions.append(directions[idx])
-                last_dir = directions[idx]
-                bot.step(directions[idx])
-                break
-            else:
-                continue
+        if not shooted:
+            for idx in range(len(directions)):
+                if check(objects, directions[idx].value, bot.coord, steps):
+                    steps.append(bot.coord.copy())
+                    step_directions.append(directions[idx])
+                    last_dir = directions[idx]
+                    bot.step(directions[idx])
+                    break
+                else:
+                    continue
         
         if idx == len(directions) - 1:
             steps.append(bot.coord.copy())

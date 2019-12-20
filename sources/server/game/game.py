@@ -27,7 +27,7 @@ class Game:
 
         # used to lock main Thread
         main_event = Event()
-        game_world = World.generate('pvp', 9)
+        game_world = World.generate('pvp', 3)
         
         executors = [
             Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user2),

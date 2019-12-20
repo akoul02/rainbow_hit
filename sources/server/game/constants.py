@@ -39,49 +39,44 @@ ANSI_GREEN: str = '\u001b[32m'
 ANSI_RES: str = '\u001b[0m'
 
 INIT_WORLD_CMD = '''{{
-    "world" : 
+    "init_world" : 
     {{
 {}
     }}
 }}'''
 
 SLEEP_CMD = '''{{
-    "{}": {{
-        "command": {{
-            "sleep" : {{}},
-        }}
+    "sleep": {{
+        "player": {},
     }}
 }}'''
 
 STEP_CMD = '''{{
-    "{}": {{
-        "command": {{
-            "step" : {{
-                "new_x": {},
-                "new_y": {},
-            }}
-        }}
+    "step" : {{
+        "player": "{}",
+        "new_x": {},
+        "new_y": {}
     }}
 }}
 '''
 
 SHOOT_CMD = '''{{
-    "{}": {{
-        "command": {{
-            "shoot" : {{
-                "x_start": {},
-                "y_start": {},
-                "x_end": {},
-                "y_end": {}
-            }},
-            "destroyed": {}
-        }}
+    "shoot" : {{
+        "player": "{}",
+        "x_start": {},
+        "y_start": {},
+        "x_end": {},
+        "y_end": {},
+        "destroyed": {}
     }}
 }}
 '''
 
 GAME_OVER = '''{{
-    "winner": {},
-    "draw": {}
+    "game_over":
+    {{
+        "winner": {},
+        "draw": {}
+    }}
 }}
 '''

@@ -7,7 +7,7 @@ from const_client import *
 class Ufo:
     """Class of UFO. Create it and process actions
     """
-    def __init__(self, x, y, canvas, way):
+    def __init__(self, x, y, canvas, way, name):
         """Initialising values and creation UFO
         """
         self.x = x
@@ -16,6 +16,7 @@ class Ufo:
         self.image = ImageTk.PhotoImage(self.pilImage)
         self.canvas = canvas
         self.sprite = self.canvas.create_image(self.x, self.y, image=self.image)
+        self.name = name
 
     def move(self, cmd, Event=None):
         """Moving UFO to adjacent cell

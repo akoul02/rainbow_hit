@@ -85,11 +85,32 @@ class World:
         '''
 
         def removeWall(cf, cs, m):
+            '''Remove wall between two empty cells, making merge
+            cf : list
+                Set the value of neighbourcell
+            cs : list
+                Set the value of currentcell
+            m : list
+                Maze
+            '''
             x = (cf[0] - cs[0]) // 2
             y = (cf[1] - cs[1]) // 2
             m[cs[0] + x][cs[1] + y] = 0
 
         def getNeighbours(mh, mw, cell, m):
+            '''Check the cell's neighbours, save and return the result
+            mh : int
+                Maze Height
+
+            mw : int
+                Maze Wight
+
+            cell : list
+                Current cell
+
+            maze : list
+                Labirint
+            '''
             res = []
             x = cell[0]
             y = cell[1]
@@ -113,8 +134,8 @@ class World:
         w = 2 * w0 + 1
         h = 2 * h0 + 1
         maze: List[List[int]] = []
-        stackcurr = []
-        unvisitedcells = w0 * h0
+        stackcurr = [] # Visited cells
+        unvisitedcells = w0 * h0 # Num of unvisited cells
 
         for i in range(h):
             maze.append([])
@@ -131,9 +152,9 @@ class World:
                     else:
                         maze[i].append([i, j, 0])
 
-        startcell = random.randrange(1, h, 2)
-        currentcell = maze[startcell][1]
-        maze[startcell][0] = 0
+        startcell = random.randrange(1, h, 2) #Choose the num of random cell from first row to start the algorithm
+        currentcell = maze[startcell][1]  #Set the list with coordinates of current cell
+        maze[startcell][0] = 0 #Set the value of current cell
         currentcell[-1] = 1
         unvisitedcells -= 1
         stackcurr.append(currentcell)
@@ -142,16 +163,16 @@ class World:
             neigh = getNeighbours(h, w, currentcell, maze)
 
             if (neigh):
-                randnum = random.randint(0, len(neigh) - 1)
+                randnum = random.randint(0, len(neigh) - 1) #Check the random neighbour cell
                 neighbourcell = neigh[randnum]
                 neighbourcell[-1] = 1
                 unvisitedcells -= 1
-                removeWall(neighbourcell, currentcell, maze)
-                currentcell = neighbourcell
+                removeWall(neighbourcell, currentcell, maze) #Remove the wall between current and neighbour cell
+                currentcell = neighbourcell #Now new current cell is neighbour cell
                 stackcurr.append(neighbourcell)
 
             else:
-                stackcurr.pop()
+                stackcurr.pop() #Remove cell from stack
                 currentcell = stackcurr[-1]
 
         endcell = random.randrange(1, h, 2)

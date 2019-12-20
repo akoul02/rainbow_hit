@@ -1,5 +1,4 @@
 from tkinter import Canvas, Tk, Button, messagebox
-from tkinter import *
 import random
 from PIL import Image, ImageTk
 from dataclasses import dataclass
@@ -37,12 +36,26 @@ class Client:
         self.image2 = ImageTk.PhotoImage(pilImage2)
         self.canvas.create_image(592, 90, image=self.image2)
         self.health2 = self.canvas.create_rectangle(630, 78, 1010, 100, fill='green')
-        # self.text = self.canvas.create_text(632, 138, font="Times", text='Enter Your code:')
+        self.game_over = False
+        self.step = 0
+        self.steps_text = self.canvas.create_text(632, 138, font="Times", text='Current step: 0')
+
+        self.updater_job = None
         # message_entry = Text(width=56, height=22)
         # message_entry.place(x=566, y=168)
         # self.window = self.canvas.create_rectangle(566, 168, 1018, 524, width=5, outline='#f21d1d')
-        # message_button = Button(text="Send", width=64)
-        # message_button.place(x=564, y=540)
+        self.start_button = Button(text="start", width=32, command=self.updater)
+        self.start_button.place(x=564, y=200)
+
+        self.step_button = Button(text="step", width=32, command=self.step_once)
+        self.step_button.place(x=564, y=240)
+
+        self.pause_btn = Button(text="pause", width=32, command=self.pause)
+        self.pause_btn.place(x=564, y=280)
+
+    def pause(self, event=None):
+        if self.updater_job != None:
+            self.root.after_cancel(self.updater_job)
 
     def get_object(self, x, y):
         for obj in self.objects:
@@ -88,10 +101,14 @@ class Client:
         self.root.bind('<Down>', self.ufo_2.laser)
         self.root.bind('<Up>', self.ufo_2.deleter)
 
-    def updater(self):
+    def updater(self, event=None):
+        self.step_once()
+        self.updater_job = self.canvas.after(100, self.updater)
+
+    def step_once(self, event=None):
         cmd = self.game_data.pop(0)
         if list(cmd.keys())[0] == 'sleep':
-            self.canvas.after(100, self.updater)
+            pass
         elif list(cmd.keys())[0] == 'step':
             player = cmd['step']['player']
             newx = cmd['step']['new_x']
@@ -100,7 +117,6 @@ class Client:
             player_ufo = self.get_ufo_by_name(player)
             player_ufo.move(newx, newy)
 
-            self.canvas.after(100, self.updater)
         elif list(cmd.keys())[0] == 'shoot':
             player = cmd['shoot']['player']
             x_end = cmd['shoot']['x_end']
@@ -113,13 +129,18 @@ class Client:
                 obj = self.pop_object(x_end, y_end)
                 obj.deleter()
 
-            self.canvas.after(100, self.updater)
         elif list(cmd.keys())[0] == 'game_over':
+            self.game_over = True
             if cmd['game_over']['draw'] == True:
                 messagebox.showinfo("GAME OVER", "Draw!")
             else:
                 messagebox.showinfo("GAME OVER", f"Winner is: {cmd['game_over']['winner']}")
 
+        if not self.game_over:
+            self.step += 1
+            self.canvas.itemconfigure(self.steps_text, text=f'Current step: {self.step}')
+
     def main_loop(self):
-        self.canvas.after(100, self.updater)
+        # self.canvas.after(100, self.updater)
+        # self.root.bind('<Right>', self.updater)
         self.root.mainloop()

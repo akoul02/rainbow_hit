@@ -133,8 +133,8 @@ def run_enemy4(bot: Bot):
 def run_user2(bot: Bot):
     objects = [[False] * 16 for i in range(16)]
     # queue for steps (last 6)
-    steps: deque = deque([], 10)
-    step_directions: deque = deque([], 10)
+    steps: deque = deque([], 20)
+    step_directions: deque = deque([], 20)
 
     def at_position(world: List[List[bool]], coord: Point) -> bool:
         if world[coord.x][coord.y]:

@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from dataclasses import dataclass
 from objects.UFO import Ufo
 from objects.cloud import Cloud
-from constants import *
+from const_client import *
 
 
 class Client:

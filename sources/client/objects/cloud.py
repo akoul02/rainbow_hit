@@ -1,6 +1,6 @@
 from tkinter import Canvas
 from PIL import Image, ImageTk
-from constants import *
+from const_client import *
 
 
 class Cloud:

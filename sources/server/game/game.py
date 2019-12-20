@@ -24,7 +24,7 @@ class Game:
         None
         '''
         result: bool = False
-        history = open('history.json', 'w')
+        history = open('history.txt', 'w')
 
         # used to lock main Thread
         main_event = Event()

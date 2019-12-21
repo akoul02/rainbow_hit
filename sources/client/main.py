@@ -53,10 +53,6 @@ class Client:
         self.pause_btn = Button(text="pause", width=32, command=self.pause)
         self.pause_btn.place(x=564, y=280)
 
-    def pause(self, event=None):
-        if self.updater_job != None:
-            self.root.after_cancel(self.updater_job)
-
     def get_object(self, x, y):
         for obj in self.objects:
             objx, objy = self.canvas.coords(obj.sprite)
@@ -101,11 +97,18 @@ class Client:
         self.root.bind('<Down>', self.ufo_2.laser)
         self.root.bind('<Up>', self.ufo_2.deleter)
 
+    def pause(self, event=None):
+        if self.updater_job != None:
+            self.root.after_cancel(self.updater_job)
+
     def updater(self, event=None):
         self.step_once()
-        self.updater_job = self.canvas.after(100, self.updater)
+        self.updater_job = self.root.after(100, self.updater)
 
     def step_once(self, event=None):
+        if self.game_over:
+            return None
+        
         cmd = self.game_data.pop(0)
         if list(cmd.keys())[0] == 'sleep':
             pass

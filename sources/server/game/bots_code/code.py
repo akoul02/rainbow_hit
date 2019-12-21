@@ -37,7 +37,7 @@ def continuemain(func):
     return wrapper
 
 @continuemain
-def run_enemy2(bot: Bot):
+def run_user1(bot: Bot):
     objects = [[False] * 16 for i in range(16)]
     # queue for steps (last 6)
     steps: deque = deque([], 10)
@@ -89,46 +89,7 @@ def run_enemy2(bot: Bot):
                 bot.step(direction)
             except:
                 bot.shoot(bot.scan()[0])
-                
-@continuemain
-def run_enemy(bot: Bot):
-    bot.step(Direction.RightUp)
-    bot.step(Direction.Up)
-    bot.shoot(Point(4, 4))
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    bot.step(Direction.RightUp)
-    bot.step(Direction.Up)
-    bot.step(Direction.Right)
-    bot.step(Direction.Right)
-    bot.step(Direction.Right)
-    bot.step(Direction.Right)
-    bot.step(Direction.Up)
-    bot.scan()
-
-@continuemain
-def run_enemy3(bot: Bot):
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    objects = bot.scan()
-    bot.step(Direction.Up)
-    objects = bot.scan()
-    bot.step(Direction.Up)
-    bot.step(Direction.Up)
-    objects = bot.scan()
-    bot.step(Direction.Up)
-    objects = bot.scan()
-    
-@continuemain
-def run_enemy4(bot: Bot):
-    bot.sleep()
-    bot.sleep()
-    bot.sleep()
-    objects = bot.scan()
-    bot.sleep()
-    bot.sleep()
-    
+                   
 @continuemain
 def run_user2(bot: Bot):
     objects = [[False] * 16 for i in range(16)]

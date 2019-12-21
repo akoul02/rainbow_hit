@@ -6,7 +6,7 @@ from client.main import Client
 from server.game.game import Game
 from server.game.constants import TRACE_NAME
 
-def main():
+def run():
     game = Game()
     game.start()
 
@@ -14,6 +14,8 @@ def main():
     client.creating_game_objects()
     client.main_loop()
 
+def main():
+    run()
 
 if __name__ == "__main__":
     main()

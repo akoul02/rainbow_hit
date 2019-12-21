@@ -8,7 +8,7 @@ from engine.gameobjects.bots.bot import Bot
 from engine.gameobjects.bots.enemy_bot import EnemyBot
 from engine.gameobjects.bots.user_bot import UserBot
 from engine.utils.point import Point
-from constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER
+from constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
 from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
 from bots_code.code import *
 
@@ -28,11 +28,11 @@ class Game:
 
         # used to lock main Thread
         main_event = Event()
-        game_world = World.generate('pvp', 4)
+        game_world = World.generate('pvp', LABYRINTH_DENSITY)
         
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user2),
-            Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_enemy2),
+            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user1),
+            Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_user2),
         ]
 
         objects = ''

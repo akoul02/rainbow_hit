@@ -1,3 +1,6 @@
+# Bigger value = maze with more spaces
+LABYRINTH_DENSITY: int = 3
+
 # Kill user-code thread, if it is in inactive state for more than n seconds
 THREAD_TIMEOUT: int = 2
 

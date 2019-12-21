@@ -130,7 +130,7 @@ class Client:
             player_ufo.laser(x_end, y_end)
             if destroyed:
                 obj = self.pop_object(x_end, y_end)
-                obj.deleter()
+                self.root.after(70, func=obj.deleter)
 
         elif list(cmd.keys())[0] == 'game_over':
             self.game_over = True
@@ -144,6 +144,4 @@ class Client:
             self.canvas.itemconfigure(self.steps_text, text=f'Current step: {self.step}')
 
     def main_loop(self):
-        # self.canvas.after(100, self.updater)
-        # self.root.bind('<Right>', self.updater)
         self.root.mainloop()

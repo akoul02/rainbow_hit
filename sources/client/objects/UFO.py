@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from tkinter import Canvas, Tk
 from PIL import Image, ImageTk
-from client.const_client import *
+from const_client import *
 
 
 class Ufo:

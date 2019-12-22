@@ -55,7 +55,7 @@ class Client:
         self.pause_btn = Button(text="pause", width=32, command=self.pause)
         self.pause_btn.place(x=564, y=280)
 
-        message_entry = self.canvas.create_text(635, 335, font="Times", text='Simulation speed')
+        message_entry = self.canvas.create_text(635, 335, font="Times", text='Step delay')
 
         self.scale = Scale(self.root, from_=25, to=400, length=200, orient=HORIZONTAL)
         self.scale.set(UPDATE_TIME)

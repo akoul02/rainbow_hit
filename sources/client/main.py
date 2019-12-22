@@ -7,6 +7,7 @@ from objects.cloud import Cloud
 from const_client import *
 import json
 
+
 class Client:
     """Base client class.
     """
@@ -35,7 +36,9 @@ class Client:
         pilImage2 = Image.open("./sources/client/assets/ufo2.png")
         self.image2 = ImageTk.PhotoImage(pilImage2)
         self.canvas.create_image(592, 90, image=self.image2)
-        self.health2 = self.canvas.create_rectangle(630, 78, 1010, 100, fill='green')
+        self.health2 = self.canvas.create_rectangle(630, 78, 1010, 99, fill='green')
+        self.canvas.create_rectangle(630, 36, 1010, 58, width=2)
+        self.canvas.create_rectangle(630, 78, 1010, 100, width=2)
         self.game_over = False
         self.step = 0
         self.steps_text = self.canvas.create_text(632, 138, font="Times", text='Current step: 0')
@@ -145,3 +148,26 @@ class Client:
 
     def main_loop(self):
         self.root.mainloop()
+
+    def helth_line(self, ufo_number, percent):
+        """Reduce life string
+
+        Parameters
+        ----------
+        ufo_number : int
+        percent : int
+
+        Returns
+        -------
+        None
+        """
+        if ufo_number == 1:
+            ufo_health = self.health1
+            self.canvas.delete(ufo_health)
+            ufo_health = self.canvas.create_rectangle(630, 36, 1010 - (1010 - 630) * percent * 0.01, 58, fill='green')
+            self.health1 = ufo_health
+        else:
+            ufo_health = self.health2
+            self.canvas.delete(ufo_health)
+            ufo_health = self.canvas.create_rectangle(630, 78, 1010 - (1010 - 630) * percent * 0.01, 99, fill='green')
+            self.health2 = ufo_health

@@ -11,17 +11,21 @@ class Ufo:
     ----------
     x : int
     y : int
+
     canvas : Canvas
         game filled
 
     sprite : Canvas
         photos of UFOs on canvas
 
-    name: str
+    name : str
         unique identifier of UFOs
 
+    health : int
+    max_health: int
+    damage : int
     """
-    def __init__(self, x, y, canvas, way, name):
+    def __init__(self, x, y, canvas, way, name, health, damage):
         """Initialising values and creation UFO
         """
         self.x = x
@@ -29,7 +33,13 @@ class Ufo:
         self.canvas = canvas
         self.image = ImageTk.PhotoImage(Image.open(way))
         self.sprite = self.canvas.create_image(self.x, self.y, image=self.image)
+
+        self.explosion_img = ImageTk.PhotoImage(Image.open("./sources/client/assets/explosion.png"))
+
         self.name = name
+        self.health = health
+        self.max_health = health
+        self.damage = damage
 
     def move(self, x, y, Event=None):
         """Moving UFO to adjacent cell
@@ -61,6 +71,9 @@ class Ufo:
         x1, y1 = self.canvas.coords(self.sprite)
         canvas_id = self.canvas.create_line(x1, y1, 48 + x * 32, 32 * 18 - (48 + y * 32), fill='red', width='3')
         self.canvas.after(LASER_TIMEOUT, self.canvas.delete, canvas_id)
+        
+        explosion_id = self.canvas.create_image(48 + x * 32, 32 * 18 - (48 + y * 32), image=self.explosion_img)
+        self.canvas.after(EXPLOSION_TIMEOUT, self.canvas.delete, explosion_id)
 
     def deleter(self, Event=None):
         """Delete UFO if it dies

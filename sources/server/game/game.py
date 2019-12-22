@@ -31,8 +31,8 @@ class Game:
         game_world = World.generate('pvp', LABYRINTH_DENSITY)
         
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 1, 10, True, 'player1', main_event), MAX_STEPS, run_user1),
-            Executor(UserBot(Point(15, 15), game_world, 1, 10, True, 'player2', main_event), MAX_STEPS, run_user2),
+            Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player1', main_event), MAX_STEPS, run_user1),
+            Executor(UserBot(Point(15, 15), game_world, 10, 10, True, 'player2', main_event), MAX_STEPS, run_user2),
         ]
 
         objects = ''

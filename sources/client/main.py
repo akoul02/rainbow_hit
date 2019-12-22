@@ -1,4 +1,4 @@
-from tkinter import Canvas, Tk, Button, messagebox
+from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
 import random
 from PIL import Image, ImageTk
 from dataclasses import dataclass
@@ -6,7 +6,6 @@ from objects.UFO import Ufo
 from objects.cloud import Cloud
 from const_client import *
 import json
-
 
 class Client:
     """Base client class.
@@ -56,6 +55,10 @@ class Client:
         self.pause_btn = Button(text="pause", width=32, command=self.pause)
         self.pause_btn.place(x=564, y=280)
 
+        self.scale = Scale(self.root, from_=50, to=400, length=200, orient=HORIZONTAL)
+        self.scale.set(UPDATE_TIME)
+        self.scale.place(x=564, y=320)
+
     def get_object(self, x, y):
         for obj in self.objects:
             objx, objy = self.canvas.coords(obj.sprite)
@@ -84,9 +87,9 @@ class Client:
         for k, v in self.game_data[0]['init_world'].items():
             x, y = eval(k) 
             if v[0] == 'Bot' and v[1] == 'player1':
-                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo1.png", 'player1'))
+                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo1.png", 'player1', v[2], v[3]))
             elif v[0] == 'Bot' and v[1] == 'player2':
-                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo2.png", 'player2'))
+                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo2.png", 'player2', v[2], v[3]))
             else:
                 self.objects.append(Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/Cloud.png"))            
         
@@ -106,7 +109,7 @@ class Client:
 
     def updater(self, event=None):
         self.step_once()
-        self.updater_job = self.root.after(100, self.updater)
+        self.updater_job = self.root.after(self.scale.get(), self.updater)
 
     def step_once(self, event=None):
         if self.game_over:
@@ -131,6 +134,16 @@ class Client:
 
             player_ufo = self.get_ufo_by_name(player)
             player_ufo.laser(x_end, y_end)
+
+            shooted_obj = self.get_object(x_end, y_end)
+            if isinstance(shooted_obj, Ufo):
+                shooted_obj.health -= player_ufo.damage
+
+                if player == 'player1':
+                    self.health_line(2, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
+                else:
+                    self.health_line(1, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
+
             if destroyed:
                 obj = self.pop_object(x_end, y_end)
                 self.root.after(70, func=obj.deleter)
@@ -146,10 +159,7 @@ class Client:
             self.step += 1
             self.canvas.itemconfigure(self.steps_text, text=f'Current step: {self.step}')
 
-    def main_loop(self):
-        self.root.mainloop()
-
-    def helth_line(self, ufo_number, percent):
+    def health_line(self, ufo_number, percent):
         """Reduce life string
 
         Parameters
@@ -171,3 +181,6 @@ class Client:
             self.canvas.delete(ufo_health)
             ufo_health = self.canvas.create_rectangle(630, 78, 1010 - (1010 - 630) * percent * 0.01, 99, fill='green')
             self.health2 = ufo_health
+    
+    def main_loop(self):
+        self.root.mainloop()

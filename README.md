@@ -19,5 +19,6 @@ While you're **exactly** in rainbow_hit directory run `python3 ./sources/main.py
 - You can write any python code for each of the bots inside this file: `./rainbow_hit/sources/server/game/bots_code/code.py`. The code must be written in the body of the `run_user1` and `run_user2`.
 
 #### Game screenshots
-![StartGame](https://i.imgur.com/N5gDV8M.png)
-![GameOver](https://i.imgur.com/axErrF5.png)
+![StartGame](https://i.imgur.com/8qojgjc.png)
+![Gameplay](https://i.imgur.com/7QbjNjD.png)
+![GameOver](https://i.imgur.com/oy1Nj9g.png)

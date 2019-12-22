@@ -384,7 +384,7 @@ class BotTest(unittest.TestCase):
 
         self.assertEqual(len(world.objects), 1)
 
-    def test_shoot10(self):
+    def test_shoot_vertical2(self):
         world = World('pvp')
         bot1  = UserBot(Point(5, 10), world, 2, 10, True, 'player', None)
         self.assertEqual(bot1.is_alive(), True)
@@ -396,6 +396,56 @@ class BotTest(unittest.TestCase):
         self.assertEqual(wall1.is_alive(), True)
 
         wall2 = Wall(Point(5, 11), world, 1, 1, True, 'wall2')
+        self.assertEqual(wall2.is_alive(), True)
+
+        try:
+            bot1.shoot(bot2, blocking=False)
+            world.update()
+            self.assertEqual(bot2.is_alive(), False)
+            self.assertEqual(wall1.is_alive(), True)
+            self.assertEqual(wall2.is_alive(), True)
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
+
+        self.assertEqual(len(world.objects), 3)
+
+    def test_shoot_horizontal(self):
+        world = World('pvp')
+        bot1  = UserBot(Point(10, 5), world, 2, 10, True, 'player', None)
+        self.assertEqual(bot1.is_alive(), True)
+
+        bot2 = UserBot(Point(10, 10), world, 1, 10, True, 'enemy1', None)
+        self.assertEqual(bot2.is_alive(), True)
+
+        wall1 = Wall(Point(10, 4), world, 1, 1, True, 'wall1')
+        self.assertEqual(wall1.is_alive(), True)
+
+        wall2 = Wall(Point(10, 11), world, 1, 1, True, 'wall2')
+        self.assertEqual(wall2.is_alive(), True)
+
+        try:
+            bot1.shoot(bot2, blocking=False)
+            world.update()
+            self.assertEqual(bot2.is_alive(), False)
+            self.assertEqual(wall1.is_alive(), True)
+            self.assertEqual(wall2.is_alive(), True)
+        except GameOver as e:
+            self.assertEqual(e.game_won, True)
+
+        self.assertEqual(len(world.objects), 3)
+
+    def test_shoot_diagonal2(self):
+        world = World('pvp')
+        bot1  = UserBot(Point(4, 4), world, 2, 10, True, 'player', None)
+        self.assertEqual(bot1.is_alive(), True)
+
+        bot2 = UserBot(Point(8, 8), world, 1, 10, True, 'enemy1', None)
+        self.assertEqual(bot2.is_alive(), True)
+
+        wall1 = Wall(Point(9, 9), world, 1, 1, True, 'wall1')
+        self.assertEqual(wall1.is_alive(), True)
+
+        wall2 = Wall(Point(3, 3), world, 1, 1, True, 'wall2')
         self.assertEqual(wall2.is_alive(), True)
 
         try:

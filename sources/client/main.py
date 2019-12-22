@@ -60,6 +60,17 @@ class Client:
         self.scale.place(x=564, y=320)
 
     def get_object(self, x, y):
+        '''Get object by coordinates
+
+        Parameters
+        ----------
+        x : int
+        y : int
+
+        Returns
+        -------
+            Optional[Gameobject]
+        '''
         for obj in self.objects:
             objx, objy = self.canvas.coords(obj.sprite)
             if objx == 48 + x * 32.0 and objy == 32.0 * 18 - (48 + y * 32):
@@ -67,6 +78,18 @@ class Client:
         return None
 
     def pop_object(self, x, y):
+        '''Return object from objects list
+        and remove it from list
+
+        Parameters
+        ----------
+        x : int
+        y : int
+
+        Returns
+        -------
+            Optional[Gameobject]
+        '''
         for idx in range(len(self.objects)):
             objx, objy = self.canvas.coords(self.objects[idx].sprite)
             if objx == 48 + x * 32.0 and objy == 32.0 * 18 - (48 + y * 32):
@@ -74,6 +97,16 @@ class Client:
         return None
 
     def get_ufo_by_name(self, name):
+        '''Get UFO-object by name attribute
+
+        Parameters
+        ----------
+        name : str
+
+        Returns
+        -------
+            Optional[Gameobject]
+        '''
         for obj in self.objects:
             if isinstance(obj, Ufo):
                 if obj.name == name:

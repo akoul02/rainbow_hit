@@ -8,8 +8,8 @@ While you're **exactly** in rainbow_hit directory run `python3 ./sources/main.py
 
 ### Game information
 #### Tweakable settings
-- Labyrinth density can be edited by changing `LABYRINTH_DENSITY` const inside `./sources/server/constants.py`. *(Bigger value = maze with more spaces)*
-- Bots behaviour can be updated by editing their constructor parameters inside `./sources/server/game/game.py` (lines 34, 35)
+- Labyrinth density can be edited by changing `LABYRINTH_DENSITY` const inside [`./sources/server/constants.py`](https://github.com/m4drat/rainbow_hit/blob/7c3e6411f22bb2ba62f2feb90987a58776f20269/sources/server/game/constants.py#L2). *(Bigger value = maze with more spaces)*
+- Bots behaviour can be updated by editing their constructor parameters inside [`./sources/server/game/game.py`](https://github.com/m4drat/rainbow_hit/blob/7c3e6411f22bb2ba62f2feb90987a58776f20269/sources/server/game/game.py#L34) (lines 34, 35)
 
 #### Game steps  
 1. The game is fully emulated using the "server" module

@@ -93,6 +93,14 @@ def run_user1(bot: Bot):
 @continuemain
 def run_user2(bot: Bot):
     objects = [[False] * 16 for i in range(16)]
+    '''
+    This algorithm performs the following sequence of actions:
+    1. Generates a random direction of movement on the map;
+    2. Checks the ability to take a step to this point;
+    3. Executes step;
+    4. Performs an enemy check:
+    If it's a bot, makes a shot.
+     '''
     # queue for steps (last 6)
     steps: deque = deque([], 20)
     step_directions: deque = deque([], 20)

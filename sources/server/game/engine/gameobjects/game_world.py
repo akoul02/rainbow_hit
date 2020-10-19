@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import math
 import random
 from dataclasses import *
+from typing import List
+
 from server.game.constants import *
-from server.game.engine.gameobjects.bots.bot import Bot
 from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
 from server.game.engine.gameobjects.bots.user_bot import UserBot
 from server.game.engine.gameobjects.destroyable import Destroyable
@@ -13,7 +13,6 @@ from server.game.engine.gameobjects.laser import Laser
 from server.game.engine.gameobjects.wall import Wall
 from server.game.engine.utils.point import Point
 from server.game.exceptions import GameOver
-from typing import Any, List
 
 
 @dataclass

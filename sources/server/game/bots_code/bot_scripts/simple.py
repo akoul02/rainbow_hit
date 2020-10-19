@@ -1,15 +1,15 @@
+import math
 import random
-import time
 from collections import deque
+from typing import List
+
 from server.game.bots_code.code import continuemain
 from server.game.engine.gameobjects.bots.bot import Bot
 from server.game.engine.gameobjects.bots.user_bot import UserBot
-from server.game.engine.gameobjects.destroyable import Destroyable
 from server.game.engine.gameobjects.wall import Wall
 from server.game.engine.utils.direction import Direction
+from server.game.engine.utils.math_utils import get_angle
 from server.game.engine.utils.point import Point
-from server.game.exceptions import *
-from typing import Any, List
 
 
 @continuemain
@@ -31,9 +31,21 @@ def perform(bot: Bot):
                     return True
         return False
 
+    def get_closest_dir(obj_fin: Point, obj_start: Point):
+        directions = list(Direction)
+        item_vector = Point(obj_fin.x - obj_start.x, obj_fin.y - obj_start.y)
+        dif = math.pi
+        best = None
+
+        for dirr in directions:
+            if math.acos(get_angle(item_vector, dirr._value_)) < dif:
+                best = dirr
+                dif = math.acos(get_angle(item_vector, dirr._value_))
+        return best
+
     def closest(avoid_list: List[Direction], directions: List[Direction], best_direction: Direction):
         close_enough = directions[0]
-        for dirr in all_directions:
+        for dirr in directions:
             if dirr not in avoid_list:
                 if best_direction.distance_to(dirr):
                     close_enough = dirr
@@ -43,17 +55,22 @@ def perform(bot: Bot):
     clean_directions = list(Direction)
 
     while True:
+        avoid_list = []
+
         for obj in bot.scan():
             if isinstance(obj, Wall):
                 objects[obj.coord.x][obj.coord.y] = True
-                # clean_directions.remove(bot.current_location().distance_to(obj.coord))
-
-        avoid_list = []
+                avoid_list.append(get_closest_dir(bot.current_location(), obj.current_location()))
 
         shooted = False
         for obj in bot.scan():
             if isinstance(obj, UserBot):
-                avoid_list.append(Direction(obj))
+                avoid_list.append(get_closest_dir(bot.current_location(), obj.current_location()))
+                print("asdsadsa")
+                print(closest((avoid_list, directions,
+                               ~get_closest_dir(bot.current_location(), obj.current_location()))))
+                bot.step(closest((avoid_list, directions,
+                                  ~get_closest_dir(bot.current_location(), obj.current_location()))))
 
         random.shuffle(directions)
         if not shooted:
@@ -66,11 +83,3 @@ def perform(bot: Bot):
                     break
                 else:
                     continue
-
-        if idx == len(directions) - 1:
-            steps.append(bot.coord.copy())
-            try:
-                direction = ~step_directions.pop()
-                bot.step(direction)
-            except:
-                bot.shoot(bot.scan()[0])

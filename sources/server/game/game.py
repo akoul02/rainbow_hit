@@ -1,16 +1,14 @@
 from dataclasses import dataclass
+from threading import Event
+
 from server.game.bots_code import config
 from server.game.bots_code.code import *
-from server.game.constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
-from server.game.engine.gameobjects.bots.bot import Bot
-from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
+from server.game.constants import MAX_STEPS, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
 from server.game.engine.gameobjects.bots.user_bot import UserBot
 from server.game.engine.gameobjects.game_world import World
 from server.game.engine.runner.executor import Executor
 from server.game.engine.utils.point import Point
 from server.game.exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
-from threading import Event
-from time import sleep
 
 
 @dataclass
@@ -36,7 +34,7 @@ class Game:
             Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player1', main_event), MAX_STEPS,
                      get_callable_script(config.p1sc)),
             Executor(UserBot(Point(15, 15), game_world, 10, 10, True, 'player2', main_event), MAX_STEPS,
-                     get_callable_script(config.p1sc)),
+                     get_callable_script(config.p2sc)),
         ]
 
         objects = ''

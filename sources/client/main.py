@@ -1,11 +1,11 @@
 import json
-import random
+from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
+
 from PIL import Image, ImageTk
+
 from client.const_client import *
 from client.objects.UFO import Ufo
 from client.objects.cloud import Cloud
-from dataclasses import dataclass
-from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
 
 
 class Client:
@@ -20,26 +20,26 @@ class Client:
 
         self.root = Tk()
         self.root.title("RAINBOW hit")
-        self.canvas = Canvas(self.root, width=WIDTH * 1.8, height=HEIGHT, bg="white")
+        self.canvas = Canvas(self.root, width=WIDTH * 1.8, height=HEIGHT, bg="#f0f7f6")
         for i in range(GRID_SIZE):
             for j in range(GRID_SIZE):
                 if i == 0 or j == 0 or i == GRID_SIZE - 1 or j == GRID_SIZE - 1:
                     continue
                 self.canvas.create_rectangle(i * CELL_SIZE, j * CELL_SIZE,
                                              i * CELL_SIZE + CELL_SIZE,
-                                             j * CELL_SIZE + CELL_SIZE, fill='pink', outline='#999090')
-        self.canvas.create_rectangle(32, 32, HEIGHT - 32, HEIGHT - 32, outline='black', width=2)
+                                             j * CELL_SIZE + CELL_SIZE, fill='#c4badb', outline='#999090')
+        self.canvas.create_rectangle(32, 32, HEIGHT - 32, HEIGHT - 32, outline='gray', width=2)
         self.canvas.grid(column=0, row=0)
         pilImage1 = Image.open("./client/assets/ufo1.png")
         self.image1 = ImageTk.PhotoImage(pilImage1)
         self.canvas.create_image(592, 48, image=self.image1)
-        self.health1 = self.canvas.create_rectangle(630, 36, 1010, 58, fill='green')
+        self.health1 = self.canvas.create_rectangle(630, 36, 1010, 58, fill='#3ab03e', outline='gray')
         pilImage2 = Image.open("./client/assets/ufo2.png")
         self.image2 = ImageTk.PhotoImage(pilImage2)
         self.canvas.create_image(592, 90, image=self.image2)
-        self.health2 = self.canvas.create_rectangle(630, 78, 1010, 99, fill='green')
-        self.canvas.create_rectangle(630, 36, 1010, 58, width=2)
-        self.canvas.create_rectangle(630, 78, 1010, 100, width=2)
+        self.health2 = self.canvas.create_rectangle(630, 78, 1010, 99, fill='#3ab03e', outline='gray')
+        self.canvas.create_rectangle(630, 36, 1010, 58, width=2, outline='gray')
+        self.canvas.create_rectangle(630, 78, 1010, 100, width=2, outline='gray')
         self.game_over = False
         self.step = 0
         self.steps_text = self.canvas.create_text(632, 138, font="Times", text='Current step: 0')
@@ -48,13 +48,14 @@ class Client:
         # message_entry = Text(width=56, height=22)
         # message_entry.place(x=566, y=168)
         # self.window = self.canvas.create_rectangle(566, 168, 1018, 524, width=5, outline='#f21d1d')
-        self.start_button = Button(text="start", width=32, command=self.updater)
+        self.start_button = Button(self.root, text="start", width=32, command=self.updater, bg="#3fbfbf")
         self.start_button.place(x=564, y=200)
 
-        self.step_button = Button(text="step", width=32, command=self.step_once)
+        self.step_button = Button(self.root, text="step", width=32, command=self.step_once, bg="#3fbfbf")
         self.step_button.place(x=564, y=240)
 
-        self.pause_btn = Button(text="pause", width=32, command=self.pause)
+        self.pause_btn = Button(self.root, text="pause", bg="#3fbfbf", activeforeground='#3fbfbf',
+                                activebackground='#3fbfbf', fg='#3fbfbf', width=32, command=self.pause)
         self.pause_btn.place(x=564, y=280)
 
         message_entry = self.canvas.create_text(635, 335, font="Times", text='Step delay')

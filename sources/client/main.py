@@ -1,15 +1,17 @@
-from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
+import json
 import random
 from PIL import Image, ImageTk
+from client.const_client import *
+from client.objects.UFO import Ufo
+from client.objects.cloud import Cloud
 from dataclasses import dataclass
-from objects.UFO import Ufo
-from objects.cloud import Cloud
-from const_client import *
-import json
+from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
+
 
 class Client:
     """Base client class.
     """
+
     def __init__(self, trace_path):
         """Initialising values and creating the window with game world
         """
@@ -28,11 +30,11 @@ class Client:
                                              j * CELL_SIZE + CELL_SIZE, fill='pink', outline='#999090')
         self.canvas.create_rectangle(32, 32, HEIGHT - 32, HEIGHT - 32, outline='black', width=2)
         self.canvas.grid(column=0, row=0)
-        pilImage1 = Image.open("./sources/client/assets/ufo1.png")
+        pilImage1 = Image.open("./client/assets/ufo1.png")
         self.image1 = ImageTk.PhotoImage(pilImage1)
         self.canvas.create_image(592, 48, image=self.image1)
         self.health1 = self.canvas.create_rectangle(630, 36, 1010, 58, fill='green')
-        pilImage2 = Image.open("./sources/client/assets/ufo2.png")
+        pilImage2 = Image.open("./client/assets/ufo2.png")
         self.image2 = ImageTk.PhotoImage(pilImage2)
         self.canvas.create_image(592, 90, image=self.image2)
         self.health2 = self.canvas.create_rectangle(630, 78, 1010, 99, fill='green')
@@ -114,20 +116,25 @@ class Client:
                 if obj.name == name:
                     return obj
         return None
-    
+
     def creating_game_objects(self):
         """Creating Ufos and clouds
         """
         self.objects = []
         for k, v in self.game_data[0]['init_world'].items():
-            x, y = eval(k) 
+            x, y = eval(k)
             if v[0] == 'Bot' and v[1] == 'player1':
-                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo1.png", 'player1', v[2], v[3]))
+                self.objects.append(
+                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/ufo1.png", 'player1', v[2],
+                        v[3]))
             elif v[0] == 'Bot' and v[1] == 'player2':
-                self.objects.append(Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/ufo2.png", 'player2', v[2], v[3]))
+                self.objects.append(
+                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/ufo2.png", 'player2', v[2],
+                        v[3]))
             else:
-                self.objects.append(Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./sources/client/assets/Cloud.png"))            
-        
+                self.objects.append(
+                    Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/Cloud.png"))
+
         self.game_data.pop(0)
 
     def actions(self):
@@ -149,7 +156,7 @@ class Client:
     def step_once(self, event=None):
         if self.game_over:
             return None
-        
+
         cmd = self.game_data.pop(0)
         if list(cmd.keys())[0] == 'sleep':
             pass
@@ -216,6 +223,6 @@ class Client:
             self.canvas.delete(ufo_health)
             ufo_health = self.canvas.create_rectangle(630, 78, 1010 - (1010 - 630) * percent * 0.01, 99, fill='green')
             self.health2 = ufo_health
-    
+
     def main_loop(self):
         self.root.mainloop()

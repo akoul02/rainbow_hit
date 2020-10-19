@@ -1,9 +1,8 @@
+import os
+import sys
 import unittest
 
-
-import sys, os
 sys.path.insert(0, os.path.dirname(__file__) + '/../game/')
-
 
 from engine.utils.point import Point
 from engine.gameobjects.game_world import World

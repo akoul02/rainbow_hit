@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from server.game.engine.gameobjects.destroyable import Destroyable
+from server.game.engine.gameobjects.gameobject import GameObject
+from server.game.engine.utils.point import Point
 
-from engine.gameobjects.gameobject import GameObject
-from engine.gameobjects.destroyable import Destroyable
-from engine.utils.point import Point
 
 @dataclass
 class Laser(GameObject):

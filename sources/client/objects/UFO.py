@@ -1,7 +1,7 @@
+from PIL import Image, ImageTk
+from client.const_client import *
 from dataclasses import dataclass
 from tkinter import Canvas, Tk
-from PIL import Image, ImageTk
-from const_client import *
 
 
 class Ufo:
@@ -25,6 +25,7 @@ class Ufo:
     max_health: int
     damage : int
     """
+
     def __init__(self, x, y, canvas, way, name, health, damage):
         """Initialising values and creation UFO
         """
@@ -34,7 +35,7 @@ class Ufo:
         self.image = ImageTk.PhotoImage(Image.open(way))
         self.sprite = self.canvas.create_image(self.x, self.y, image=self.image)
 
-        self.explosion_img = ImageTk.PhotoImage(Image.open("./sources/client/assets/explosion.png"))
+        self.explosion_img = ImageTk.PhotoImage(Image.open("./client/assets/explosion.png"))
 
         self.name = name
         self.health = health
@@ -71,7 +72,7 @@ class Ufo:
         x1, y1 = self.canvas.coords(self.sprite)
         canvas_id = self.canvas.create_line(x1, y1, 48 + x * 32, 32 * 18 - (48 + y * 32), fill='red', width='3')
         self.canvas.after(LASER_TIMEOUT, self.canvas.delete, canvas_id)
-        
+
         explosion_id = self.canvas.create_image(48 + x * 32, 32 * 18 - (48 + y * 32), image=self.explosion_img)
         self.canvas.after(EXPLOSION_TIMEOUT, self.canvas.delete, explosion_id)
 

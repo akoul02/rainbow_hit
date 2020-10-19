@@ -4,7 +4,7 @@
 HSE miem 2019 python project.
 
 ### How to run
-While you're **exactly** in rainbow_hit directory run `python3 ./sources/main.py`
+Cd to `sources` and run `python3 main.py`
 
 ### Game information
 #### Tweakable settings
@@ -16,7 +16,7 @@ While you're **exactly** in rainbow_hit directory run `python3 ./sources/main.py
 2. The game is visualized using the "client" module
 
 #### Running game
-- You can write any python code for each of the bots inside this file: `./rainbow_hit/sources/server/game/bots_code/code.py`. The code must be written in the body of the `run_user1` and `run_user2`.
+- You can write custom python scripts for each of the bots inside this directory: `./rainbow_hit/sources/server/game/bots_code/bot_scripts/`. The code must be written inside a function `perform`. In file `./rainbow_hit/sources/server/game/bots_code/config.py` write names of preferred scripts in variables `p1sc` and `p2sc`.
 
 #### Game screenshots
 ![StartGame](https://i.imgur.com/8qojgjc.png)

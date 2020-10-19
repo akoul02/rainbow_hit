@@ -1,22 +1,37 @@
 import enum
+import math
 import random
-from engine.utils.point import Point
+from server.game.engine.utils.math_utils import get_angle
+from server.game.engine.utils.point import Point
+
 
 class Direction(enum.Enum):
     '''Describes all possible directions.
     '''
-    North     = N  = Up        = Point(0, 1)
-    NorthEast = NE = RightUp   = UpRight   = Point(1, 1)
-    East      = E  = Right     = Point(1, 0)
+    North = N = Up = Point(0, 1)
+    NorthEast = NE = RightUp = UpRight = Point(1, 1)
+    East = E = Right = Point(1, 0)
     SouthEast = SE = DownRight = RightDown = Point(1, -1)
-    South     = S  = Down      = Point(0, -1)
-    SouthWest = SW = LeftDown  = DownLeft  = Point(-1, -1)
-    West      = W  = Left      = Point(-1, 0)
-    NorthWest = NW = LeftUp    = UpLeft    = Point(-1, 1)
+    South = S = Down = Point(0, -1)
+    SouthWest = SW = LeftDown = DownLeft = Point(-1, -1)
+    West = W = Left = Point(-1, 0)
+    NorthWest = NW = LeftUp = UpLeft = Point(-1, 1)
 
     @staticmethod
     def rand_dir():
         return random.choice(list(Direction))
+
+    def get_closest_dir(obj_fin: Point, obj_start: Point):
+        directions = list(Direction)
+        item_vector = Point(obj_fin.x - obj_start.x, obj_fin.y - obj_start.y)
+        dif = math.pi
+        best = None
+
+        for dirr in directions:
+            if math.acos(get_angle(item_vector, dirr)) < dif:
+                best = dirr
+                dif = math.acos(get_angle(item_vector, dirr))
+        return best
 
     # overloading '~' operator
     def __invert__(self):

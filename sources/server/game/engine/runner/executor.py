@@ -1,11 +1,11 @@
-from threading import Thread, Event
 from dataclasses import *
+from server.game.constants import THREAD_TIMEOUT
+from server.game.engine.gameobjects.bots.bot import Bot
+from server.game.engine.utils.kthread import KThread
+from server.game.exceptions import *
+from threading import Thread, Event
 from typing import Callable
 
-from engine.gameobjects.bots.bot import Bot
-from engine.utils.kthread import KThread
-from constants import THREAD_TIMEOUT
-from exceptions import *
 
 @dataclass
 class Executor:
@@ -31,7 +31,7 @@ class Executor:
     bot: Bot
     max_steps: int
     run_func: Callable[[Bot], None]
-    
+
     thread: KThread = field(default_factory=KThread)
     is_started: bool = False
 
@@ -67,7 +67,7 @@ class Executor:
                         # if actions are over
                         self.thread.join()
                         raise ActionsAreOver()
-            
+
                 # clear main event
                 self.bot.main_event.clear()
                 # wait here, while bot is doing his actions

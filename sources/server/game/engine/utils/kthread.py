@@ -1,8 +1,9 @@
-import ctypes 
+import ctypes
 import threading
 import time
 
-from exceptions import FatalException
+from server.game.exceptions import FatalException
+
 
 class KThread(threading.Thread):
     '''This thread can be killed.

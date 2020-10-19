@@ -1,22 +1,27 @@
 import asyncio
-from exceptions import HandshakeError, UnameError, CodeTransmissionError
 from Crypto.Util.number import getPrime
 from gmpy2 import powmod, invert
 from hashlib import md5
 from os import listdir
+from server.game.exceptions import HandshakeError, UnameError, CodeTransmissionError
+
 
 class DSA:
     def __init__(self, p, q, e):
         self.p = p
         self.q = q
         self.e = e
-        self.n = p*q
-        self.d = invert(e, (p-1)*(q-1))
+        self.n = p * q
+        self.d = invert(e, (p - 1) * (q - 1))
+
     def sign(self, message):
         m = int.from_bytes(md5(message).digest(), "big")
         return powmod(m, self.d, self.n)
 
+
 ExitException = KeyboardInterrupt
+
+
 async def server_main(r, w):
     addr = writer.get_extra_info('peername')
     uname = md5(addr.encode('ascii')).hexdigest()
@@ -30,7 +35,6 @@ async def server_main(r, w):
 
 
 def server_start():
-    
     loop = asyncio.get_event_loop()
     coro = asyncio.start_server(server_main, '0.0.0.0', 31488, loop=loop)
     server = loop.run_until_complete(coro)

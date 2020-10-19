@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from math import sqrt, pow
-from copy import deepcopy
+
 
 @dataclass
 class Point:
@@ -46,7 +47,7 @@ class Point:
         n : float
             distance between 2 points
         '''
-        return sqrt(pow(self.x - b.x, 2) + pow(self.y - b.y, 2)) 
+        return sqrt(pow(self.x - b.x, 2) + pow(self.y - b.y, 2))
 
     @staticmethod
     def distance(a: Point, b: Point) -> float:

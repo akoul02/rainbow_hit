@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from engine.utils.math_utils import clamp
+from server.game.engine.gameobjects.gameobject import GameObject
+from server.game.engine.utils.math_utils import clamp
 
-from engine.gameobjects.gameobject import GameObject
 
 @dataclass
 class Destroyable(GameObject):
@@ -32,7 +32,7 @@ class Destroyable(GameObject):
         '''
         self.health = clamp(self.health - n, 0, self.max_health)
         return self.health
-    
+
     def increase_health(self, n: int) -> int:
         '''Increase hp for n points. Resulting value clamps between 0 and max_health
 
@@ -43,12 +43,12 @@ class Destroyable(GameObject):
         '''
         self.health = clamp(self.health + n, 0, self.max_health)
         return self.health
-    
+
     def is_alive(self) -> bool:
         '''Returns object status (alive/dead)
         '''
         return self.alive
-    
+
     def kill(self) -> None:
         '''Kill current object.
         '''

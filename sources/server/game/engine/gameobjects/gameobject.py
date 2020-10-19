@@ -1,8 +1,8 @@
+import server.game.engine.gameobjects.game_world as g_world
 from dataclasses import dataclass
+from server.game.engine.utils.point import Point
+from server.game.exceptions import InvalidCoordinate
 
-from engine.utils.point import Point
-from exceptions import InvalidCoordinate
-import engine.gameobjects.game_world as g_world
 
 @dataclass
 class GameObject:
@@ -23,4 +23,3 @@ class GameObject:
             if self.world.at_position(self.coord):
                 raise InvalidCoordinate()
             self.world.append(self)
-

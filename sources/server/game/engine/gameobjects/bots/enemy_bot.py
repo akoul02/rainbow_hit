@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
-from engine.gameobjects.bots.bot import Bot
+from server.game.engine.gameobjects.bots.bot import Bot
+
 
 @dataclass
 class EnemyBot(Bot):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
+from server.game.engine.gameobjects.destroyable import Destroyable
 
-from engine.gameobjects.destroyable import Destroyable
 
 @dataclass
 class Wall(Destroyable):

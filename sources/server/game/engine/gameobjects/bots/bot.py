@@ -1,19 +1,19 @@
 from dataclasses import dataclass, field
+from math import pow, sqrt
+from server.game.constants import *
+from server.game.engine.gameobjects.destroyable import Destroyable
+from server.game.engine.gameobjects.gameobject import GameObject
+from server.game.engine.gameobjects.laser import Laser
+from server.game.engine.utils.direction import Direction
+from server.game.engine.utils.math_utils import samelcheck
+from server.game.engine.utils.point import Point
+from server.game.exceptions import InvalidSelfInstance, GameException
 from threading import Event, Timer, Thread
 from typing import List, Dict, Any, Callable, Tuple, Union, Optional
-from math import pow, sqrt
-
-from exceptions import InvalidSelfInstance, GameException
-from constants import *
-from engine.utils.direction import Direction
-from engine.utils.point import Point
-from engine.gameobjects.laser import Laser
-from engine.gameobjects.gameobject import GameObject
-from engine.gameobjects.destroyable import Destroyable
-from engine.utils.math_utils import samelcheck
 
 if IS_DEBUG:
     import threading
+
 
 @dataclass
 class Bot(Destroyable):
@@ -56,6 +56,7 @@ class Bot(Destroyable):
         
         First argument should be bot instance. 
         '''
+
         def wrapper(self, *args: List[Any], **kwargs: Dict[str, Any]):
             flag = kwargs.pop('blocking', True)
             res = func(self, *args, **kwargs)
@@ -70,6 +71,7 @@ class Bot(Destroyable):
                 else:
                     raise InvalidSelfInstance()
             return res
+
         return wrapper
 
     def serialize(self):
@@ -95,11 +97,12 @@ class Bot(Destroyable):
                 self.coord.x += dir.value.x
                 self.coord.y += dir.value.y
         if IS_DEBUG:
-            print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
+            print(
+                f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} step: ({old_coord.x}, {old_coord.y}) => ({self.coord.x}, {self.coord.y})')
 
         self.last_action = STEP_CMD.format(
-            self.name, 
-            self.coord.x, 
+            self.name,
+            self.coord.x,
             self.coord.y
         )
         return Point(self.coord.x, self.coord.y)
@@ -113,7 +116,7 @@ class Bot(Destroyable):
             current coordinates
         '''
         return Point(self.coord.x, self.coord.y)
-    
+
     def current_hp(self) -> int:
         '''Get current health
 
@@ -123,7 +126,6 @@ class Bot(Destroyable):
             Current health
         '''
         return self.health
-    
 
     def scan(self) -> List[GameObject]:
         '''Find objects around you in world
@@ -147,7 +149,6 @@ class Bot(Destroyable):
                 print(f'\t{ANSI_GREEN + obj.name + ANSI_RES} : ({obj.coord})')
 
         return objects
-        
 
     @synchronized
     def shoot(self, obj: Union[Point, GameObject]) -> Optional[int]:
@@ -173,11 +174,11 @@ class Bot(Destroyable):
             point = obj
         elif isinstance(obj, GameObject):
             point = obj.coord
-        
+
         class NoneObject:
             def __init__(self, point):
                 self.coord = point
-                        
+
         closest = self.world.get_obj_at_position(point)
         if closest == None:
             closest = NoneObject(point)
@@ -185,15 +186,19 @@ class Bot(Destroyable):
         _range = lambda x1, x2: range(x1, x2) if x1 != x2 else [x1]
 
         dbp = lambda x1, y1, x2, y2: sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-        heron = lambda a, b, c: sqrt((a+b+c)/2*((a+b+c)/2 - a)*((a+b+c)/2 - b)*((a+b+c)/2 - c))
+        heron = lambda a, b, c: sqrt(
+            (a + b + c) / 2 * ((a + b + c) / 2 - a) * ((a + b + c) / 2 - b) * ((a + b + c) / 2 - c))
         a = dbp(point.x, point.y, self.coord.x, self.coord.y)
-        dircheck = lambda ox, oy, x1, x2, y1, y2 : True if ox in _range(min(x1, x2), max(x1, x2)) and oy in _range(min(y1, y2), max(y1, y2)) else False
+        dircheck = lambda ox, oy, x1, x2, y1, y2: True if ox in _range(min(x1, x2), max(x1, x2)) and oy in _range(
+            min(y1, y2), max(y1, y2)) else False
         for obj in self.world.objects:
             dch = dircheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y)
-            if obj.coord != self.coord and obj != self and self.coord != point and dircheck(obj.coord.x, obj.coord.y, self.coord.x, point.x, self.coord.y, point.y):
+            if obj.coord != self.coord and obj != self and self.coord != point and dircheck(obj.coord.x, obj.coord.y,
+                                                                                            self.coord.x, point.x,
+                                                                                            self.coord.y, point.y):
                 b = dbp(self.coord.x, self.coord.y, obj.coord.x, obj.coord.y)
                 c = dbp(point.x, point.y, obj.coord.x, obj.coord.y)
-                dist = 2*heron(a, b, c)/a
+                dist = 2 * heron(a, b, c) / a
                 if dist <= DELTA:
                     if obj.coord.distance_to(self.coord) <= closest.coord.distance_to(self.coord):
                         closest = obj
@@ -202,20 +207,22 @@ class Bot(Destroyable):
         if isinstance(closest, Destroyable):
             l = Laser(self.coord, None, closest.coord, self.damage)
             if IS_DEBUG:
-                print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
+                print(
+                    f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} shooting at: {closest.coord} [{ANSI_GREEN + self.world.get_obj_at_position(closest.coord).name + ANSI_RES}]')
                 print(f'Health after shoot: {self.world.get_obj_at_position(closest.coord).health - self.damage}')
             res = l.shoot(closest)
         else:
             if IS_DEBUG:
-                print(f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
+                print(
+                    f'[{threading.current_thread().name}] {ANSI_CYAN + self.name + ANSI_RES} doesnt found any destroyable objects at {point}')
             res = None
 
         self.last_action = SHOOT_CMD.format(
-            self.name, 
-            self.coord.x, 
-            self.coord.y, 
-            (point.x if type(closest) is NoneObject else closest.coord.x), 
-            (point.y if type(closest) is NoneObject else closest.coord.y), 
+            self.name,
+            self.coord.x,
+            self.coord.y,
+            (point.x if type(closest) is NoneObject else closest.coord.x),
+            (point.y if type(closest) is NoneObject else closest.coord.y),
             ("true" if ((type(closest) is not NoneObject) and not closest.is_alive()) else "false")
         )
         return res

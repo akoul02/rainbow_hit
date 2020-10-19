@@ -1,9 +1,11 @@
+import os
+import sys
 import unittest
 
-import sys, os
 sys.path.insert(0, os.path.dirname(__file__) + '/../game/')
 
 from engine.utils.point import Point
+
 
 class PointTest(unittest.TestCase):
     def test_distance_to1(self):
@@ -29,6 +31,7 @@ class PointTest(unittest.TestCase):
         p2 = Point(0, 5)
 
         self.assertEqual(Point.distance(p2, p1), 5)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,18 +3,18 @@ from __future__ import annotations
 import math
 import random
 from dataclasses import *
+from server.game.constants import *
+from server.game.engine.gameobjects.bots.bot import Bot
+from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
+from server.game.engine.gameobjects.bots.user_bot import UserBot
+from server.game.engine.gameobjects.destroyable import Destroyable
+from server.game.engine.gameobjects.gameobject import GameObject
+from server.game.engine.gameobjects.laser import Laser
+from server.game.engine.gameobjects.wall import Wall
+from server.game.engine.utils.point import Point
+from server.game.exceptions import GameOver
 from typing import Any, List
 
-from engine.gameobjects.wall import Wall
-from engine.gameobjects.gameobject import GameObject
-from engine.gameobjects.destroyable import Destroyable
-from engine.utils.point import Point
-from engine.gameobjects.bots.user_bot import UserBot
-from engine.gameobjects.bots.bot import Bot
-from engine.gameobjects.bots.enemy_bot import EnemyBot
-from engine.gameobjects.laser import Laser
-from exceptions import GameOver
-from constants import *
 
 @dataclass
 class World:
@@ -57,9 +57,8 @@ class World:
         self.objects.append(obj)
         return self.objects
 
-
     def draw(self):
-        print('┌' + '─' * self.size_y * 2+ '┐')
+        print('┌' + '─' * self.size_y * 2 + '┐')
         for i in range(self.size_x - 1, -1, -1):
             s = '│'
             for j in range(self.size_y):
@@ -69,7 +68,7 @@ class World:
                 elif isinstance(obj, UserBot):
                     s += '🛸'
                 else:
-                    s += '  ' # ░░
+                    s += '  '  # ░░
             s += '│'
             print(s)
         print('└' + '─' * self.size_y * 2 + '┘')
@@ -134,8 +133,8 @@ class World:
         w = 2 * w0 + 1
         h = 2 * h0 + 1
         maze: List[List[int]] = []
-        stackcurr = [] # Visited cells
-        unvisitedcells = w0 * h0 # Num of unvisited cells
+        stackcurr = []  # Visited cells
+        unvisitedcells = w0 * h0  # Num of unvisited cells
 
         for i in range(h):
             maze.append([])
@@ -152,9 +151,9 @@ class World:
                     else:
                         maze[i].append([i, j, 0])
 
-        startcell = random.randrange(1, h, 2) #Choose the num of random cell from first row to start the algorithm
-        currentcell = maze[startcell][1]  #Set the list with coordinates of current cell
-        maze[startcell][0] = 0 #Set the value of current cell
+        startcell = random.randrange(1, h, 2)  # Choose the num of random cell from first row to start the algorithm
+        currentcell = maze[startcell][1]  # Set the list with coordinates of current cell
+        maze[startcell][0] = 0  # Set the value of current cell
         currentcell[-1] = 1
         unvisitedcells -= 1
         stackcurr.append(currentcell)
@@ -163,16 +162,16 @@ class World:
             neigh = getNeighbours(h, w, currentcell, maze)
 
             if (neigh):
-                randnum = random.randint(0, len(neigh) - 1) #Check the random neighbour cell
+                randnum = random.randint(0, len(neigh) - 1)  # Check the random neighbour cell
                 neighbourcell = neigh[randnum]
                 neighbourcell[-1] = 1
                 unvisitedcells -= 1
-                removeWall(neighbourcell, currentcell, maze) #Remove the wall between current and neighbour cell
-                currentcell = neighbourcell #Now new current cell is neighbour cell
+                removeWall(neighbourcell, currentcell, maze)  # Remove the wall between current and neighbour cell
+                currentcell = neighbourcell  # Now new current cell is neighbour cell
                 stackcurr.append(neighbourcell)
 
             else:
-                stackcurr.pop() #Remove cell from stack
+                stackcurr.pop()  # Remove cell from stack
                 currentcell = stackcurr[-1]
 
         endcell = random.randrange(1, h, 2)
@@ -194,9 +193,9 @@ class World:
         for i in range(0, len(maze_new)):
             for j in range(0, len(maze_new)):
                 if random.randrange(0, 10) < maze_density:
-                    maze_new[i][j] = 0 # 1 - maze_new[i][j]
+                    maze_new[i][j] = 0  # 1 - maze_new[i][j]
 
-        maze_new[0][0] = 0                      # Empty cell for bot
+        maze_new[0][0] = 0  # Empty cell for bot
         maze_new[FIELD_X - 1][FIELD_Y - 1] = 0  # Empty cell for bot
 
         world = World(mode)
@@ -204,7 +203,7 @@ class World:
             for j in range(0, len(maze_new)):
                 if maze_new[i][j]:
                     Wall(Point(i, j), world, 1, 1, True)
-                    
+
         return world
 
     def update(self) -> None:
@@ -218,7 +217,7 @@ class World:
                     self.objects.remove(i)
             if isinstance(i, Laser):
                 self.objects.remove(i)
-        enemy_objects  = [i for i in self.objects if isinstance(i, EnemyBot)]
+        enemy_objects = [i for i in self.objects if isinstance(i, EnemyBot)]
         player_objects = [i for i in self.objects if isinstance(i, UserBot)]
 
         if self.game_mode == 'pvp':
@@ -277,4 +276,3 @@ class World:
             if obj.coord == coord:
                 return obj
         return None
-

@@ -1,21 +1,23 @@
 from dataclasses import dataclass
+from server.game.bots_code import config
+from server.game.bots_code.code import *
+from server.game.constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
+from server.game.engine.gameobjects.bots.bot import Bot
+from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
+from server.game.engine.gameobjects.bots.user_bot import UserBot
+from server.game.engine.gameobjects.game_world import World
+from server.game.engine.runner.executor import Executor
+from server.game.engine.utils.point import Point
+from server.game.exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
 from threading import Event
 from time import sleep
 
-from engine.gameobjects.game_world import World
-from engine.runner.executor import Executor
-from engine.gameobjects.bots.bot import Bot
-from engine.gameobjects.bots.enemy_bot import EnemyBot
-from engine.gameobjects.bots.user_bot import UserBot
-from engine.utils.point import Point
-from constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
-from exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
-from bots_code.code import *
 
 @dataclass
 class Game:
     '''Base game class.
     '''
+
     def start(self) -> bool:
         '''Starts the game
 
@@ -29,10 +31,12 @@ class Game:
         # used to lock main Thread
         main_event = Event()
         game_world = World.generate('pvp', LABYRINTH_DENSITY)
-        
+
         executors = [
-            Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player1', main_event), MAX_STEPS, run_user1),
-            Executor(UserBot(Point(15, 15), game_world, 10, 10, True, 'player2', main_event), MAX_STEPS, run_user2),
+            Executor(UserBot(Point(0, 0), game_world, 10, 10, True, 'player1', main_event), MAX_STEPS,
+                     get_callable_script(config.p1sc)),
+            Executor(UserBot(Point(15, 15), game_world, 10, 10, True, 'player2', main_event), MAX_STEPS,
+                     get_callable_script(config.p1sc)),
         ]
 
         objects = ''
@@ -43,12 +47,12 @@ class Game:
                 objects += ' ' * 8 + obj.serialize()
             else:
                 objects += ' ' * 8 + obj.serialize() + ',\n'
-        
+
         history.write('[' + INIT_WORLD_CMD.format(objects) + ',\n')
         history.flush()
 
         # send world layout and bots positions
-        
+
         # game_world.draw()
 
         try:
@@ -90,7 +94,7 @@ class Game:
             history.write(GAME_OVER.format('', "false" if result else "true") + ']')
             history.flush()
             print(f'Draw!')
-        
+
         # send result
 
         print('Simulation is over!')
@@ -108,9 +112,11 @@ class Game:
     def update(self):
         pass
 
+
 def main():
     game = Game()
     result = game.start()
+
 
 if __name__ == '__main__':
     main()

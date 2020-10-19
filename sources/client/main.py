@@ -1,11 +1,11 @@
 import json
-from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
-
+import random
 from PIL import Image, ImageTk
-
 from client.const_client import *
 from client.objects.UFO import Ufo
 from client.objects.cloud import Cloud
+from dataclasses import dataclass
+from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
 
 
 class Client:

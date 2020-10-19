@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-
-from server.game.engine.gameobjects.gameobject import GameObject
 from server.game.engine.utils.math_utils import clamp
+from server.game.engine.gameobjects.gameobject import GameObject
 
 
 @dataclass

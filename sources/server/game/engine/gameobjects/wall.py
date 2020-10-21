@@ -22,3 +22,11 @@ class Wall(Destroyable):
             current coordinates
         '''
         return Point(self.coord.x, self.coord.y)
+
+    @property
+    def x(self):
+        return self.value.x
+
+    @property
+    def y(self):
+        return self.value.y

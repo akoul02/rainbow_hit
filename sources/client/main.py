@@ -55,7 +55,7 @@ class Client:
         self.step_button.place(x=564, y=240)
 
         self.pause_btn = Button(self.root, text="pause", bg="#3fbfbf", activeforeground='#3fbfbf',
-                                activebackground='#3fbfbf', fg='#3fbfbf', width=32, command=self.pause)
+                                activebackground='#3fbfbf', width=32, command=self.pause)
         self.pause_btn.place(x=564, y=280)
 
         message_entry = self.canvas.create_text(635, 335, font="Times", text='Step delay')

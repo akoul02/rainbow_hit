@@ -6,9 +6,9 @@ from server.game.engine.utils.point import Point
 
 
 class Direction(enum.Enum):
-    '''
+    """
     Describes all possible directions.
-    '''
+    """
     North = N = Up = Point(0, 1)
     NorthEast = NE = RightUp = UpRight = Point(1, 1)
     East = E = Right = Point(1, 0)
@@ -19,8 +19,20 @@ class Direction(enum.Enum):
     NorthWest = NW = LeftUp = UpLeft = Point(-1, 1)
 
     @staticmethod
-    def rand_dir():
-        return random.choice(list(Direction))
+    def to_list():
+        return [e.value for e in Direction]
+
+    @staticmethod
+    def random():
+        return random.choice(Direction.to_list())
+
+    @property
+    def x(self):
+        return self.value.x
+
+    @property
+    def y(self):
+        return self.value.y
 
     # overloading '~' operator
     def __invert__(self):

@@ -69,7 +69,7 @@ class GameOver(GameException):
     '''Exception, which get raised, if game is over
     '''
     game_won: bool = False
-    winner: Optional['UserBot'] = None
+    winner: Optional[object] = None
 
     def __init__(self, win_status: bool, winner=None):
         self.game_won = win_status

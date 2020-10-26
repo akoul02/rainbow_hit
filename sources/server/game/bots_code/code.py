@@ -1,4 +1,4 @@
-from server.game.engine.gameobjects.bots.bot import Bot
+from server.game.engine.gameobjects.bots.user_bot import Bot
 from server.game.exceptions import *
 
 

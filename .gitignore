@@ -677,3 +677,5 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/linux,macos,python,windows,sublimetext,visualstudio,jupyternotebooks,visualstudiocode
+
+.idea/

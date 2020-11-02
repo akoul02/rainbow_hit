@@ -1,13 +1,10 @@
-from client.main import Client
-from server.game.constants import TRACE_NAME
-from server.game.game_sync import Game
 import sys
 
 
-def run():
+def run(player1 = None):
     print(f'[DEBUG] Python {sys.version.split()[0]}')
 
-    game = Game()
+    game = Game(player1)
     game.start_game_loop()  # TODO every 3 destroyed clouds lead to 10% HP decrease in order to nerf chaotic destroyer
 
     client = Client(TRACE_NAME)
@@ -20,4 +17,11 @@ def main():
 
 
 if __name__ == "__main__":
+    from client.main import Client
+    from server.game.constants import TRACE_NAME
+    from server.game.game_sync import Game
     main()
+else:
+    from .client.main import Client
+    from .server.game.constants import TRACE_NAME
+    from .server.game.game_sync import Game

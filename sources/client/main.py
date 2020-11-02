@@ -1,11 +1,12 @@
 import json
 import random
 from PIL import Image, ImageTk
-from client.const_client import *
-from client.objects.UFO import Ufo
-from client.objects.cloud import Cloud
+from .const_client import *
+from .objects.UFO import Ufo
+from .objects.cloud import Cloud
 from dataclasses import dataclass
 from tkinter import Canvas, Tk, Button, messagebox, Scale, HORIZONTAL
+from pathlib import Path
 
 
 class Client:
@@ -17,6 +18,7 @@ class Client:
         """
         self.trace_path = trace_path
         self.game_data = json.loads(open(trace_path, 'r').read())
+        self.rootpath = Path(__file__).parent
 
         self.root = Tk()
         self.root.title("RAINBOW hit")
@@ -30,11 +32,11 @@ class Client:
                                              j * CELL_SIZE + CELL_SIZE, fill='#c4badb', outline='#999090')
         self.canvas.create_rectangle(32, 32, HEIGHT - 32, HEIGHT - 32, outline='gray', width=2)
         self.canvas.grid(column=0, row=0)
-        pilImage1 = Image.open("./client/assets/ufo1.png")
+        pilImage1 = Image.open(self.rootpath / "assets/ufo1.png")
         self.image1 = ImageTk.PhotoImage(pilImage1)
         self.canvas.create_image(592, 48, image=self.image1)
         self.health1 = self.canvas.create_rectangle(630, 36, 1010, 58, fill='#3ab03e', outline='gray')
-        pilImage2 = Image.open("./client/assets/ufo2.png")
+        pilImage2 = Image.open(self.rootpath / "assets/ufo2.png")
         self.image2 = ImageTk.PhotoImage(pilImage2)
         self.canvas.create_image(592, 90, image=self.image2)
         self.health2 = self.canvas.create_rectangle(630, 78, 1010, 99, fill='#3ab03e', outline='gray')
@@ -126,15 +128,15 @@ class Client:
             x, y = eval(k)
             if v[0] == 'Bot' and v[1] == 'player1':
                 self.objects.append(
-                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/ufo1.png", 'player1', v[2],
+                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, self.rootpath / "assets/ufo1.png", 'player1', v[2],
                         v[3]))
             elif v[0] == 'Bot' and v[1] == 'player2':
                 self.objects.append(
-                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/ufo2.png", 'player2', v[2],
+                    Ufo(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, self.rootpath / "assets/ufo2.png", 'player2', v[2],
                         v[3]))
             else:
                 self.objects.append(
-                    Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, "./client/assets/Cloud.png"))
+                    Cloud(48 + x * 32, 32 * 18 - (48 + y * 32), self.canvas, self.rootpath / "assets/Cloud.png"))
 
         self.game_data.pop(0)
 

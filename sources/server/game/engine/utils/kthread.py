@@ -2,7 +2,7 @@ import ctypes
 import threading
 import time
 
-from server.game.exceptions import FatalException
+from ...exceptions import FatalException
 
 
 class KThread(threading.Thread):

@@ -3,13 +3,7 @@ import random
 from collections import deque
 from typing import List
 
-from server.game.bots_code.code import continuemain
-from server.game.engine.gameobjects.bots.bot import Bot
-from server.game.engine.gameobjects.bots.user_bot import UserBot
-from server.game.engine.gameobjects.wall import Wall
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.math_utils import get_angle
-from server.game.engine.utils.point import Point
+from ...api import continuemain, Bot, UserBot, Wall, Direction, get_angle, Point
 
 
 @continuemain

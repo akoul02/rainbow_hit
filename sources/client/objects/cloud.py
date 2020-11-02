@@ -1,5 +1,5 @@
 from PIL import Image, ImageTk
-from client.const_client import *
+from ..const_client import *
 from tkinter import Canvas
 
 

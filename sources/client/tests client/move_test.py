@@ -5,8 +5,8 @@ from tkinter import Canvas, Tk
 
 sys.path.insert(0, os.path.dirname(__file__) + '/../')
 
-from client.objects.UFO import Ufo
-from client.const_client import *
+from ..objects.UFO import Ufo
+from ..const_client import *
 
 
 class Move_tests(unittest.TestCase):

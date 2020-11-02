@@ -1,10 +1,10 @@
 from random import choice, shuffle
 
-from server.game.bots_code.code_dummy import BotActivityDummy
-from server.game.engine.gameobjects.bots.bot_sync import Bot
-from server.game.engine.gameobjects.wall import Wall
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.point import Point
+from ..code_dummy import BotActivityDummy
+from ...engine.gameobjects.bots.bot_sync import Bot
+from ...engine.gameobjects.wall import Wall
+from ...engine.utils.direction import Direction
+from ...engine.utils.point import Point
 
 
 class BotActivity:

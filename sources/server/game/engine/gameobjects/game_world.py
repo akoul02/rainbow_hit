@@ -4,14 +4,14 @@ import random
 from dataclasses import *
 from typing import List
 
-from server.game.constants import *
-from server.game.engine.gameobjects.wall import Wall
-from server.game.engine.gameobjects.gameobject import GameObject
-from server.game.engine.gameobjects.destroyable import Destroyable
-from server.game.engine.utils.point import Point
-from server.game.engine.gameobjects.bots.bot_sync import Bot
-from server.game.engine.gameobjects.laser import Laser
-from server.game.exceptions import GameOver
+from ...constants import *
+from .wall import Wall
+from .gameobject import GameObject
+from .destroyable import Destroyable
+from ..utils.point import Point
+from .bots.bot_sync import Bot
+from .laser import Laser
+from ...exceptions import GameOver
 
 
 @dataclass

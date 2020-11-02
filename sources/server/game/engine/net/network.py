@@ -3,7 +3,7 @@ from Crypto.Util.number import getPrime
 from gmpy2 import powmod, invert
 from hashlib import md5
 from os import listdir
-from server.game.exceptions import HandshakeError, UnameError, CodeTransmissionError
+from ..exceptions import HandshakeError, UnameError, CodeTransmissionError
 
 
 class DSA:

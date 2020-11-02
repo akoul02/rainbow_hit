@@ -1,4 +1,4 @@
-from server.game.game import Game
+from .game import Game
 
 
 def main():

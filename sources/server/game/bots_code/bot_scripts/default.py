@@ -1,14 +1,14 @@
 import random
 import time
 from collections import deque
-from server.game.bots_code.code import continuemain
-from server.game.engine.gameobjects.bots.bot import Bot
-from server.game.engine.gameobjects.bots.user_bot import UserBot
-from server.game.engine.gameobjects.destroyable import Destroyable
-from server.game.engine.gameobjects.wall import Wall
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.point import Point
-from server.game.exceptions import *
+from ..code import continuemain
+from ...engine.gameobjects.bots.bot import Bot
+from ...engine.gameobjects.bots.user_bot import UserBot
+from ...engine.gameobjects.destroyable import Destroyable
+from ...engine.gameobjects.wall import Wall
+from ...engine.utils.direction import Direction
+from ...engine.utils.point import Point
+from ...exceptions import *
 from typing import Any, List
 
 

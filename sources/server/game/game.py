@@ -1,14 +1,14 @@
 from dataclasses import dataclass
-from server.game.bots_code import config
-from server.game.engine.gameobjects.game_world import World
-from server.game.engine.runner.executor import Executor
-from server.game.bots_code.code import *
-from server.game.engine.gameobjects.bots.bot import Bot
-from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
-from server.game.engine.gameobjects.bots.user_bot import UserBot
-from server.game.engine.utils.point import Point
-from server.game.constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
-from server.game.exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
+from .bots_code import config
+from .engine.gameobjects.game_world import World
+from .engine.runner.executor import Executor
+from .bots_code.code import *
+from .engine.gameobjects.bots.bot import Bot
+from .engine.gameobjects.bots.enemy_bot import EnemyBot
+from .engine.gameobjects.bots.user_bot import UserBot
+from .engine.utils.point import Point
+from .constants import MAX_STEPS, BOT_DEFAULT_HP, SLEEP_CMD, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
+from .exceptions import ActionsAreOver, BotTimeoutError, StepsAreOver, ThreadKilledError, GameOver, BotIsDead
 from threading import Event
 from time import sleep
 

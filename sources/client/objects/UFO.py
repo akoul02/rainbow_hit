@@ -1,5 +1,5 @@
 from PIL import Image, ImageTk
-from client.const_client import *
+from ..const_client import *
 from dataclasses import dataclass
 from tkinter import Canvas, Tk
 
@@ -35,7 +35,7 @@ class Ufo:
         self.image = ImageTk.PhotoImage(Image.open(way))
         self.sprite = self.canvas.create_image(self.x, self.y, image=self.image)
 
-        self.explosion_img = ImageTk.PhotoImage(Image.open("./client/assets/explosion.png"))
+        self.explosion_img = ImageTk.PhotoImage(Image.open(way.parent / "explosion.png"))
 
         self.name = name
         self.health = health

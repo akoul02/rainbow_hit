@@ -1,7 +1,7 @@
 from typing import Union
 
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.point import Point
+from ..engine.utils.direction import Direction
+from ..engine.utils.point import Point
 
 
 class BotActivityDummy:

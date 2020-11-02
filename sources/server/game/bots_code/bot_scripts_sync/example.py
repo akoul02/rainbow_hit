@@ -1,7 +1,7 @@
 from random import choice
 
-from server.game.bots_code.code_dummy import BotActivityDummy
-from server.game.engine.utils.direction import Direction
+from ..code_dummy import BotActivityDummy
+from ...engine.utils.direction import Direction
 
 
 class BotActivity:

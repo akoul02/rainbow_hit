@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from server.game.engine.gameobjects.gameobject import GameObject
-from server.game.engine.gameobjects.destroyable import Destroyable
-from server.game.engine.utils.point import Point
+from .gameobject import GameObject
+from .destroyable import Destroyable
+from ..utils.point import Point
 
 
 @dataclass

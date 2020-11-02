@@ -1,8 +1,8 @@
 import enum
 import math
 import random
-from server.game.engine.utils.math_utils import get_angle
-from server.game.engine.utils.point import Point
+from .math_utils import get_angle
+from .point import Point
 
 
 class Direction(enum.Enum):

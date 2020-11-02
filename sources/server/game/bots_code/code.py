@@ -1,5 +1,5 @@
-from server.game.engine.gameobjects.bots.user_bot import Bot
-from server.game.exceptions import *
+from ..engine.gameobjects.bots.user_bot import Bot
+from ..exceptions import *
 
 
 def continuemain(func):
@@ -31,4 +31,4 @@ def continuemain(func):
 
 
 def get_callable_script(name):
-    return __import__(f'server.game.bots_code.bot_scripts.{name}', fromlist=[name]).perform
+    return importlib.import_module(f'..bot_scripts.{name}', __name__).perform

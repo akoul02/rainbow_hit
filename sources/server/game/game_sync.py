@@ -1,23 +1,23 @@
 import traceback
 
-from server.game.bots_code import config
-from server.game.bots_code.code_sync import BotActivityWrapper, get_bot_activity
-from server.game.engine.gameobjects.game_world import World
-from server.game.constants import MAX_STEPS, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
-from server.game.engine.gameobjects.bots.bot_sync import Bot
-from server.game.engine.utils.point import Point
-from server.game.exceptions import GameOver, BotIsDead
+from .bots_code import config
+from .bots_code.code_sync import BotActivityWrapper, get_bot_activity
+from .engine.gameobjects.game_world import World
+from .constants import MAX_STEPS, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
+from .engine.gameobjects.bots.bot_sync import Bot
+from .engine.utils.point import Point
+from .exceptions import GameOver, BotIsDead
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, player1 = None, player2 = None):
         self.result = False
         self.history = open('history.json', 'w')
         self.world = World.generate('pvp', LABYRINTH_DENSITY)
 
         self.bots = [
-            BotActivityWrapper(Bot(Point(0, 0), self.world, 10, 10, True, 'player1'), get_bot_activity(config.p1sc)),
-            BotActivityWrapper(Bot(Point(15, 15), self.world, 10, 10, True, 'player2'), get_bot_activity(config.p2sc))]
+            BotActivityWrapper(Bot(Point(0, 0), self.world, 10, 10, True, 'player1'), player1 or get_bot_activity(config.p1sc)),
+            BotActivityWrapper(Bot(Point(15, 15), self.world, 10, 10, True, 'player2'), player2 or get_bot_activity(config.p2sc))]
 
         self.__save_map()
 

@@ -1,4 +1,4 @@
-from server.game.engine.gameobjects.gameobject import GameObject
+from .gameobject import GameObject
 
 
 class PowerUp(GameObject):

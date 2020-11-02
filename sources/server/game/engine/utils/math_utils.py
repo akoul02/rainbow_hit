@@ -1,5 +1,5 @@
 import math
-from server.game.engine.utils.point import Point
+from .point import Point
 
 '''Simple math functions
 '''

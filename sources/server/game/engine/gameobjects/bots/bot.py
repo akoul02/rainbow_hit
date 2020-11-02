@@ -3,14 +3,14 @@ from math import sqrt
 from threading import Event
 from typing import List, Dict, Any, Callable, Tuple, Union, Optional
 
-from server.game.constants import *
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.point import Point
-from server.game.engine.gameobjects.laser import Laser
-from server.game.engine.gameobjects.gameobject import GameObject
-from server.game.engine.gameobjects.destroyable import Destroyable
+from ....constants import *
+from ...utils.direction import Direction
+from ...utils.point import Point
+from ..laser import Laser
+from ..gameobject import GameObject
+from ..destroyable import Destroyable
 
-from server.game.exceptions import InvalidSelfInstance
+from ....exceptions import InvalidSelfInstance
 
 if IS_DEBUG:
     import threading

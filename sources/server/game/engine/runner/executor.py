@@ -1,8 +1,8 @@
 from dataclasses import *
-from server.game.constants import THREAD_TIMEOUT
-from server.game.engine.gameobjects.bots.bot import Bot
-from server.game.engine.utils.kthread import KThread
-from server.game.exceptions import *
+from ...constants import THREAD_TIMEOUT
+from ..gameobjects.bots.bot import Bot
+from ..utils.kthread import KThread
+from ...exceptions import *
 from threading import Thread, Event
 from typing import Callable
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from server.game.engine.gameobjects.bots.bot_sync import Bot
+from .bot_sync import Bot
 
 
 @dataclass

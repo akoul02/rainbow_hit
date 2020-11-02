@@ -1,8 +1,9 @@
 from typing import Union
 
-from server.game.bots_code.code_dummy import BotActivityDummy as BotActivity
-from server.game.engine.utils.direction import Direction
-from server.game.engine.utils.point import Point
+from .code_dummy import BotActivityDummy as BotActivity
+from ..engine.utils.direction import Direction
+from ..engine.utils.point import Point
+import importlib
 
 
 class BotActivityWrapper:
@@ -60,6 +61,6 @@ class BotActivityWrapper:
 
 def get_bot_activity(name):
     try:
-        return __import__(f'server.game.bots_code.bot_scripts_sync.{name}', fromlist=[name]).BotActivity
+        return importlib.import_module(f'..bot_scripts_sync.{name}', __name__).BotActivity
     except:
         raise KeyError(f'Invalid script: {name}')

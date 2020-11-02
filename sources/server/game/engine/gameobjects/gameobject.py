@@ -1,7 +1,6 @@
-import server.game.engine.gameobjects.game_world as g_world
 from dataclasses import dataclass
-from server.game.engine.utils.point import Point
-from server.game.exceptions import InvalidCoordinate
+from ..utils.point import Point
+from ...exceptions import InvalidCoordinate
 
 
 @dataclass

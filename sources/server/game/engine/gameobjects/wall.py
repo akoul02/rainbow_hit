@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from server.game.engine.gameobjects.destroyable import Destroyable
-from server.game.engine.utils.point import Point
+from .destroyable import Destroyable
+from ..utils.point import Point
 
 
 @dataclass

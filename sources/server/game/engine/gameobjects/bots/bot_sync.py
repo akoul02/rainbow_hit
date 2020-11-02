@@ -24,9 +24,11 @@ class Bot(Destroyable):
         return f'"({self.coord.x}, {self.coord.y})": ["Bot", "{self.name}", {self.health}, {self.damage}]'
 
     def step(self, dir: Direction):
+        if dir is None:
+            raise TypeError('NoneType passed as a direction to Bot.step()')
         old_coord = Point(self.coord.x, self.coord.y)
         if not self.world.at_position(Point(self.coord.x + dir.x, self.coord.y + dir.y)):
-            if self.coord.x + dir.x >= 0 and self.coord.x + dir.x < self.world.size_x and self.coord.y + dir.y >= 0 and self.coord.y + dir.y < self.world.size_y:
+            if 0 <= self.coord.x + dir.x < self.world.size_x and 0 <= self.coord.y + dir.y < self.world.size_y:
                 self.coord.x += dir.x
                 self.coord.y += dir.y
 

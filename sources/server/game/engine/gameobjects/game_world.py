@@ -9,9 +9,7 @@ from server.game.engine.gameobjects.wall import Wall
 from server.game.engine.gameobjects.gameobject import GameObject
 from server.game.engine.gameobjects.destroyable import Destroyable
 from server.game.engine.utils.point import Point
-from server.game.engine.gameobjects.bots.user_bot import UserBot
 from server.game.engine.gameobjects.bots.bot_sync import Bot
-from server.game.engine.gameobjects.bots.enemy_bot import EnemyBot
 from server.game.engine.gameobjects.laser import Laser
 from server.game.exceptions import GameOver
 
@@ -65,7 +63,7 @@ class World:
                 obj = self.get_obj_at_position(Point(j, i))
                 if isinstance(obj, Wall):
                     s += '■■'
-                elif isinstance(obj, UserBot):
+                elif isinstance(obj, Bot):
                     s += '🛸'
                 else:
                     s += '  '  # ░░
@@ -217,7 +215,7 @@ class World:
                     self.objects.remove(i)
             if isinstance(i, Laser):
                 self.objects.remove(i)
-        enemy_objects = [i for i in self.objects if isinstance(i, EnemyBot)]
+        # enemy_objects = [i for i in self.objects if isinstance(i, EnemyBot)]
         player_objects = [i for i in self.objects if isinstance(i, Bot)]
 
         if self.game_mode == 'pvp':
@@ -230,11 +228,11 @@ class World:
         elif self.game_mode == 'pvpve':
             # TODO
             pass
-        elif self.game_mode == 'pve':
-            if len(player_objects) == 0:
-                raise GameOver(False)
-            if len(enemy_objects) == 0:
-                raise GameOver(True, player_objects[0])
+        # elif self.game_mode == 'pve':
+        #     if len(player_objects) == 0:
+        #         raise GameOver(False)
+        #     if len(enemy_objects) == 0:
+        #         raise GameOver(True, player_objects[0])
 
         return None
 

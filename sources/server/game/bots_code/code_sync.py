@@ -1,6 +1,6 @@
 from typing import Union
 
-from server.game.bots_code.bot_scripts_sync.new_example import BotActivity
+from server.game.bots_code.code_dummy import BotActivityDummy as BotActivity
 from server.game.engine.utils.direction import Direction
 from server.game.engine.utils.point import Point
 
@@ -14,18 +14,20 @@ class BotActivityWrapper:
         self.__improper_access = False
 
     def make_step(self):
-        if self.__improper_access:  # exceptions handler
+        if self.__improper_access:
             raise PermissionError('make_step() is restricted from internal calling')
-        self.__improper_access = True
-        self.__action = None
+        try:
+            self.__improper_access = True
+            self.__action = None
 
-        self.activity.perform()
+            self.activity.perform()
 
-        self.__improper_access = False
-        if not self.__verify():
-            return self.__bot.sleep()
-        else:
-            return self.__action
+            if not self.__verify():
+                return self.__bot.sleep()
+            else:
+                return self.__action
+        finally:
+            self.__improper_access = False
 
     def sleep(self):
         if self.__improper_access:

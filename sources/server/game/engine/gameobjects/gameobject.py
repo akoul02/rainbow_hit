@@ -16,10 +16,10 @@ class GameObject:
     '''
 
     coord: Point
-    world: 'g_world.World'
+    world: object  # 'g_world.World'
 
     def __post_init__(self):
-        if self.world != None:
+        if self.world is not None:
             if self.world.at_position(self.coord):
                 raise InvalidCoordinate()
             self.world.append(self)

@@ -1,3 +1,3 @@
-p1sc = 'new_example'
-p2sc = 'new_example'
+p1sc = 'simple_pathfinder'
+p2sc = 'chaotic_destroyer'
 print_traceback = True

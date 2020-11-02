@@ -17,7 +17,7 @@ class Game:
 
         self.bots = [
             BotActivityWrapper(Bot(Point(0, 0), self.world, 10, 10, True, 'player1'), get_bot_activity(config.p1sc)),
-            BotActivityWrapper(Bot(Point(15, 15), self.world, 10, 10, True, 'player2'), get_bot_activity(config.p1sc))]
+            BotActivityWrapper(Bot(Point(15, 15), self.world, 10, 10, True, 'player2'), get_bot_activity(config.p2sc))]
 
         self.__save_map()
 

@@ -8,7 +8,7 @@ def run():
     print(f'[DEBUG] Python {sys.version.split()[0]}')
 
     game = Game()
-    game.start_game_loop()
+    game.start_game_loop()  # TODO every 3 destroyed clouds lead to 10% HP decrease in order to nerf chaotic destroyer
 
     client = Client(TRACE_NAME)
     client.creating_game_objects()

@@ -184,14 +184,24 @@ class Client:
             if isinstance(shooted_obj, Ufo):
                 shooted_obj.health -= player_ufo.damage
 
-                if player == 'player1':
-                    self.health_line(2, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
-                else:
-                    self.health_line(1, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
+                # if player == 'player1':
+                #     self.health_line(2, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
+                # else:
+                #     self.health_line(1, 100 - (shooted_obj.health / shooted_obj.max_health) * 100)
 
             if destroyed:
                 obj = self.pop_object(x_end, y_end)
                 self.root.after(70, func=obj.deleter)
+
+        elif list(cmd.keys())[0] == 'bot_state':
+            name = cmd['bot_state']['name']
+            hp = cmd['bot_state']['hp']
+
+            if name == 'player1':
+                self.health_line(1, 100 - hp * 10)  # TODO no hardcode
+            else:
+                self.health_line(2, 100 - hp * 10)
+
 
         elif list(cmd.keys())[0] == 'game_over':
             self.game_over = True

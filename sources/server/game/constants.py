@@ -85,3 +85,12 @@ GAME_OVER = '''{{
     }}
 }}
 '''
+
+BOTS_STATE = '''{{
+    "bot_state":
+    {{
+        "name": "{}",
+        "hp": {}
+    }}
+}}
+'''

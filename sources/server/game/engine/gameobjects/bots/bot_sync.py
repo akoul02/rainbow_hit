@@ -19,6 +19,7 @@ class Bot(Destroyable):
     fov: int = BOT_FOV_CELLS
     power_ups: List = field(default_factory=list)
     last_action: str = ''
+    kills: int = 0
 
     def serialize(self):
         return f'"({self.coord.x}, {self.coord.y})": ["Bot", "{self.name}", {self.health}, {self.damage}]'
@@ -91,6 +92,12 @@ class Bot(Destroyable):
         if isinstance(closest, Destroyable):
             l = Laser(self.coord, None, closest.coord, self.damage)
             res = l.shoot(closest)
+            if not closest.alive:
+                self.kills += 1
+                if self.kills > 0 and self.kills % 3 == 0:
+                    self.reduce_health(1)
+                    if self.health == 0:
+                        self.kill()
         else:
             res = None
 

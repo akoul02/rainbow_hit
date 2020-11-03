@@ -3,7 +3,7 @@ import traceback
 from .bots_code import config
 from .bots_code.code_sync import BotActivityWrapper, get_bot_activity
 from .engine.gameobjects.game_world import World
-from .constants import MAX_STEPS, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY
+from .constants import MAX_STEPS, INIT_WORLD_CMD, GAME_OVER, LABYRINTH_DENSITY, BOTS_STATE
 from .engine.gameobjects.bots.bot_sync import Bot
 from .engine.utils.point import Point
 from .exceptions import GameOver, BotIsDead
@@ -52,6 +52,8 @@ class Game:
             action = bot.sleep()
         finally:
             self.history.write(action + ',\n')
+            self.history.flush()
+            self.history.write(BOTS_STATE.format(bot.name, bot.current_hp()) + ',\n')
             self.history.flush()
 
     def start_game_loop(self):

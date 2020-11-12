@@ -32,14 +32,20 @@ class BotActivityWrapper:
 
     def sleep(self):
         if self.__improper_access:
+            if self.__action is not None:
+                return
             self.__action = self.__bot.sleep()
         else:
             return self.__bot.sleep()
 
     def step(self, direction: Direction):
+        if self.__action is not None:
+            return
         self.__action = self.__bot.step(direction)
 
     def shoot(self, obj: Union[Point, object]):
+        if self.__action is not None:
+            return
         self.__action = self.__bot.shoot(obj)
 
     def scan(self):
@@ -61,6 +67,6 @@ class BotActivityWrapper:
 
 def get_bot_activity(name):
     try:
-        return importlib.import_module(f'..bot_scripts_sync.{name}', __name__).BotActivity
+        return __import__(f'server.game.bots_code.bot_scripts_sync.{name}', fromlist=[name]).BotActivity
     except:
         raise KeyError(f'Invalid script: {name}')

@@ -16,7 +16,7 @@ Cd to `sources` and run `python3 main.py`
 2. The game is visualized using the "client" module
 
 #### Running game
-- You can write custom python scripts for each of the bots inside this directory: `./rainbow_hit/sources/server/game/bots_code/bot_scripts/`. The code must be written inside a function `perform`. In file `./rainbow_hit/sources/server/game/bots_code/config.py` write names of preferred scripts in variables `p1sc` and `p2sc`.
+- You can write custom python scripts for each of the bots inside this directory: `./rainbow_hit/sources/server/game/bots_code/bot_scripts_sync/`. The code must be written inside a wrapper class BotActivity, which should contain function `perform`. In file `./rainbow_hit/sources/server/game/bots_code/config.py` write names of preferred scripts in variables `p1sc` and `p2sc`.
 
 #### Game screenshots
 ![StartGame](https://i.imgur.com/8qojgjc.png)

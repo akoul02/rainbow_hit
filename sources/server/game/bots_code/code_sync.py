@@ -67,6 +67,6 @@ class BotActivityWrapper:
 
 def get_bot_activity(name):
     try:
-        return __import__(f'server.game.bots_code.bot_scripts_sync.{name}', fromlist=[name]).BotActivity
+        return importlib.import_module(f'..bot_scripts_sync.{name}', __name__).BotActivity
     except:
         raise KeyError(f'Invalid script: {name}')

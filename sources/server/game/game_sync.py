@@ -10,14 +10,22 @@ from .exceptions import GameOver, BotIsDead
 
 
 class Game:
-    def __init__(self, player1 = None, player2 = None):
+    def __init__(self,
+                 player1=None,
+                 player2=None,
+                 names=['player1', 'player2']):
         self.result = False
         self.history = open('history.json', 'w')
         self.world = World.generate('pvp', LABYRINTH_DENSITY)
 
         self.bots = [
-            BotActivityWrapper(Bot(Point(0, 0), self.world, 10, 10, True, 'player1'), player1 or get_bot_activity(config.p1sc)),
-            BotActivityWrapper(Bot(Point(15, 15), self.world, 10, 10, True, 'player2'), player2 or get_bot_activity(config.p2sc))]
+            BotActivityWrapper(
+                Bot(Point(0, 0), self.world, 10, 10, True, names[0]), player1
+                or get_bot_activity(config.p1sc)),
+            BotActivityWrapper(
+                Bot(Point(15, 15), self.world, 10, 10, True, names[1]), player2
+                or get_bot_activity(config.p2sc))
+        ]
 
         self.__save_map()
 
@@ -55,6 +63,14 @@ class Game:
             self.history.flush()
             self.history.write(BOTS_STATE.format(bot.name, bot.current_hp()) + ',\n')
             self.history.flush()
+
+    def run(self):
+        for _step in range(0, MAX_STEPS):
+            for bot in self.bots:
+                state = self.make_step(bot)
+                if state is not None:
+                    return state
+        return GameOver(False)
 
     def start_game_loop(self):
         result = False
